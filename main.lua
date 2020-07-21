@@ -1,45 +1,23 @@
-HC = require 'HC'
+Player = require "player"
 
--- array to hold collision messages
-local text = {}
+local player
 
 function love.load()
-    -- add a rectangle to the scene
-    rect = HC.rectangle(200,400,400,20)
-
-    -- add a circle to the scene
-    mouse = HC.circle(400,400,20)
-    -- mouse:moveTo(love.mouse.getPosition())
+  if arg[#arg] == "-debug" then require("mobdebug").start() end
+  --love.window.setMode(1200, 800, {resizable = true})
+  player = Player(0, 0)
+  --print(player)
 end
 
 function love.update(dt)
-    -- move circle to mouse position
-    -- mouse:moveTo(love.mouse.getPosition())
+  player.move(100 * dt, 100 * dt)
 
-    -- rotate rectangle
-     rect:rotate(dt)
-
-    -- check for collisions
-    for shape, delta in pairs(HC.collisions(mouse)) do
-        text[#text+1] = string.format("Colliding. Separating vector = (%s,%s)",
-                                      delta.x, delta.y)
-        mouse:move(delta.x, delta.y)
-    end
-
-    while #text > 40 do
-        table.remove(text, 1)
-    end
 end
 
 function love.draw()
-    -- print messages
-    for i = 1,#text do
-        love.graphics.setColor(255,255,255, 255 - (i-1) * 6)
-        love.graphics.print(text[#text - (i-1)], 10, i * 15)
-    end
+  player.draw()
+  end
 
-    -- shapes can be drawn to the screen
-    love.graphics.setColor(255,0,0, 10)
-    rect:draw('fill')
-    mouse:draw('fill')
-end
+  function love.keypressed(key, sc, isr)
+    Entities.clear()
+  end
