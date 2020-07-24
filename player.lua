@@ -1,57 +1,73 @@
 HC = require 'lib.HC'
-vector = require 'lib.hump.vector'
+Vector = require 'lib.hump.vector'
+Class = require 'lib.hump.class'
 
-local Player = {}
+Player = Class{
+  init = function(self, x, y, id)
+    self.hitbox = HC.rectangle(x or 0, y or 0, 35, 35)
+    local posX, posY = self.hitbox:center()
+    self.position = Vector.new(posX or 0, posY or 0)
+    self.velocity = Vector.new(0, 0)
+    self.acceleration = 20
+    self.frictionRatio = 0.1
+    self.stats = {
+      speedBoost = 0, 
+      bombs = 1,
+      power = 1,
+      shield = false,
+      throw = false,
+      kick = false,
+      slow = false,
+      hyperactive = false,
+      mirror = false,
+      scatty = false,
+      restrain = false
+    }
+    self.id = id or 0
+    self.hitbox.playerId = self.id
+  end,
+  __tostring = function(self)
+    return string.format("x = %.16g, y = %.16g", self.position:unpack())
+  end,
+  draw = function(self)
+    love.graphics.setColor(255,255,255,1)
+    self.hitbox:draw('line')
+  end,
+  move = function(self, x, y)
+    self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
+  end,
+  update = function(self, dt)
 
-setmetatable(Player, {
-    __index=function(cls, key)
-      return getmetatable(cls)[key]
-    end,
-    __call=function(cls, ...)
-      return getmetatable(cls).new(...)
-    end,
-    new = function(x, y)
-      self = setmetatable({}, getmetatable(Player))
-      self.position = vector.new(x, y)
-      self.hitbox = HC.rectangle(self.position.x, self.position.y, 30, 30)
-      self.velocity = vector.new(0, 0)
-      self.acceleration = 20
-      self.frictionRatio = 0.1
-      self.stats = {
-        speedBoost = 0, 
-        bombs = 1,
-        power = 1,
-        shield = false,
-        throw = false,
-        kick = false,
-        slow = false,
-        hyperactive = false,
-        mirror = false,
-        scatty = false,
-        restrain = false
-      }
+    local frictionVector = self.velocity * self.frictionRatio
 
-      return self
-    end,
-    __tostring = function(p)
-      return string.format("(%.16g, %.16g)", self.position:unpack())
-    end,
-    draw = function()
-      love.graphics.setColor(255,255,255,1)
-      self.hitbox:draw('line')
-    end,
-    move = function(x, y)
-      self.velocity = (self.velocity + self.acceleration * vector.new(x, y))
-    end,
-    update = function(dt)
+    self.velocity = self.velocity - frictionVector
 
-      local frictionVector = self.velocity * self.frictionRatio
+    self.hitbox:move(self.velocity.x * dt, self.velocity.y * dt)
+    local x,y = self.hitbox:center()
+    self.position = Vector.new(x, y)
 
-      self.velocity = self.velocity - frictionVector
-
-      self.hitbox:move(self.velocity.x * dt, self.velocity.y * dt)
+    for shape, delta in pairs(HC.collisions(self.hitbox)) do
+      if shape.solid then
+        self:collision(vector.new(delta.x, delta.y))
+      end
     end
-  })
+
+  end,
+  setPosition = function(self, x, y)
+    self.position = Vector.new(x, y)
+    self.hitbox:moveTo(self.position.x, self.position.y)
+  end,
+  collision = function(self, v)
+    --self.velocity = Vector.new(0, 0)
+    self.hitbox:move(v.x, v.y)
+    local posX, posY = self.hitbox:center()
+    self.position = Vector.new(posX or 0, posY or 0)
+  end,
+  setId = function(self, id)
+    self.id = id
+    self.hitbox.PlayerId = self.id
+  end
+}
 
 
 return Player

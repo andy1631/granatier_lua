@@ -1,4 +1,4 @@
-local HC = require "HC"
+local HC = require "lib.HC"
 -- array to hold collision messages
 local text = {}
 
@@ -40,5 +40,5 @@ function love.draw()
     -- shapes can be drawn to the screen
     love.graphics.setColor(255, 0, 0)
     rect:draw("fill")
-    mouse:draw("fill")
+    --mouse:draw("fill")
 end
