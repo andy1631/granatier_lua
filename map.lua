@@ -16,8 +16,9 @@ function Map:init(file)
   self.position = vector.new((love.graphics:getWidth() / 2) - (self.width / 2), (love.graphics:getHeight() / 2) - (self.height / 2))
   self.playerCount = 0
   self.players = {}
-  self.map = {}
-
+  self.fields = {}
+  self.bombs = {}
+  
   for i = 0,10, 1 do
     self.map[i] = {}
     for j = 0, 10, 1 do
@@ -84,5 +85,9 @@ function Map:draw()
   end
 end
 
+function Map:setBomb(x, y)
+  
+  
+end
 
 return Map
