@@ -28,7 +28,7 @@ function Map:init(file)
     end
   end
 
-  self.map[3][5]:addContent('wall')
+  self.map[3][5]:setType('wall')
 
 end
 

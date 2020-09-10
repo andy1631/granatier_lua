@@ -3,25 +3,25 @@ Class = require 'lib.hump.class'
 
 Field = Class{}
 
-function Field:init(pos, size, content)
-  self.content = content
+function Field:init(pos, size, t)
+  self.type = t
   self.hitbox = HC.rectangle(pos.x , pos.y, size, size)
   local x,y = self.hitbox:center()
   self.position = vector.new(x, y)
-  self.hitbox.solid = self.content == 'wall'
+  self.hitbox.solid = self.type == 'wall'
 end
 
 function Field:__tostring()
-  return string.format('content: %s', self.content)
+  return string.format('type: %s', self.type)
 end
 
 function Field:draw()
-  self.hitbox:draw((self.content == 'wall') and 'fill' or 'line')
+  self.hitbox:draw((self.type == 'wall') and 'fill' or 'line')
 end
 
-function Field:addContent(c)
-  self.content = c
-  self.hitbox.solid = self.content == 'wall'
+function Field:setType(t)
+  self.type = t
+  self.hitbox.solid = self.type == 'wall'
   
 end
 
