@@ -3,6 +3,7 @@ Class = require 'lib.hump.class'
 Player = require 'player'
 Field = require 'field'
 vector = require 'lib.hump.vector'
+tove = require 'lib.tove'
 
 Map = Class{}
 
