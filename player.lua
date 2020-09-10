@@ -1,6 +1,7 @@
 HC = require 'lib.HC'
 Vector = require 'lib.hump.vector'
 Class = require 'lib.hump.class'
+tove = require 'lib.tove'
 
 Player = Class{
   init = function(self, x, y, id)
