@@ -2,8 +2,10 @@ HC = require 'lib.HC'
 Vector = require 'lib.hump.vector'
 Class = require 'lib.hump.class'
 tove = require 'lib.tove'
+--Laden der oben genannten Module
 
 Player = Class{
+  --Player wird als Objekt festgelegt
   init = function(self, x, y, id)
     self.hitbox = HC.rectangle(x or 0, y or 0, 35, 35)
     local posX, posY = self.hitbox:center()
@@ -11,6 +13,7 @@ Player = Class{
     self.velocity = Vector.new(0, 0)
     self.acceleration = 20
     self.frictionRatio = 0.1
+    --Position des Spielers und Standardwerte
     self.stats = {
       speedBoost = 0, 
       bombs = 1,
@@ -24,6 +27,7 @@ Player = Class{
       scatty = false,
       restrain = false
     }
+    --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
   end,
@@ -72,3 +76,4 @@ Player = Class{
 
 
 return Player
+--Rückgabe des Objekts Player
