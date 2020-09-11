@@ -7,11 +7,14 @@ tove = require 'lib.tove'
 
 Map = Class{}
 
-function Map:init(file)
-  -- parse Map
-  --if file == nil then
-  -- use default map file
-  --end
+function Map:init(x,y)
+  if x == nil or y == nil then
+    self.x=10
+    self.y=10
+  else
+    self.x=x
+    self.y=y
+  end
   self.width = 400
   self.height = 400
   self.position = vector.new((love.graphics:getWidth() / 2) - (self.width / 2), (love.graphics:getHeight() / 2) - (self.height / 2))
@@ -19,12 +22,12 @@ function Map:init(file)
   self.players = {}
   self.fields = {}
   self.bombs = {}
-  
-  for i = 0,10, 1 do
-    self.fields[i] = {}
-    for j = 0, 10, 1 do
 
-      local field = Field(self.position + vector.new(i * (self.width / 10), j * (self.height / 10)), 40)
+  for i = 0, self.x, 1 do
+    self.fields[i] = {}
+    for j = 0, self.y, 1 do
+
+      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40)
 
       self.fields[i][j] = field
     end
@@ -79,8 +82,8 @@ function Map:draw()
     self.players[key]:draw()
   end
 
-  for i = 0, 10, 1 do
-    for j = 0, 10, 1 do
+  for i = 0, self.x, 1 do
+    for j = 0, self.y, 1 do
       self.fields[i][j]:draw()
     end
   end
