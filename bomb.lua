@@ -1,6 +1,10 @@
 HC = require 'lib.HC'
 class = "lib.hump.class"
+tove = require 'lib.tove'
+
+
 Bomb = class{}
+
 
 function Bomb:init(pos, power)
   self.position = pos
