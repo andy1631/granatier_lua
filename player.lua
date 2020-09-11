@@ -42,10 +42,12 @@ Player = Class{
     love.graphics.translate(-(self.position.x + 75), -(self.position.y - 476.5))
     --love.graphics.setColor(255,255,255,1)
     self.hitbox:draw('line')
+    --Zeigen der Spielfigur und zeichnen der HitBox
   end,
   move = function(self, x, y)
     self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
   end,
+  --Bewegen des Spielers
   update = function(self, dt)
 
     local frictionVector = self.velocity * self.frictionRatio
@@ -61,18 +63,20 @@ Player = Class{
         self:collision(vector.new(delta.x, delta.y))
       end
     end
-
   end,
+   --Update-Funktion (Aktualisieren der UI)
   setPosition = function(self, x, y)
     self.position = Vector.new(x, y)
     self.hitbox:moveTo(self.position.x, self.position.y)
   end,
+  
   collision = function(self, v)
     --self.velocity = Vector.new(0, 0)
     self.hitbox:move(v.x, v.y)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
   end,
+  --
   setId = function(self, id)
     self.id = id
     self.hitbox.PlayerId = self.id
