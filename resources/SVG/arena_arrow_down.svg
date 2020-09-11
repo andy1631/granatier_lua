@@ -7,9 +7,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="10.583288mm"
+   height="10.583288mm"
+   viewBox="0 0 10.583288 10.583288"
    version="1.1"
    id="svg2762"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
@@ -42,18 +42,23 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="400"
-     inkscape:cy="560"
+     inkscape:zoom="2.8"
+     inkscape:cx="53.687478"
+     inkscape:cy="22.680191"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="1254"
-     inkscape:window-height="872"
-     inkscape:window-x="101"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="1368"
+     inkscape:window-height="850"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:pagecheckerboard="true" />
   <metadata
      id="metadata2759">
     <rdf:RDF>
@@ -69,7 +74,8 @@
   <g
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-65.767883,-71.059546)">
     <g
        transform="matrix(-0.26458333,0,0,-0.26458333,150.43532,84.913636)"
        id="arena_arrow_down">
