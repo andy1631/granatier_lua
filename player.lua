@@ -2,8 +2,10 @@ HC = require 'lib.HC'
 Vector = require 'lib.hump.vector'
 Class = require 'lib.hump.class'
 tove = require 'lib.tove'
+--Laden der oben genannten Module
 
 Player = Class{
+  --Player wird als Objekt festgelegt
   init = function(self, x, y, id)
     self.hitbox = HC.rectangle(x or 0, y or 0, 35, 35)
     local posX, posY = self.hitbox:center()
@@ -11,6 +13,8 @@ Player = Class{
     self.velocity = Vector.new(0, 0)
     self.acceleration = 20
     self.frictionRatio = 0.1
+    self.direction = "right"
+    --Position des Spielers und Standardwerte
     self.stats = {
       speedBoost = 0, 
       bombs = 1,
@@ -24,19 +28,36 @@ Player = Class{
       scatty = false,
       restrain = false
     }
+    --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
+    player = love.filesystem.read("resources/SVG/player1.svg")
+    myPlayer = tove.newGraphics(player)
   end,
   __tostring = function(self)
     return string.format("x = %.16g, y = %.16g", self.position:unpack())
   end,
   draw = function(self)
-    love.graphics.setColor(255,255,255,1)
+    local dir=0
+    love.graphics.translate(self.position.x + 75, self.position.y - 476.5)
+    if self.direction == "up" then
+      love.graphics.rotate(-90)
+      dir = 90
+    elseif self.direction == "down" then
+      love.graphics.rotate(90)
+      dir = -90
+    end
+    myPlayer:draw()
+    love.graphics.rotate(dir)
+    love.graphics.translate(-(self.position.x + 75), -(self.position.y - 476.5))
+    --love.graphics.setColor(255,255,255,1)
     self.hitbox:draw('line')
+    --Zeigen der Spielfigur und zeichnen der HitBox
   end,
   move = function(self, x, y)
     self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
   end,
+  --Bewegen des Spielers
   update = function(self, dt)
 
     local frictionVector = self.velocity * self.frictionRatio
@@ -52,18 +73,20 @@ Player = Class{
         self:collision(vector.new(delta.x, delta.y))
       end
     end
-
   end,
+   --Update-Funktion (Aktualisieren der UI)
   setPosition = function(self, x, y)
     self.position = Vector.new(x, y)
     self.hitbox:moveTo(self.position.x, self.position.y)
   end,
+  
   collision = function(self, v)
     --self.velocity = Vector.new(0, 0)
     self.hitbox:move(v.x, v.y)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
   end,
+  --
   setId = function(self, id)
     self.id = id
     self.hitbox.PlayerId = self.id
@@ -72,3 +95,4 @@ Player = Class{
 
 
 return Player
+--Rückgabe des Objekts Player

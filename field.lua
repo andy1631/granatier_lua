@@ -23,7 +23,7 @@ end
 function Field:draw()
   self.hitbox:draw((self.type == 'wall') and 'fill' or 'line')
 end
---Erstellen einer HitBox für die Mauer
+--Zeichnen der Linie der Hitbox
 
 function Field:setType(t)
   self.type = t
