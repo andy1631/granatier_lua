@@ -30,12 +30,17 @@ Player = Class{
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
+    player = love.filesystem.read("resources/SVG/player1.svg")
+    myPlayer = tove.newGraphics(player)
   end,
   __tostring = function(self)
     return string.format("x = %.16g, y = %.16g", self.position:unpack())
   end,
   draw = function(self)
-    love.graphics.setColor(255,255,255,1)
+    love.graphics.translate(self.position.x + 75, self.position.y - 476.5)
+    myPlayer:draw()
+    love.graphics.translate(-(self.position.x + 75), -(self.position.y - 476.5))
+    --love.graphics.setColor(255,255,255,1)
     self.hitbox:draw('line')
   end,
   move = function(self, x, y)
