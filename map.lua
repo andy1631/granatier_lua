@@ -35,6 +35,7 @@ function Map:init(x,y)
   end
 
   self.fields[3][5]:setType('wall')
+  self:setBomb(100, 100)
 
 end
 
@@ -76,11 +77,22 @@ function Map:update(dt)
     self.players[key]:update(dt)
   end
   
+  for key, value in pairs(self.bombs) do
+    self.bombs[key]:update(dt)
+    if self.bombs[key].toDelete then
+      table.remove(self.bombs,key)
+    end
+  end
+  
 end
 
 function Map:draw()
   for key, value in pairs(self.players) do
     self.players[key]:draw()
+  end
+  
+  for key, value in pairs(self.bombs) do
+    self.bombs[key]:draw()
   end
 
   for i = 0, self.x, 1 do
@@ -91,7 +103,7 @@ function Map:draw()
 end
 
 function Map:setBomb(x, y)
-    
+    table.insert(self.bombs, Bomb(vector(x,y), 1))
 end
 
 return Map
