@@ -87,7 +87,6 @@ end
 
 function Map:setBomb(x, y)
   
-  
 end
 
 return Map
