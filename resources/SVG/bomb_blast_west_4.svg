@@ -8,9 +8,9 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="15.875272mm"
+   height="5.2916665mm"
+   viewBox="0 0 15.875272 5.2916665"
    version="1.1"
    id="svg2627"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
@@ -160,8 +160,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="400"
-     inkscape:cy="560"
+     inkscape:cx="101.42908"
+     inkscape:cy="224.28571"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -170,7 +170,12 @@
      inkscape:window-height="872"
      inkscape:window-x="101"
      inkscape:window-y="0"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:pagecheckerboard="true" />
   <metadata
      id="metadata2624">
     <rdf:RDF>
@@ -186,7 +191,8 @@
   <g
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-78.996888,-88.824405)">
     <g
        transform="matrix(0.22436555,0,0,0.06614583,56.814602,78.266869)"
        id="bomb_blast_west_4">
