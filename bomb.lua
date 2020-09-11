@@ -2,6 +2,12 @@ HC = require 'lib.HC'
 Timer = require 'lib.hump.timer'
 Class = require 'lib.hump.class'
 Bomb = Class{}
+class = "lib.hump.class"
+tove = require 'lib.tove'
+
+
+Bomb = class{}
+
 
 function Bomb:init(pos, power)
   self.position = pos
