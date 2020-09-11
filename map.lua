@@ -21,22 +21,22 @@ function Map:init(file)
   self.bombs = {}
   
   for i = 0,10, 1 do
-    self.map[i] = {}
+    self.fields[i] = {}
     for j = 0, 10, 1 do
 
       local field = Field(self.position + vector.new(i * (self.width / 10), j * (self.height / 10)), 40)
 
-      self.map[i][j] = field
+      self.fields[i][j] = field
     end
   end
 
-  self.map[3][5]:setType('wall')
+  self.fields[3][5]:setType('wall')
 
 end
 
 function Map:spawn(player)
   self.players[self.playerCount] = player
-  self.players[self.playerCount]:setPosition(self.map[0][0].position.x, self.map[0][0].position.y)
+  self.players[self.playerCount]:setPosition(self.fields[0][0].position.x, self.fields[0][0].position.y)
   self.players[self.playerCount]:setId(self.playerCount)
   self.playerCount = self.playerCount + 1
 end
@@ -81,7 +81,7 @@ function Map:draw()
 
   for i = 0, 10, 1 do
     for j = 0, 10, 1 do
-      self.map[i][j]:draw()
+      self.fields[i][j]:draw()
     end
   end
 end
