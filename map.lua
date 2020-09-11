@@ -50,18 +50,22 @@ function Map:update(dt)
   if love.keyboard.isDown('w') and (not dir_lock or direction == 'w') then
     self.players[0]:move(0, -1)
     direction = 'w'
+    self.players[0].direction = "up"
     dir_lock = true
   elseif love.keyboard.isDown('a') and (not dir_lock or direction == 'a') then
     self.players[0]:move(-1, 0)
     direction = 'a'
+    self.players[0].direction = "left"
     dir_lock = true
   elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
     self.players[0]:move(0, 1)
     direction = 's'
+    self.players[0].direction = "down"
     dir_lock = true
   elseif love.keyboard.isDown('d') and (not dir_lock or direction == 'd') then
     self.players[0]:move(1, 0)
     direction = 'd'
+    self.players[0].direction = "right"
     dir_lock = true
   else
     dir_lock = false

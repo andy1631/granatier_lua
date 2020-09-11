@@ -13,6 +13,7 @@ Player = Class{
     self.velocity = Vector.new(0, 0)
     self.acceleration = 20
     self.frictionRatio = 0.1
+    self.direction = "right"
     --Position des Spielers und Standardwerte
     self.stats = {
       speedBoost = 0, 
@@ -37,8 +38,17 @@ Player = Class{
     return string.format("x = %.16g, y = %.16g", self.position:unpack())
   end,
   draw = function(self)
+    local dir=0
     love.graphics.translate(self.position.x + 75, self.position.y - 476.5)
+    if self.direction == "up" then
+      love.graphics.rotate(-90)
+      dir = 90
+    elseif self.direction == "down" then
+      love.graphics.rotate(90)
+      dir = -90
+    end
     myPlayer:draw()
+    love.graphics.rotate(dir)
     love.graphics.translate(-(self.position.x + 75), -(self.position.y - 476.5))
     --love.graphics.setColor(255,255,255,1)
     self.hitbox:draw('line')
