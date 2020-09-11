@@ -3,6 +3,7 @@ Class = require 'lib.hump.class'
 Player = require 'player'
 Field = require 'field'
 vector = require 'lib.hump.vector'
+Bomb = require 'bomb'
 
 Map = Class{}
 
@@ -86,8 +87,8 @@ function Map:draw()
 end
 
 function Map:setBomb(x, y)
-  
-  
+    self.bombs[0] = Bomb(vector(x,y),1)
+    
 end
 
 return Map
