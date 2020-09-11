@@ -3,11 +3,8 @@ Class = require 'lib.hump.class'
 Player = require 'player'
 Field = require 'field'
 vector = require 'lib.hump.vector'
-<<<<<<< HEAD
 Bomb = require 'bomb'
-=======
 tove = require 'lib.tove'
->>>>>>> 030ea88e9903f970c1c023d1ba9d3df39d481f2e
 
 Map = Class{}
 
