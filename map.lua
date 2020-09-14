@@ -16,8 +16,8 @@ function Map:init(x,y)
     self.x=x
     self.y=y
   end
-  self.width = 400
-  self.height = 400
+  self.width = self.x * 40
+  self.height = self.y * 40
   self.position = vector.new((love.graphics:getWidth() / 2) - (self.width / 2), (love.graphics:getHeight() / 2) - (self.height / 2))
   self.playerCount = 0
   self.players = {}
@@ -28,7 +28,7 @@ function Map:init(x,y)
     self.fields[i] = {}
     for j = 0, self.y, 1 do
 
-      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
+      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_ground')
 
       self.fields[i][j] = field
     end
