@@ -22,6 +22,9 @@ end
 function Bomb:draw()
   love.graphics.setColor(255,255,255)
   self.hitbox:draw()  
+  love.graphics.translate(self.position.x, self.position.y)
+  mybomb:draw()
+  love.graphics.translate(-self.position.x, -self.position.y)
 end
 
 function Bomb:update(dt)
