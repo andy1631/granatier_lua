@@ -13,6 +13,10 @@ function Bomb:init(pos, power)
   self.time = 3
   self.hitbox = HC.circle(self.position.x,self.position.y,20)
   self.toDelete = false
+  
+  bomb = love.filesystem.read("resources/SVG/bomb.svg")
+  mybomb = tove.newGraphics(bomb)
+  
 end
 
 function Bomb:draw()
