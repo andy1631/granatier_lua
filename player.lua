@@ -35,9 +35,11 @@ Player = Class{
     myPlayer = tove.newGraphics(player)
     myPlayer:rescale(35)
   end,
+  --Anzeige der SVG-Spielers
   __tostring = function(self)
     return string.format("x = %.16g, y = %.16g", self.position:unpack())
   end,
+  --ÜBergabe der aktuellen Position des Spielers als String
   draw = function(self)
     local dir=0
     love.graphics.translate(self.position.x, self.position.y)
@@ -51,6 +53,7 @@ Player = Class{
       love.graphics.rotate(math.pi)
       dir = -math.pi
     end
+    --Rotation des Spielers bei Richtungswechsel
     myPlayer:draw()
     love.graphics.rotate(dir)
     love.graphics.translate(-(self.position.x), -(self.position.y))
@@ -90,11 +93,12 @@ Player = Class{
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
   end,
-  --
+  --Bewegung der Hitbox
   setId = function(self, id)
     self.id = id
     self.hitbox.PlayerId = self.id
   end
+  --Zuweisen der HitBox zu einem Spieler
 }
 
 
