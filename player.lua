@@ -11,8 +11,8 @@ Player = Class{
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
     self.velocity = Vector.new(0, 0)
-    self.acceleration = 20
-    self.frictionRatio = 0.1
+    self.acceleration = 30
+    self.frictionRatio = 0.3
     self.direction = "right"
     --Position des Spielers und Standardwerte
     self.stats = {
@@ -31,8 +31,9 @@ Player = Class{
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
-    player = love.filesystem.read("resources/SVG/player1.svg")
+    player = love.filesystem.read("resources/player1.svg")
     myPlayer = tove.newGraphics(player)
+    myPlayer:rescale(35)
   end,
   --Anzeige der SVG-Spielers
   __tostring = function(self)
@@ -41,18 +42,21 @@ Player = Class{
   --ÜBergabe der aktuellen Position des Spielers als String
   draw = function(self)
     local dir=0
-    love.graphics.translate(self.position.x + 75, self.position.y - 476.5)
+    love.graphics.translate(self.position.x, self.position.y)
     if self.direction == "up" then
-      love.graphics.rotate(-90)
-      dir = 90
+      love.graphics.rotate(-math.pi / 2)
+      dir = math.pi / 2
     elseif self.direction == "down" then
-      love.graphics.rotate(90)
-      dir = -90
+      love.graphics.rotate(math.pi / 2)
+      dir = -math.pi / 2
+    elseif self.direction == "left" then
+      love.graphics.rotate(math.pi)
+      dir = -math.pi
     end
     --Rotation des Spielers bei Richtungswechsel
     myPlayer:draw()
     love.graphics.rotate(dir)
-    love.graphics.translate(-(self.position.x + 75), -(self.position.y - 476.5))
+    love.graphics.translate(-(self.position.x), -(self.position.y))
     --love.graphics.setColor(255,255,255,1)
     self.hitbox:draw('line')
     --Zeigen der Spielfigur und zeichnen der HitBox

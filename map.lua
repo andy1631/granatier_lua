@@ -91,18 +91,19 @@ function Map:update(dt)
 end
 
 function Map:draw()
+
+  for i = 0, self.x, 1 do
+    for j = 0, self.y, 1 do
+      self.fields[i][j]:draw()
+    end
+  end
+  
   for key, value in pairs(self.players) do
     self.players[key]:draw()
   end
   
   for key, value in pairs(self.bombs) do
     self.bombs[key]:draw()
-  end
-
-  for i = 0, self.x, 1 do
-    for j = 0, self.y, 1 do
-      self.fields[i][j]:draw()
-    end
   end
 end
 
