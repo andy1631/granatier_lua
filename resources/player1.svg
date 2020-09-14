@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400px" height="400px" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient id="c">
+            <stop stop-color="#730e0e" offset="0" />
+            <stop stop-color="#ba1f1f" offset="1" />
+        </linearGradient>
+        <linearGradient id="d">
+            <stop stop-color="#1919c4" offset="0" />
+            <stop stop-color="#000040" offset="1" />
+        </linearGradient>
+        <radialGradient id="a" cx="24.829" cy="19.452" r="6.9342" gradientTransform="matrix(1.0401 .10629 -.07693 .50622 -2.1976 9.305)" gradientUnits="userSpaceOnUse" xlink:href="#c" />
+        <radialGradient id="b" cx="46.222" cy="242.38" r="17.5" gradientTransform="matrix(1 0 0 .82857 -22.722 -165.97)" gradientUnits="userSpaceOnUse" xlink:href="#d" />
+    </defs>
+    <g transform="translate(0,-197)">
+        <g id="footL">
+            <g transform="matrix(.99939 -.0349 .0349 .99939 -.74667 .78157)">
+                <rect transform="matrix(.99483 .10153 -.14827 .98895 0 0)" x="17.195" y="15.442" width="15.668" height="8.0215" rx="6" ry="4" />
+                <rect transform="matrix(.99483 .10153 -.14827 .98895 0 0)" x="17.544" y="15.621" width="14.968" height="7.6634" rx="5.7321" ry="3.8214" fill="#dedede" />
+                <path d="m24.363 18.443-3.3825-0.3241c-3.0602-0.31274-5.7606 0.9748-6.0554 2.9143l-0.0033 0.03108c-0.29475 1.9395 1.9319 3.7627 4.9922 4.0754l3.3825 0.32409c0.95633 0.09773 1.854 0.03036 2.6776-0.15848l0.65984-6.2779c-0.67616-0.28045-1.4368-0.49908-2.2711-0.58434z" fill="url(#a)" />
+                <path transform="matrix(.99452 .10453 -.10453 .99452 -6.5139 -51.229)" d="m39.113 71.627-0.5278-4.6113-1.2501 4.7595-0.58336-4.8984-1.2315 5.0095-0.73152-5.0651" fill="none" stroke="#dedede" />
+            </g>
+        </g>
+        <g id="footR">
+            <g transform="matrix(.99939 .0349 .0349 -.99939 -.75047 68.944)">
+                <rect transform="matrix(.99483 .10153 -.14827 .98895 0 0)" x="17.195" y="15.442" width="15.668" height="8.0215" rx="6" ry="4" />
+                <rect transform="matrix(.99483 .10153 -.14827 .98895 0 0)" x="17.544" y="15.621" width="14.968" height="7.6634" rx="5.7321" ry="3.8214" fill="#dedede" />
+                <path d="m24.363 18.443-3.3825-0.3241c-3.0602-0.31274-5.7606 0.9748-6.0554 2.9143l-0.0033 0.03108c-0.29475 1.9395 1.9319 3.7627 4.9922 4.0754l3.3825 0.32409c0.95633 0.09773 1.854 0.03036 2.6776-0.15848l0.65984-6.2779c-0.67616-0.28045-1.4368-0.49908-2.2711-0.58434z" fill="url(#a)" />
+                <path transform="matrix(.99452 .10453 -.10453 .99452 -6.5139 -51.229)" d="m39.113 71.627-0.5278-4.6113-1.2501 4.7595-0.58336-4.8984-1.2315 5.0095-0.73152-5.0651" fill="none" stroke="#dedede" />
+            </g>
+        </g>
+        <g id="torso">
+            <rect x="6.0001" y="20.362" width="35" height="29" rx="14.5" fill="url(#b)" />
+            <g transform="matrix(.88807 -.52021 .51273 .90103 -12.048 20.971)">
+                <ellipse transform="matrix(1.5727 0 0 1.3289 -42.865 -52.627)" cx="49.817" cy="59.101" rx="1.3238" ry="1.8812" fill="#fff" />
+                <ellipse transform="matrix(1 0 0 1.0417 -15.697 -32.886)" cx="51.489" cy="56.802" rx="1.4632" ry="1.6722" />
+            </g>
+            <g transform="matrix(.88807 .52021 .51273 -.90103 -12.048 48.754)">
+                <ellipse transform="matrix(1.5727 0 0 1.3289 -42.865 -52.627)" cx="49.817" cy="59.101" rx="1.3238" ry="1.8812" fill="#fff" />
+                <ellipse transform="matrix(1 0 0 1.0417 -15.697 -32.886)" cx="51.489" cy="56.802" rx="1.4632" ry="1.6722" />
+            </g>
+        </g>
+    </g>
+
+    <style>
+        #torso{
+            transform: matrix(2.8348, 0, 0, 2.8348, -16.348, 148.66);
+        }
+        #footL{
+            transform: matrix(2.8193, -.29632, .29632, 2.8193, -22.49, 156.11);
+        }
+        #footR{
+            transform: matrix(2.8193, .29632, -.29632, 2.8193, -1.8292, 142.29);
+        }
+    </style>
+</svg>

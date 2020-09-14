@@ -28,13 +28,14 @@ function Map:init(x,y)
     self.fields[i] = {}
     for j = 0, self.y, 1 do
 
-      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40)
+      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
 
       self.fields[i][j] = field
     end
   end
 
-  self.fields[3][5]:setType('wall')
+  self.fields[3][5]:setType('arena_greenwall')
+  self:setBomb(100, 100)
 
 end
 
@@ -50,20 +51,26 @@ function Map:update(dt)
   if love.keyboard.isDown('w') and (not dir_lock or direction == 'w') then
     self.players[0]:move(0, -1)
     direction = 'w'
+    self.players[0].direction = "up"
     dir_lock = true
   elseif love.keyboard.isDown('a') and (not dir_lock or direction == 'a') then
     self.players[0]:move(-1, 0)
     direction = 'a'
+    self.players[0].direction = "left"
     dir_lock = true
   elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
     self.players[0]:move(0, 1)
     direction = 's'
+    self.players[0].direction = "down"
     dir_lock = true
   elseif love.keyboard.isDown('d') and (not dir_lock or direction == 'd') then
     self.players[0]:move(1, 0)
     direction = 'd'
+    self.players[0].direction = "right"
     dir_lock = true
-  else
+  --elseif love.keyboard.isDown('e') and (not dir_lock or direction == 'e') then
+    
+    else
     dir_lock = false
     direction = ''
   end
@@ -76,22 +83,34 @@ function Map:update(dt)
     self.players[key]:update(dt)
   end
   
+  for key, value in pairs(self.bombs) do
+    self.bombs[key]:update(dt)
+    if self.bombs[key].toDelete then
+      table.remove(self.bombs,key)
+    end
+  end
+  
 end
 
 function Map:draw()
-  for key, value in pairs(self.players) do
-    self.players[key]:draw()
-  end
 
   for i = 0, self.x, 1 do
     for j = 0, self.y, 1 do
       self.fields[i][j]:draw()
     end
   end
+  
+  for key, value in pairs(self.players) do
+    self.players[key]:draw()
+  end
+  
+  for key, value in pairs(self.bombs) do
+    self.bombs[key]:draw()
+  end
 end
 
 function Map:setBomb(x, y)
-    
+    table.insert(self.bombs, Bomb(vector(x,y), 1))
 end
 
 return Map
