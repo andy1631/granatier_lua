@@ -28,13 +28,13 @@ function Map:init(x,y)
     self.fields[i] = {}
     for j = 0, self.y, 1 do
 
-      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40)
+      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
 
       self.fields[i][j] = field
     end
   end
 
-  self.fields[3][5]:setType('wall')
+  self.fields[3][5]:setType('arena_greenwall')
   self:setBomb(100, 100)
 
 end
