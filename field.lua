@@ -11,10 +11,17 @@ function Field:init(pos, size, t)
   self.hitbox = HC.rectangle(pos.x , pos.y, size, size)
   local x,y = self.hitbox:center()
   self.position = vector.new(x, y)
+<<<<<<< HEAD
   
   self.hitbox.solid = (self.type == 'arena_greenwall' or self.type == 'arena_wall')
 
   self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
+=======
+
+  self.hitbox.solid = (self.type == 'arena_greenwall' or self.type == 'arena_wall')
+  self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. '.svg')
+  
+>>>>>>> 55fdf55ee920cf13dc364bc5762d7ff935a545ab
   self.Texture = tove.newGraphics(self.Texture)
   self.Texture:rescale(40)
 end
@@ -43,5 +50,9 @@ function Field:setType(t)
   self.Texture:rescale(40)
 end
 --Festlegen des Types als HitBox
+<<<<<<< HEAD
+=======
+
+>>>>>>> 55fdf55ee920cf13dc364bc5762d7ff935a545ab
 return Field
 --Rückgabe des Objekts Field
