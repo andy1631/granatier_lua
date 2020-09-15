@@ -61,7 +61,10 @@ function MapParser:parse()
         temp="arena_arrow_left"
       elseif ycord=="p" then
         --player poistion
+        --map:addSpawn(j,i)
         temp="arena_ground"
+      elseif ycord=="m" then
+        temp="arena_mine"
       end
       map:changeType(j,i,temp)
     end
