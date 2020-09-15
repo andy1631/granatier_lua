@@ -24,18 +24,23 @@ function Map:init(x,y)
   self.fields = {}
   self.bombs = {}
 
-  for i = 0, self.x, 1 do
-    self.fields[i] = {}
-    for j = 0, self.y, 1 do
+  --if self.type == 'arena_greenwall' then
+    for i = 0, self.x, 1 do
+      self.fields[i] = {}
+      for j = 0, self.y, 1 do
 
-      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_ground')
+        local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
 
-      self.fields[i][j] = field
+        self.fields[i][j] = field
+      end
     end
-  end
-
-  self.fields[3][5]:setType('arena_greenwall')
-  self:setBomb(100, 100)
+  self.fields[3][5]:setType('air')
+  
+  -- Hintergrund anzeigen lassen:
+  background = love.filesystem.read("resources/SVG/background.svg")
+  background = tove.newGraphics(background)
+  background:rescale(2500)
+  
 
 end
 
@@ -57,8 +62,7 @@ function Map:update(dt)
     self.players[0]:move(-1, 0)
     direction = 'a'
     self.players[0].direction = "left"
-    dir_lock = true
-  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
+    dir_lock = true  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
     self.players[0]:move(0, 1)
     direction = 's'
     self.players[0].direction = "down"
@@ -68,12 +72,14 @@ function Map:update(dt)
     direction = 'd'
     self.players[0].direction = "right"
     dir_lock = true
- -- elseif love.keyboard.isDown('e') and (not dir_lock or direction == 'e') then
- --   self.bomb[0]:draw
- --   dir_lock = true
-    else
-    dir_lock = false
+    
+  else
     direction = ''
+    dir_lock = false
+  end
+ 
+  if love.keyboard.isDown('e') then
+    self:setBomb()
   end
 
   -- send player[0] (own player) position to server
@@ -94,10 +100,12 @@ function Map:update(dt)
 end
 
 function Map:draw()
+  
+  background:draw() -- Hintergrund zeichnen lassen
 
   for i = 0, self.x, 1 do
     for j = 0, self.y, 1 do
-      self.fields[i][j]:draw()
+      self.fields[i][j]:draw() 
     end
   end
   
@@ -110,8 +118,8 @@ function Map:draw()
   end
 end
 
-function Map:setBomb(x, y)
-    table.insert(self.bombs, Bomb(vector(x,y), 1))
+function Map:setBomb()
+    table.insert(self.bombs, Bomb(self.players[0].position, self.players[0].stats.power))
 end
 
 return Map

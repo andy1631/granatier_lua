@@ -31,7 +31,7 @@ Player = Class{
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
-    player = love.filesystem.read("resources/player1.svg")
+    player = love.filesystem.read("resources/player2.svg")
     myPlayer = tove.newGraphics(player)
     myPlayer:rescale(35)
   end,
@@ -58,7 +58,7 @@ Player = Class{
     love.graphics.rotate(dir)
     love.graphics.translate(-(self.position.x), -(self.position.y))
     --love.graphics.setColor(255,255,255,1)
-    self.hitbox:draw('line')
+    --self.hitbox:draw('line')
     --Zeigen der Spielfigur und zeichnen der HitBox
   end,
   move = function(self, x, y)
