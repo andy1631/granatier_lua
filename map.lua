@@ -122,4 +122,8 @@ function Map:setBomb()
     table.insert(self.bombs, Bomb(self.players[0].position, self.players[0].stats.power))
 end
 
+function Map:changeType(x,y,typ)
+  self.fields[x,y]:setType(typ)
+end
+
 return Map
