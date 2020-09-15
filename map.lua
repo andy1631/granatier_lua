@@ -25,9 +25,9 @@ function Map:init(x,y)
   self.bombs = {}
 
   --if self.type == 'arena_greenwall' then
-    for i = 0, self.x, 1 do
+    for i = 1, self.x, 1 do
       self.fields[i] = {}
-      for j = 0, self.y, 1 do
+      for j = 1, self.y, 1 do
 
         local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
 
@@ -46,7 +46,7 @@ end
 
 function Map:spawn(player)
   self.players[self.playerCount] = player
-  self.players[self.playerCount]:setPosition(self.fields[0][0].position.x, self.fields[0][0].position.y)
+  self.players[self.playerCount]:setPosition(self.fields[1][1].position.x, self.fields[1][1].position.y)
   self.players[self.playerCount]:setId(self.playerCount)
   self.playerCount = self.playerCount + 1
 end
@@ -103,8 +103,8 @@ function Map:draw()
   
   background:draw() -- Hintergrund zeichnen lassen
 
-  for i = 0, self.x, 1 do
-    for j = 0, self.y, 1 do
+  for i = 1, self.x, 1 do
+    for j = 1, self.y, 1 do
       self.fields[i][j]:draw() 
     end
   end
@@ -123,7 +123,7 @@ function Map:setBomb()
 end
 
 function Map:changeType(x,y,typ)
-  self.fields[x,y]:setType(typ)
+  self.fields[x][y]:setType(typ)
 end
 
 return Map

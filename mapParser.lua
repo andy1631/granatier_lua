@@ -30,8 +30,8 @@ function MapParser:parse()
     local xcord=v[1]
     for j=1,x,1 do
       local ycord=string.sub(xcord,j,j)
-      local temp="air"
-      --map.fields[i][j]:setType(temp)
+      local temp="arena_ground"
+      map:changeType(j,i,temp)
     end
   end
   
