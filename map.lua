@@ -30,18 +30,13 @@ function Map:init(x,y)
       self.fields[i] = {}
       for j = 0, self.y, 1 do
 
-<<<<<<< Updated upstream
-      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_ground')
-=======
         local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
-        -- local background = Field(self.position + vector.new(), 1000, 'background')
->>>>>>> Stashed changes
 
         self.fields[i][j] = field
       end
     end
   self.fields[3][5]:setType('arena_greenwall')
-  self:setBomb(100, 100)
+  --self:setBomb(100, 100)
 
   -- Hintergrund anzeigen lassen:
   background = love.filesystem.read("resources/SVG/background.svg")
@@ -79,12 +74,14 @@ function Map:update(dt)
     direction = 'd'
     self.players[0].direction = "right"
     dir_lock = true
- elseif love.keyboard.isDown('e') and (not dir_lock or direction == 'e') then
-    self:setBomb(self.x, self.y)
-    dir_lock = true
-    else
-    dir_lock = false
+    
+  else
     direction = ''
+    dir_lock = false
+  end
+ 
+  if love.keyboard.isDown('e') then
+    self:setBomb()
   end
 
   -- send player[0] (own player) position to server
@@ -123,8 +120,8 @@ function Map:draw()
   end
 end
 
-function Map:setBomb(x, y)
-    table.insert(self.bombs, Bomb(vector(x,y), 1))
+function Map:setBomb()
+    table.insert(self.bombs, Bomb(self.players[0].position, self.players[0].stats.power))
 end
 
 return Map
