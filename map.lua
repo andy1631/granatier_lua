@@ -9,6 +9,7 @@ tove = require 'lib.tove'
 Map = Class{}
 
 function Map:init(x,y)
+  counter = 0
   if x == nil or y == nil then
     self.x=10
     self.y=10
@@ -24,18 +25,29 @@ function Map:init(x,y)
   self.fields = {}
   self.bombs = {}
 
-  for i = 0, self.x, 1 do
-    self.fields[i] = {}
-    for j = 0, self.y, 1 do
+  --if self.type == 'arena_greenwall' then
+    for i = 0, self.x, 1 do
+      self.fields[i] = {}
+      for j = 0, self.y, 1 do
 
+<<<<<<< Updated upstream
       local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_ground')
+=======
+        local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
+        -- local background = Field(self.position + vector.new(), 1000, 'background')
+>>>>>>> Stashed changes
 
-      self.fields[i][j] = field
+        self.fields[i][j] = field
+      end
     end
-  end
-
   self.fields[3][5]:setType('arena_greenwall')
   self:setBomb(100, 100)
+
+  -- Hintergrund anzeigen lassen:
+  background = love.filesystem.read("resources/SVG/background.svg")
+  background = tove.newGraphics(background)
+  background:rescale(2500)
+  
 
 end
 
@@ -93,6 +105,8 @@ function Map:update(dt)
 end
 
 function Map:draw()
+  
+  background:draw() -- Hintergrund zeichnen lassen
 
   for i = 0, self.x, 1 do
     for j = 0, self.y, 1 do
