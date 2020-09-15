@@ -29,26 +29,13 @@ function Map:init(x,y)
       self.fields[i] = {}
       for j = 0, self.y, 1 do
 
-<<<<<<< HEAD
-
         local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
-        
-=======
-        local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
->>>>>>> 55fdf55ee920cf13dc364bc5762d7ff935a545ab
 
         self.fields[i][j] = field
       end
     end
-<<<<<<< HEAD
   self.fields[3][5]:setType('air')
-  self:setBomb(100, 100)
   
-=======
-  self.fields[3][5]:setType('arena_greenwall')
-  --self:setBomb(100, 100)
-
->>>>>>> 55fdf55ee920cf13dc364bc5762d7ff935a545ab
   -- Hintergrund anzeigen lassen:
   background = love.filesystem.read("resources/SVG/background.svg")
   background = tove.newGraphics(background)
