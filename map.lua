@@ -47,7 +47,11 @@ end
 
 function Map:spawn(player)
   self.players[self.playerCount] = player
-  self.players[self.playerCount]:setPosition(self.fields[1][1].position.x, self.fields[1][1].position.y)
+  local num=love.math.random(1,table.getn(self.spawns))
+  local posx=self.spawns[num].x
+  local posy=self.spawns[num].y
+  table.remove(self.spawns,num)
+  self.players[self.playerCount]:setPosition(self.fields[posx][posy].position.x, self.fields[posx][posy].position.y)
   self.players[self.playerCount]:setId(self.playerCount)
   self.playerCount = self.playerCount + 1
 end
