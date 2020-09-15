@@ -35,6 +35,70 @@ function Field:draw()
 end
 --Zeichnen der Linie der Hitbox
 
+function Field:spawnPowerUp(type)
+  randomNumber = math.random(1, 15)
+  -- Spiegel:
+  if randomNumber == 1 then
+    self.PowerUp = PowerUpMirror()
+  end
+  -- Kaffee:
+  if randomNumber == 2 then
+    self.PowerUp = PowerUpCoffee()
+  end
+  -- Fessel:
+  if randomNumber == 3 then
+    self.PowerUp = PowerUpRestrain()
+  end
+  -- Wirft Bomben zu zufälligen Positionen (Scatty):
+  if randomNumber == 4 then
+    self.PowerUp = PowerUpScatty()
+  end
+  -- Schnecke:
+  if randomNumber == 5 then
+    self.PowerUp = PowerUpSlow()
+  end
+  -- Bombe:
+  if randomNumber == 6 then
+    self.PowerUp = PowerUpBomb()
+  end
+  -- Fußball:
+  if randomNumber == 7 then
+    self.PowerUp = PowerUpKick()
+  end
+  -- Schaufel:
+  if randomNumber == 8 then
+    self.PowerUp = PowerUpMason()
+  end
+  -- Zufallbox:
+  if randomNumber == 9 then
+    self.PowerUp = PowerUpPandora()
+  end
+  -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
+  if randomNumber == 10 then
+    self.PowerUp = PowerUpResurrect()
+  end
+  -- Teleporter:
+  if randomNumber == 11 then
+    self.PowerUp = PowerUpTeleport()
+  end
+  -- Power:
+  if randomNumber == 12 then
+    self.PowerUp = PowerUpPower()
+  end
+  -- Schild:
+  if randomNumber == 13 then
+    self.PowerUp = PowerUpShield()
+  end
+  -- Schneller bewegen:
+  if randomNumber == 14 then
+    self.PowerUp = PowerUpSpeed()
+  end
+  -- Werfen:
+  if randomNumber == 15 then
+    self.PowerUp = PowerUpThrow()
+  end
+end
+
 function Field:setType(t)
   self.type = t
   self.hitbox.solid = (self.type == 'arena_greenwall' or self.type == 'arena_wall')
