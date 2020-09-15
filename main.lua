@@ -1,5 +1,6 @@
 Player = require "player"
 Map = require 'map'
+MapParser= require 'mapParser'
 
 local player
 local direction = ''
@@ -7,9 +8,9 @@ local dir_lock = false
 function love.load()
   if arg[#arg] == "-debug" then require("mobdebug").start() end
   love.window.setMode(1200, 800, {resizable = true})
-  map = Map()
-  map:spawn(Player())
   --print(player)
+  mapParser=MapParser()
+  mapParser:parse()
 end
 
 function love.update(dt)
