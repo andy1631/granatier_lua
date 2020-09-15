@@ -103,8 +103,8 @@ function Map:draw()
   
   background:draw() -- Hintergrund zeichnen lassen
 
-  for i = 0, self.x, 1 do
-    for j = 0, self.y, 1 do
+  for i = 1, self.x, 1 do
+    for j = 1, self.y, 1 do
       self.fields[i][j]:draw() 
     end
   end

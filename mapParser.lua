@@ -17,7 +17,7 @@ function MapParser:parse()
   local x=t._attr.colCount
   local y=t._attr.rowCount
   map=Map(x,y)
-  map:spawn(Player(), map)
+  map:spawn(Player())
 end
 
 return MapParser
