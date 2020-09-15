@@ -53,34 +53,61 @@ end
 
 function Map:update(dt)
   -- local player move events
-  if love.keyboard.isDown('w') and (not dir_lock or direction == 'w') then
-    self.players[0]:move(0, -1)
-    direction = 'w'
-    self.players[0].direction = "up"
-    dir_lock = true
-  elseif love.keyboard.isDown('a') and (not dir_lock or direction == 'a') then
-    self.players[0]:move(-1, 0)
-    direction = 'a'
-    self.players[0].direction = "left"
-    dir_lock = true  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
-    self.players[0]:move(0, 1)
-    direction = 's'
-    self.players[0].direction = "down"
-    dir_lock = true
-  elseif love.keyboard.isDown('d') and (not dir_lock or direction == 'd') then
-    self.players[0]:move(1, 0)
-    direction = 'd'
-    self.players[0].direction = "right"
-    dir_lock = true
+--  if love.keyboard.isDown('w') and (not dir_lock or direction == 'w') then
+--    self.players[0]:move(0, -1)
+--    direction = 'w'
+--    self.players[0].direction = "up"
+--    dir_lock = true
+--  elseif love.keyboard.isDown('a') and (not dir_lock or direction == 'a') then
+--    self.players[0]:move(-1, 0)
+--    direction = 'a'
+--    self.players[0].direction = "left"
+--    dir_lock = true  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
+--    self.players[0]:move(0, 1)
+--    direction = 's'
+--    self.players[0].direction = "down"
+--    dir_lock = true
+--  elseif love.keyboard.isDown('d') and (not dir_lock or direction == 'd') then
+--    self.players[0]:move(1, 0)
+--    direction = 'd'
+--    self.players[0].direction = "right"
+--    dir_lock = true
     
-  else
-    direction = ''
-    dir_lock = false
-  end
+--  else
+--    direction = ''
+--    dir_lock = false
+--  end
  
-  if love.keyboard.isDown('e') then
-    self:setBomb()
-  end
+--  if love.keyboard.isDown('e') then
+--    self:setBomb()
+--  endif love.keyboard.isDown('w') and (not dir_lock or direction == 'w') then
+--    self.players[0]:move(0, -1)
+--    direction = 'w'
+--    self.players[0].direction = "up"
+--    dir_lock = true
+--  elseif love.keyboard.isDown('a') and (not dir_lock or direction == 'a') then
+--    self.players[0]:move(-1, 0)
+--    direction = 'a'
+--    self.players[0].direction = "left"
+--    dir_lock = true  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
+--    self.players[0]:move(0, 1)
+--    direction = 's'
+--    self.players[0].direction = "down"
+--    dir_lock = true
+--  elseif love.keyboard.isDown('d') and (not dir_lock or direction == 'd') then
+--    self.players[0]:move(1, 0)
+--    direction = 'd'
+--    self.players[0].direction = "right"
+--    dir_lock = true
+    
+--  else
+--    direction = ''
+--    dir_lock = false
+--  end
+ 
+--  if love.keyboard.isDown('e') then
+--    self:setBomb()
+--  end
 
   -- send player[0] (own player) position to server
   -- get position of other players from server
