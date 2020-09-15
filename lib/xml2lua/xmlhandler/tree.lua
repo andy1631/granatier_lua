@@ -90,7 +90,7 @@ end
 --- Recursively removes redundant vectors for nodes
 -- with single child elements
 function tree:reduce(node, key, parent)
-    for k,v in pairs(node) do
+    --[[for k,v in pairs(node) do
         if type(v) == 'table' then
             self:reduce(v,k,node)
         end
@@ -101,6 +101,7 @@ function tree:reduce(node, key, parent)
     else
         node.n = nil
     end
+    ]]
 end
 
 ---Parses a start tag.
