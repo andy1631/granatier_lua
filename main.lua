@@ -7,7 +7,7 @@ local direction = ''
 local dir_lock = false
 function love.load()
   if arg[#arg] == "-debug" then require("mobdebug").start() end
-  love.window.setMode(1200, 800, {resizable = true})
+  love.window.setMode(1200, 675, {resizable = true})
   --print(player)
   mapParser=MapParser()
   mapParser:parse()

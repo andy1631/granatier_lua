@@ -39,9 +39,7 @@ function Map:init(x,y)
   -- Hintergrund anzeigen lassen:
   background = love.filesystem.read("resources/SVG/background.svg")
   background = tove.newGraphics(background)
-  background:rescale(2500)
-  
-
+  background:rescale(1200)
 end
 
 function Map:spawn(player)
@@ -131,8 +129,10 @@ function Map:update(dt)
 end
 
 function Map:draw()
-  
+  love.graphics.reset()
+  love.graphics.translate(600, 337.5)
   background:draw() -- Hintergrund zeichnen lassen
+  love.graphics.translate(-(600), -(337.5))
 
   for i = 1, self.x, 1 do
     for j = 1, self.y, 1 do
