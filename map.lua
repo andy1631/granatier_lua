@@ -35,7 +35,6 @@ function Map:init(x,y)
         self.fields[i][j] = field
       end
     end
-  self.fields[3][5]:setType('air')
   
   -- Hintergrund anzeigen lassen:
   background = love.filesystem.read("resources/SVG/background.svg")

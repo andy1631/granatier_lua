@@ -27,7 +27,7 @@ end
 
 function Field:draw()
   if self.type ~= 'air' then
-    self.hitbox:draw((self.type == 'wall') and 'fill' or 'line')
+    --self.hitbox:draw((self.type == 'wall') and 'fill' or 'line')
     love.graphics.translate(self.position.x, self.position.y)
     self.Texture:draw()
     love.graphics.translate(-self.position.x, -self.position.y)
