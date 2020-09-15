@@ -57,8 +57,7 @@ function Map:update(dt)
     self.players[0]:move(-1, 0)
     direction = 'a'
     self.players[0].direction = "left"
-    dir_lock = true
-  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
+    dir_lock = true  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
     self.players[0]:move(0, 1)
     direction = 's'
     self.players[0].direction = "down"
@@ -68,9 +67,9 @@ function Map:update(dt)
     direction = 'd'
     self.players[0].direction = "right"
     dir_lock = true
- -- elseif love.keyboard.isDown('e') and (not dir_lock or direction == 'e') then
- --   self.bomb[0]:draw
- --   dir_lock = true
+ elseif love.keyboard.isDown('e') and (not dir_lock or direction == 'e') then
+    self:setBomb(self.x, self.y)
+    dir_lock = true
     else
     dir_lock = false
     direction = ''
