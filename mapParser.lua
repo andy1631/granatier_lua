@@ -5,7 +5,7 @@ Xml = require 'lib.xml2lua.xml2lua'
 MapParser= Class{}
 
 function MapParser:init()
-   self.filePath="resources/arenas/granatier.xml"
+   self.filePath="resources/arenas/random.xml"
 end
 
 function MapParser:parse()
@@ -41,7 +41,12 @@ function MapParser:parse()
         temp="arena_wall"
       elseif ycord=="x" then
         --50/50
-        temp="arena_ground"
+        number=love.math.random(1,100)
+        if number>50 then
+          temp="arena_ground"
+        else
+          temp="arena_wall"
+        end
       elseif ycord=="-" then
         temp="arena_ice"
       elseif ycord=="o" then
