@@ -19,13 +19,6 @@ function MapParser:parse()
   local y=t._attr.rowCount
   t.Row.n=nil
   map=Map(x,y)
-  --[[for i=1,x,1 do
-    local xcord=t.Row[i][1]
-    for j=1,y,1 do
-      local ycord=string.sub(xcord,j,j)
-    end
-  end]]
-  
   for i, v in pairs(t.Row) do
     local xcord=v[1]
     for j=1,x,1 do
@@ -40,7 +33,6 @@ function MapParser:parse()
       elseif ycord=="+" then
         temp="arena_wall"
       elseif ycord=="x" then
-        --50/50
         number=love.math.random(1,100)
         if number>50 then
           temp="arena_ground"
@@ -60,8 +52,7 @@ function MapParser:parse()
       elseif ycord=="l" then
         temp="arena_arrow_left"
       elseif ycord=="p" then
-        --player poistion
-        --map:addSpawn(j,i)
+        map:addSpawn(j,i)
         temp="arena_ground"
       elseif ycord=="m" then
         temp="arena_mine"

@@ -23,6 +23,7 @@ function Map:init(x,y)
   self.players = {}
   self.fields = {}
   self.bombs = {}
+  self.spawns = {}
 
   --if self.type == 'arena_greenwall' then
     for i = 1, self.x, 1 do
@@ -151,6 +152,10 @@ end
 
 function Map:changeType(x,y,typ)
   self.fields[x][y]:setType(typ)
+end
+
+function Map:addSpawn(x,y)
+  table.insert(self.spawns,Vector(x,y))
 end
 
 return Map
