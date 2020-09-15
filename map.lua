@@ -30,7 +30,7 @@ function Map:init(x,y)
       self.fields[i] = {}
       for j = 1, self.y, 1 do
 
-        local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_greenwall')
+        local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)), 40, 'arena_wall')
 
         self.fields[i][j] = field
       end

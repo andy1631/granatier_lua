@@ -4,9 +4,10 @@ Class = require 'lib.hump.class'
 tove = require 'lib.tove'
 --Laden der oben genannten Module
 
-Player = Class{
-  --Player wird als Objekt festgelegt
-  init = function(self, x, y, id)
+Player = Class{}
+
+--Player wird als Objekt festgelegt
+   function Player:init(x, y, id)
     self.hitbox = HC.rectangle(x or 0, y or 0, 35, 35)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
@@ -14,6 +15,7 @@ Player = Class{
     self.acceleration = 30
     self.frictionRatio = 0.3
     self.direction = "right"
+    self.movement = false
     --Position des Spielers und Standardwerte
     self.stats = {
       speedBoost = 0, 
@@ -34,13 +36,13 @@ Player = Class{
     player = love.filesystem.read("resources/player2.svg")
     myPlayer = tove.newGraphics(player)
     myPlayer:rescale(35)
-  end,
+  end
   --Anzeige der SVG-Spielers
-  __tostring = function(self)
+  function Player:__tostring()
     return string.format("x = %.16g, y = %.16g", self.position:unpack())
-  end,
+  end
   --ÜBergabe der aktuellen Position des Spielers als String
-  draw = function(self)
+  function Player:draw()
     local dir=0
     love.graphics.translate(self.position.x, self.position.y)
     if self.direction == "up" then
@@ -60,12 +62,19 @@ Player = Class{
     --love.graphics.setColor(255,255,255,1)
     --self.hitbox:draw('line')
     --Zeigen der Spielfigur und zeichnen der HitBox
-  end,
-  move = function(self, x, y)
+  end
+  function Player:move(x, y)
     self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
-  end,
+  end
   --Bewegen des Spielers
-  update = function(self, dt)
+  function Player:update(dt)
+    
+    if self.movement then
+      local x, y
+     if self.direction == 'left' then x = -1 elseif self.direction == 'right' then x = 1 else x = 0 end
+     if self.direction == 'up' then y = -1 elseif self.direction == 'down' then y = 1 else y = 0 end
+        self:move(x,y)
+    end
 
     local frictionVector = self.velocity * self.frictionRatio
 
@@ -80,27 +89,25 @@ Player = Class{
         self:collision(vector.new(delta.x, delta.y))
       end
     end
-  end,
+  end
    --Update-Funktion (Aktualisieren der UI)
-  setPosition = function(self, x, y)
+  function Player:setPosition(x, y)
     self.position = Vector.new(x, y)
     self.hitbox:moveTo(self.position.x, self.position.y)
-  end,
+  end
   
-  collision = function(self, v)
+  function Player:collision(v)
     --self.velocity = Vector.new(0, 0)
     self.hitbox:move(v.x, v.y)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
-  end,
+  end
   --Bewegung der Hitbox
-  setId = function(self, id)
+  function Player:setId(id)
     self.id = id
     self.hitbox.PlayerId = self.id
   end
   --Zuweisen der HitBox zu einem Spieler
-}
-
 
 return Player
 --Rückgabe des Objekts Player

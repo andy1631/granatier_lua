@@ -7,7 +7,7 @@ PowerUpBomb = require "powerUpBomb"
 Field = Class{}
 --Field als Objekt festlegen
 
-function Field:init(pos, size, cords, t)
+function Field:init(pos, size, t , chords)
   self.type = t
   self.hitbox = HC.rectangle(pos.x , pos.y, size, size)
   local x,y = self.hitbox:center()
@@ -18,7 +18,7 @@ function Field:init(pos, size, cords, t)
   
   self.Texture = tove.newGraphics(self.Texture)
   self.Texture:rescale(40)
-  Field:spawnPowerUp()
+  -- Field:spawnPowerUp()
 end
 --Festlegen der Position der Mauer
 
