@@ -68,8 +68,9 @@ function Map:update(dt)
     direction = 'd'
     self.players[0].direction = "right"
     dir_lock = true
-  --elseif love.keyboard.isDown('e') and (not dir_lock or direction == 'e') then
-    
+ -- elseif love.keyboard.isDown('e') and (not dir_lock or direction == 'e') then
+ --   self.bomb[0]:draw
+ --   dir_lock = true
     else
     dir_lock = false
     direction = ''
