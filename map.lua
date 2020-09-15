@@ -105,7 +105,7 @@ function Map:draw()
 
   for i = 0, self.x, 1 do
     for j = 0, self.y, 1 do
-      self.fields[i][j]:draw()
+      self.fields[i][j]:draw() 
     end
   end
   
