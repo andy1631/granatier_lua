@@ -35,7 +35,7 @@ function Bomb:update(dt)
 end
 
 function Bomb:explode()
-  source = love.audio.newSource( 'resources/sounds/explode.wav' , 'stream' )
+  source = love.audio.newSource( 'resources/sounds/explode.wav' , 'static' )
   love.audio.play(source)
   self.toDelete = true
 end

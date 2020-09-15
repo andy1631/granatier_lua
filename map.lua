@@ -151,6 +151,8 @@ end
 
 function Map:setBomb()
     table.insert(self.bombs, Bomb(self.players[0].position, self.players[0].stats.power))
+    source = love.audio.newSource( 'resources/sounds/putbomb.wav' , 'static' )
+    love.audio.play(source)
 end
 
 function Map:changeType(x,y,typ)
