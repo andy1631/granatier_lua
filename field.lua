@@ -1,12 +1,13 @@
 HC = require 'lib.HC'
 Class = require 'lib.hump.class'
 tove = require 'lib.tove'
+PowerUpBomb = require "powerUpBomb"
 --Laden den oben gennanten Module
 
 Field = Class{}
 --Field als Objekt festlegen
 
-function Field:init(pos, size, t)
+function Field:init(pos, size, cords, t)
   self.type = t
   self.hitbox = HC.rectangle(pos.x , pos.y, size, size)
   local x,y = self.hitbox:center()
@@ -17,6 +18,7 @@ function Field:init(pos, size, t)
   
   self.Texture = tove.newGraphics(self.Texture)
   self.Texture:rescale(40)
+  Field:spawnPowerUp()
 end
 --Festlegen der Position der Mauer
 
@@ -35,68 +37,69 @@ function Field:draw()
 end
 --Zeichnen der Linie der Hitbox
 
-function Field:spawnPowerUp(type)
-  randomNumber = math.random(1, 15)
+function Field:spawnPowerUp()
+  local randomNumber = math.random(1, 15)
+  randomNumber = 6
   -- Spiegel:
   if randomNumber == 1 then
-    self.PowerUp = PowerUpMirror()
-  end
+    self.PowerUp = PowerUpMirror(s)
+  
   -- Kaffee:
-  if randomNumber == 2 then
+  elseif randomNumber == 2 then
     self.PowerUp = PowerUpCoffee()
-  end
+  
   -- Fessel:
-  if randomNumber == 3 then
+  elseif randomNumber == 3 then
     self.PowerUp = PowerUpRestrain()
-  end
+  
   -- Wirft Bomben zu zufälligen Positionen (Scatty):
-  if randomNumber == 4 then
+  elseif randomNumber == 4 then
     self.PowerUp = PowerUpScatty()
-  end
+  
   -- Schnecke:
-  if randomNumber == 5 then
+  elseif randomNumber == 5 then
     self.PowerUp = PowerUpSlow()
-  end
-  -- Bombe:
-  if randomNumber == 6 then
+  
+  -- bombe:
+  elseif randomNumber == 6 then
     self.PowerUp = PowerUpBomb()
-  end
   -- Fußball:
-  if randomNumber == 7 then
+  elseif randomNumber == 7 then
     self.PowerUp = PowerUpKick()
-  end
+  
   -- Schaufel:
-  if randomNumber == 8 then
+  elseif randomNumber == 8 then
     self.PowerUp = PowerUpMason()
-  end
+  
   -- Zufallbox:
-  if randomNumber == 9 then
+  elseif randomNumber == 9 then
     self.PowerUp = PowerUpPandora()
-  end
+  
   -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
-  if randomNumber == 10 then
+  elseif randomNumber == 10 then
     self.PowerUp = PowerUpResurrect()
-  end
+  
   -- Teleporter:
-  if randomNumber == 11 then
+  elseif randomNumber == 11 then
     self.PowerUp = PowerUpTeleport()
-  end
+  
   -- Power:
-  if randomNumber == 12 then
+  elseif randomNumber == 12 then
     self.PowerUp = PowerUpPower()
-  end
+  
   -- Schild:
-  if randomNumber == 13 then
+  elseif randomNumber == 13 then
     self.PowerUp = PowerUpShield()
-  end
+  
   -- Schneller bewegen:
-  if randomNumber == 14 then
+  elseif randomNumber == 14 then
     self.PowerUp = PowerUpSpeed()
-  end
+ 
   -- Werfen:
-  if randomNumber == 15 then
+  elseif randomNumber == 15 then
     self.PowerUp = PowerUpThrow()
-  end
+    end
+  
 end
 
 function Field:setType(t)

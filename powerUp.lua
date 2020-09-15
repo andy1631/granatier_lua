@@ -23,7 +23,7 @@ end,
 local PowerUp = Class{}
 
 function PowerUp:init(cords)
-  position = Vector.new(x, y),
+  self.cords = cords
   -- print("Ein neues Power-Up erscheint!")
   self.Texture = nil
 end
