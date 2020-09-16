@@ -96,20 +96,26 @@ function Map:setBomb()
   local col={}
   local cords={}
     for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
+      if shape.cords ~= nil then
         col[#col+1] = vector.new(delta.x,delta.y):len()
         cords[#cords+1] = shape.cords
+        end
     end
-    
-    local index=1
+    col[0]=0
+    local index=0
     for k,v in pairs(col) do
-      if col[index]<v then
+      if v~=0 then
+        if col[index]<v then
         index=k
+        end
       end
     end
-    table.insert(self.bombs, Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power))
-    --table.insert(self.bombs, Bomb(self.players[0].position, self.players[0].stats.power))
+    if index~=0 and map.fields[cords[index].x][cords[index].y].bombs==0 then
+    table.insert(self.bombs, Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power, cords[index]))
+    map.fields[cords[index].x][cords[index].y].bombs=1
     source = love.audio.newSource( 'resources/sounds/putbomb.wav' , 'static' )
     love.audio.play(source)
+    end
 end
 
 function Map:changeType(x,y,typ)

@@ -17,7 +17,7 @@ function Field:init(pos, size, t , cords)
   self.hitbox.solid = (self.type == 'arena_greenwall' or self.type == 'arena_wall')
   self.hitbox.cords=self.cords
   self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. '.svg')
-  
+  self.bombs=0
   self.Texture = tove.newGraphics(self.Texture)
   self.Texture:rescale(40)
 end
