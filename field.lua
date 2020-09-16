@@ -13,7 +13,6 @@ function Field:init(pos, size, t , chords)
   local x,y = self.hitbox:center()
   self.position = vector.new(x, y)
   self.cords=chords
-
   self.hitbox.solid = (self.type == 'arena_greenwall' or self.type == 'arena_wall')
   self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. '.svg')
   

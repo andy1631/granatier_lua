@@ -7,12 +7,13 @@ tove = require 'lib.tove'
 Bomb = Class{}
 
 
-function Bomb:init(pos, power)
+function Bomb:init(pos, power,chords)
   self.position = pos
   self.power = power
   self.time = 3
   self.hitbox = HC.circle(self.position.x,self.position.y,17.5)
   self.toDelete = false
+  self.cords=chords
   
   self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
   self.bomb = tove.newGraphics(self.bomb)

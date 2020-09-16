@@ -8,7 +8,7 @@ Player = Class{}
 
 --Player wird als Objekt festgelegt
    function Player:init(x, y, id)
-    self.hitbox = HC.rectangle(x or 0, y or 0, 35, 35)
+    self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
     self.velocity = Vector.new(0, 0)
@@ -35,7 +35,7 @@ Player = Class{}
     self.hitbox.playerId = self.id
     player = love.filesystem.read("resources/player2.svg")
     myPlayer = tove.newGraphics(player)
-    myPlayer:rescale(35)
+    myPlayer:rescale(38)
   end
   --Anzeige der SVG-Spielers
   function Player:__tostring()
