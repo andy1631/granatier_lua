@@ -1,7 +1,7 @@
 PowerUp = require "powerUp"
 Class = require 'lib.hump.class'
 
-local PowerUpPandora = Class.include(PowerUp)
+local PowerUpPandora = Class.include{__includes = PowerUp}
 
 function PowerUpPandora:init(cords) 
   PowerUp.init(self, cords)

@@ -19,7 +19,7 @@ function PowerUpCoffee:usePowerUp()
 end
 ]]
 
-local PowerUpCoffee = Class.include(PowerUp)
+local PowerUpCoffee = Class.include{__includes = PowerUp}
 
 function PowerUpCoffee:init(cords) 
   PowerUp.init(self, cords)
