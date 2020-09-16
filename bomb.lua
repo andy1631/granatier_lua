@@ -11,19 +11,18 @@ function Bomb:init(pos, power)
   self.position = pos
   self.power = power
   self.time = 3
-  self.hitbox = HC.circle(self.position.x,self.position.y,20)
+  self.hitbox = HC.circle(self.position.x,self.position.y,17.5)
   self.toDelete = false
   
-  bomb = love.filesystem.read("resources/SVG/bomb.svg")
-  mybomb = tove.newGraphics(bomb)
-  
+  self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
+  self.bomb = tove.newGraphics(self.bomb)
+  self.bomb:rescale(35)
 end
 
 function Bomb:draw()
-  love.graphics.setColor(255,255,255)
-  self.hitbox:draw()  
+  --self.hitbox:draw()  
   love.graphics.translate(self.position.x, self.position.y)
-  mybomb:draw()
+  self.bomb:draw()
   love.graphics.translate(-self.position.x, -self.position.y)
 end
 
