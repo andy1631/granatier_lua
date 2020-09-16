@@ -7,13 +7,13 @@ tove = require 'lib.tove'
 Bomb = Class{}
 
 
-function Bomb:init(pos, power,chords)
+function Bomb:init(pos, power,cords)
   self.position = pos
   self.power = power
   self.time = 3
   self.hitbox = HC.circle(self.position.x,self.position.y,17.5)
   self.toDelete = false
-  self.cords=chords
+  self.cords=cords
   
   self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
   self.bomb = tove.newGraphics(self.bomb)
@@ -38,6 +38,7 @@ function Bomb:explode()
   source = love.audio.newSource( 'resources/sounds/explode.wav' , 'static' )
   love.audio.play(source)
   self.toDelete = true
+  map.fields[self.cords.x][self.cords.y].bombs=0
 end
 
 return Bomb
