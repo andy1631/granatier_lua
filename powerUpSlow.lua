@@ -3,18 +3,14 @@ Class = require 'lib.hump.class'
 
 local PowerUpSlow = Class.include{__includes = PowerUp}
 
-function PowerUpSlow:init(cords) 
-  PowerUp.init(self, cords)
+function PowerUpSlow:init(pos) 
+  PowerUp.init(self, pos)
+  self.Texture = love.filesystem.read("resources/SVG/bonus_bad_slow.svg")
+  self.Texture = tove.newGraphics(self.Texture)
 end
 
 function PowerUpSlow:usePowerUp(player)
   
-end
-
-function PowerUpSlow:draw()
-  slow = love.filesystem.read("resources/SVG/bonus_bad_slow.svg")
-  slow = tove.newGraphics(slow)
-  slow:draw()
 end
 
 return PowerUpSlow

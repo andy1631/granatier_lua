@@ -3,18 +3,14 @@ Class = require 'lib.hump.class'
 
 local PowerUpShield = Class.include{__includes = PowerUp}
 
-function PowerUpShield:init(cords) 
-  PowerUp.init(self, cords)
+function PowerUpShield:init(pos) 
+  PowerUp.init(self, pos)
+  self.Texture = love.filesystem.read("resources/SVG/bonus_shield.svg")
+  self.Texture = tove.newGraphics(self.Texture)
 end
 
 function PowerUpShield:usePowerUp(player)
   
-end
-
-function PowerUpShield:draw()
-  shield = love.filesystem.read("resources/SVG/bonus_shield.svg")
-  shield = tove.newGraphics(shield)
-  shield:draw()
 end
 
 return PowerUpShield

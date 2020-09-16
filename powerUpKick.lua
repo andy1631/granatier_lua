@@ -3,18 +3,14 @@ Class = require 'lib.hump.class'
 
 local PowerUpKick = Class.include{__includes = PowerUp}
 
-function PowerUpKick:init(cords) 
-  PowerUp.init(self, cords)
+function PowerUpKick:init(pos) 
+  PowerUp.init(self, pos)
+  self.Texture = love.filesystem.read("resources/SVG/bonus_kick.svg")
+  self.Texture = tove.newGraphics(self.Texture)
 end
 
 function PowerUpKick:usePowerUp(player)
   
-end
-
-function PowerUpKick:draw()
-  kick = love.filesystem.read("resources/SVG/bonus_kick.svg")
-  kick = tove.newGraphics(kick)
-  kick:draw()
 end
 
 return PowerUpKick

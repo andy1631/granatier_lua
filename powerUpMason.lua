@@ -3,18 +3,14 @@ Class = require 'lib.hump.class'
 
 local PowerUpMason = Class.include{__includes = PowerUp}
 
-function PowerUpMason:init(cords) 
-  PowerUp.init(self, cords)
+function PowerUpMason:init(pos) 
+  PowerUp.init(self, pos)
+  self.Texture = love.filesystem.read("resources/SVG/bonus_mason.svg")
+  self.Texture = tove.newGraphics(self.Texture)
 end
 
 function PowerUpMason:usePowerUp(player)
   
-end
-
-function PowerUpMason:draw()
-  mason = love.filesystem.read("resources/SVG/bonus_mason.svg")
-  mason = tove.newGraphics(mason)
-  mason:draw()
 end
 
 return PowerUpMason

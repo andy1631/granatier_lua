@@ -3,18 +3,14 @@ Class = require 'lib.hump.class'
 
 local PowerUpPandora = Class.include{__includes = PowerUp}
 
-function PowerUpPandora:init(cords) 
-  PowerUp.init(self, cords)
+function PowerUpPandora:init(pos) 
+  PowerUp.init(self, pos)
+  self.Texture = love.filesystem.read("resources/SVG/bonus_neutral_pandora.svg")
+  self.Texture = tove.newGraphics(self.Texture)
 end
 
 function PowerUpPandora:usePowerUp(player)
   
-end
-
-function PowerUpPandora:draw()
-  pandora = love.filesystem.read("resources/SVG/bonus_neutral_pandora.svg")
-  pandora = tove.newGraphics(pandora)
-  pandora:draw()
 end
 
 return PowerUpPandora

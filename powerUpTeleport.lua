@@ -3,18 +3,14 @@ Class = require 'lib.hump.class'
 
 local PowerUpTeleport = Class.include{__includes = PowerUp}
 
-function PowerUpTeleport:init(cords) 
-  PowerUp.init(self, cords)
+function PowerUpTeleport:init(pos) 
+  PowerUp.init(self, pos)
+  self.Texture = love.filesystem.read("resources/SVG/bonus_neutral_teleport.svg")
+  self.Texture = tove.newGraphics(self.Texture)
 end
 
 function PowerUpTeleport:usePowerUp(player)
   
-end
-
-function PowerUpTeleport:draw()
-  teleport = love.filesystem.read("resources/SVG/bonus_neutral_teleport.svg")
-  teleport = tove.newGraphics(teleport)
-  teleport:draw()
 end
 
 return PowerUpTeleport
