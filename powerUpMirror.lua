@@ -1,7 +1,7 @@
 PowerUp = require "powerUp"
 Class = require 'lib.hump.class'
 
-local PowerUpMirror = Class.include(PowerUp)
+local PowerUpMirror = Class.include{__includes = PowerUp}
 
 function PowerUpMirror:init(cords) 
   PowerUp.init(self, cords)
