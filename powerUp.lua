@@ -22,8 +22,8 @@ end,
 
 local PowerUp = Class{}
 
-function PowerUp:init(cords)
-  self.cords = cords
+function PowerUp:init(pos)
+  self.position = pos
   -- print("Ein neues Power-Up erscheint!")
   self.Texture = nil
 end
@@ -33,9 +33,9 @@ function PowerUp:usePowerUp()
 end
 
 function PowerUp:draw()
-  if self.Texture ~= nil then
-    self.Texture:draw()
-  end
+  love.graphics.translate(self.position.x, self.position.y)
+  self.Texture:draw()
+  love.graphics.translate(-self.position.x, -self.position.y)
 end
 
 return PowerUp

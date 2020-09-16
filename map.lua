@@ -54,63 +54,6 @@ function Map:spawn(player)
 end
 
 function Map:update(dt)
-  -- local player move events
---  if love.keyboard.isDown('w') and (not dir_lock or direction == 'w') then
---    self.players[0]:move(0, -1)
---    direction = 'w'
---    self.players[0].direction = "up"
---    dir_lock = true
---  elseif love.keyboard.isDown('a') and (not dir_lock or direction == 'a') then
---    self.players[0]:move(-1, 0)
---    direction = 'a'
---    self.players[0].direction = "left"
---    dir_lock = true  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
---    self.players[0]:move(0, 1)
---    direction = 's'
---    self.players[0].direction = "down"
---    dir_lock = true
---  elseif love.keyboard.isDown('d') and (not dir_lock or direction == 'd') then
---    self.players[0]:move(1, 0)
---    direction = 'd'
---    self.players[0].direction = "right"
---    dir_lock = true
-    
---  else
---    direction = ''
---    dir_lock = false
---  end
- 
---  if love.keyboard.isDown('e') then
---    self:setBomb()
---  endif love.keyboard.isDown('w') and (not dir_lock or direction == 'w') then
---    self.players[0]:move(0, -1)
---    direction = 'w'
---    self.players[0].direction = "up"
---    dir_lock = true
---  elseif love.keyboard.isDown('a') and (not dir_lock or direction == 'a') then
---    self.players[0]:move(-1, 0)
---    direction = 'a'
---    self.players[0].direction = "left"
---    dir_lock = true  elseif love.keyboard.isDown('s') and (not dir_lock or direction == 's') then
---    self.players[0]:move(0, 1)
---    direction = 's'
---    self.players[0].direction = "down"
---    dir_lock = true
---  elseif love.keyboard.isDown('d') and (not dir_lock or direction == 'd') then
---    self.players[0]:move(1, 0)
---    direction = 'd'
---    self.players[0].direction = "right"
---    dir_lock = true
-    
---  else
---    direction = ''
---    dir_lock = false
---  end
- 
---  if love.keyboard.isDown('e') then
---    self:setBomb()
---  end
-
   -- send player[0] (own player) position to server
   -- get position of other players from server
 
@@ -150,7 +93,21 @@ function Map:draw()
 end
 
 function Map:setBomb()
-    table.insert(self.bombs, Bomb(self.players[0].position, self.players[0].stats.power))
+  local col={}
+  local cords={}
+    for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
+        col[#col+1] = vector.new(delta.x,delta.y):len()
+        cords[#cords+1] = shape.cords
+    end
+    
+    local index=1
+    for k,v in pairs(col) do
+      if col[index]<v then
+        index=k
+      end
+    end
+    table.insert(self.bombs, Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power))
+    --table.insert(self.bombs, Bomb(self.players[0].position, self.players[0].stats.power))
     source = love.audio.newSource( 'resources/sounds/putbomb.wav' , 'static' )
     love.audio.play(source)
 end
