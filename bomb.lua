@@ -39,6 +39,7 @@ function Bomb:explode()
   love.audio.play(source)
   self.toDelete = true
   map.fields[self.cords.x][self.cords.y].bombs=0
+  map.players[0].stats.bombs=map.players[0].stats.bombs+1
 end
 
 return Bomb
