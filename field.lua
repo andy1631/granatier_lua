@@ -19,7 +19,6 @@ function Field:init(pos, size, t , cords)
   
   self.Texture = tove.newGraphics(self.Texture)
   self.Texture:rescale(40)
-  Field:spawnPowerUp(self.cords)
 end
 --Festlegen der Position der Mauer
 
@@ -41,47 +40,47 @@ function Field:draw()
 end
 --Zeichnen der Linie der Hitbox
 
-function Field:spawnPowerUp(cords)
+function Field:spawnPowerUp(position)
   local randomNumber = math.random(1, 15)
   randomNumber = 6
   -- Spiegel:
   if randomNumber == 1 then
-    self.PowerUp = PowerUpMirror(cords)
+    self.PowerUp = PowerUpMirror(position)
   
   -- Kaffee:
   elseif randomNumber == 2 then
-    self.PowerUp = PowerUpCoffee(cords)
+    self.PowerUp = PowerUpCoffee(position)
   
   -- Fessel:
   elseif randomNumber == 3 then
-    self.PowerUp = PowerUpRestrain(cords)
+    self.PowerUp = PowerUpRestrain(position)
   
   -- Wirft Bomben zu zufälligen Positionen (Scatty):
   elseif randomNumber == 4 then
-    self.PowerUp = PowerUpScatty(cords)
+    self.PowerUp = PowerUpScatty(position)
   
   -- Schnecke:
   elseif randomNumber == 5 then
-    self.PowerUp = PowerUpSlow(cords)
+    self.PowerUp = PowerUpSlow(position)
   
   -- bombe:
   elseif randomNumber == 6 then
-    self.PowerUp = PowerUpBomb(cords)
+    self.PowerUp = PowerUpBomb(position)
   -- Fußball:
   elseif randomNumber == 7 then
-    self.PowerUp = PowerUpKick(cords)
+    self.PowerUp = PowerUpKick(position)
   
   -- Schaufel:
   elseif randomNumber == 8 then
-    self.PowerUp = PowerUpMason(cords)
+    self.PowerUp = PowerUpMason(position)
   
   -- Zufallbox:
   elseif randomNumber == 9 then
-    self.PowerUp = PowerUpPandora(cords)
+    self.PowerUp = PowerUpPandora(position)
   
   -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
   elseif randomNumber == 10 then
-    self.PowerUp = PowerUpResurrect(cords)
+    self.PowerUp = PowerUpResurrect(position)
   
   -- Teleporter:
   elseif randomNumber == 11 then
