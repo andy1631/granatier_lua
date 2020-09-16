@@ -7,19 +7,19 @@ PowerUpBomb = require "powerUpBomb"
 Field = Class{}
 --Field als Objekt festlegen
 
-function Field:init(pos, size, t , chords)
+function Field:init(pos, size, t , cords)
   self.type = t
   self.hitbox = HC.rectangle(pos.x , pos.y, size, size)
   local x,y = self.hitbox:center()
   self.position = vector.new(x, y)
-  self.cords=chords
+  self.cords=cords
 
   self.hitbox.solid = (self.type == 'arena_greenwall' or self.type == 'arena_wall')
   self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. '.svg')
   
   self.Texture = tove.newGraphics(self.Texture)
   self.Texture:rescale(40)
-  -- Field:spawnPowerUp()
+  Field:spawnPowerUp(self.cords)
 end
 --Festlegen der Position der Mauer
 
@@ -35,50 +35,53 @@ function Field:draw()
     self.Texture:draw()
     love.graphics.translate(-self.position.x, -self.position.y)
   end
+  if self.PowerUp ~= nil then
+    self.PowerUp:draw()
+  end
 end
 --Zeichnen der Linie der Hitbox
 
-function Field:spawnPowerUp()
+function Field:spawnPowerUp(cords)
   local randomNumber = math.random(1, 15)
   randomNumber = 6
   -- Spiegel:
   if randomNumber == 1 then
-    self.PowerUp = PowerUpMirror(s)
+    self.PowerUp = PowerUpMirror(cords)
   
   -- Kaffee:
   elseif randomNumber == 2 then
-    self.PowerUp = PowerUpCoffee()
+    self.PowerUp = PowerUpCoffee(cords)
   
   -- Fessel:
   elseif randomNumber == 3 then
-    self.PowerUp = PowerUpRestrain()
+    self.PowerUp = PowerUpRestrain(cords)
   
   -- Wirft Bomben zu zufälligen Positionen (Scatty):
   elseif randomNumber == 4 then
-    self.PowerUp = PowerUpScatty()
+    self.PowerUp = PowerUpScatty(cords)
   
   -- Schnecke:
   elseif randomNumber == 5 then
-    self.PowerUp = PowerUpSlow()
+    self.PowerUp = PowerUpSlow(cords)
   
   -- bombe:
   elseif randomNumber == 6 then
-    self.PowerUp = PowerUpBomb()
+    self.PowerUp = PowerUpBomb(cords)
   -- Fußball:
   elseif randomNumber == 7 then
-    self.PowerUp = PowerUpKick()
+    self.PowerUp = PowerUpKick(cords)
   
   -- Schaufel:
   elseif randomNumber == 8 then
-    self.PowerUp = PowerUpMason()
+    self.PowerUp = PowerUpMason(cords)
   
   -- Zufallbox:
   elseif randomNumber == 9 then
-    self.PowerUp = PowerUpPandora()
+    self.PowerUp = PowerUpPandora(cords)
   
   -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
   elseif randomNumber == 10 then
-    self.PowerUp = PowerUpResurrect()
+    self.PowerUp = PowerUpResurrect(cords)
   
   -- Teleporter:
   elseif randomNumber == 11 then
