@@ -11,10 +11,10 @@ function Bomb:init(pos, power,cords)
   self.position = pos
   self.power = power
   self.time = 3
-  self.hitbox = HC.circle(self.position.x,self.position.y,17.5)
+  self.hitbox = HC.circle(self.position.x,self.position.y, 17.5)
   self.toDelete = false
   self.cords=cords
-  
+  self.hitbox.solid = true
   self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
   self.bomb = tove.newGraphics(self.bomb)
   self.bomb:rescale(35)
@@ -80,7 +80,6 @@ function Bomb:explode()
       break
     end
   end
-  
+  HC.remove(self.hitbox)
 end
-
 return Bomb

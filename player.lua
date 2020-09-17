@@ -97,10 +97,17 @@ Player = Class{}
   end
   
   function Player:collision(v)
-    --self.velocity = Vector.new(0, 0)
+    if (v.y > 0 and v.x == 0 and self.direction == 'up') 
+    or (v.y < 0 and v.x == 0 and self.direction == 'down')
+    or (v.x > 0 and v.y == 0 and self.direction == 'left')
+    or (v.x < 0 and v.y == 0 and self.direction == 'right')
+    then
+    self.velocity.x = 0
+    self.velocity.y = 0
     self.hitbox:move(v.x, v.y)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
+    end
   end
   --Bewegung der Hitbox
   function Player:setId(id)
