@@ -24,8 +24,8 @@ local PowerUp = Class{}
 
 function PowerUp:init(pos)
   self.position = pos
+  self.Texture:rescale(40)
   -- print("Ein neues Power-Up erscheint!")
-  self.Texture = nil
 end
 
 function PowerUp:usePowerUp()
