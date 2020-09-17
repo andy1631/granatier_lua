@@ -1,7 +1,7 @@
 PowerUp = require "powerUp"
 Class = require 'lib.hump.class'
 
-local PowerUpScatty = Class.include{__includes = PowerUp}
+local PowerUpScatty = Class{__includes = PowerUp}
 
 function PowerUpScatty:init(pos) 
   PowerUp.init(self, pos)

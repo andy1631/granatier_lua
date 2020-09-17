@@ -41,67 +41,66 @@ function Field:draw()
 end
 --Zeichnen der Linie der Hitbox
 
-function Field:spawnPowerUp(position)
+function Field:spawnPowerUp()
   local randomNumber = math.random(1, 15)
-  randomNumber = 6
   -- Spiegel:
   if randomNumber == 1 then
-    self.PowerUp = PowerUpMirror(position)
+    self.PowerUp = PowerUpMirror(self.position)
   
   -- Kaffee:
   elseif randomNumber == 2 then
-    self.PowerUp = PowerUpCoffee(position)
+    self.PowerUp = PowerUpCoffee(self.position)
   
   -- Fessel:
   elseif randomNumber == 3 then
-    self.PowerUp = PowerUpRestrain(position)
+    self.PowerUp = PowerUpRestrain(self.position)
   
   -- Wirft Bomben zu zufälligen Positionen (Scatty):
   elseif randomNumber == 4 then
-    self.PowerUp = PowerUpScatty(position)
+    self.PowerUp = PowerUpScatty(self.position)
   
   -- Schnecke:
   elseif randomNumber == 5 then
-    self.PowerUp = PowerUpSlow(position)
+    self.PowerUp = PowerUpSlow(self.position)
   
   -- bombe:
   elseif randomNumber == 6 then
-    self.PowerUp = PowerUpBomb(position)
+    self.PowerUp = PowerUpBomb(self.position)
   -- Fußball:
   elseif randomNumber == 7 then
-    self.PowerUp = PowerUpKick(position)
+    self.PowerUp = PowerUpKick(self.position)
   
   -- Schaufel:
   elseif randomNumber == 8 then
-    self.PowerUp = PowerUpMason(position)
+    self.PowerUp = PowerUpMason(self.position)
   
   -- Zufallbox:
   elseif randomNumber == 9 then
-    self.PowerUp = PowerUpPandora(position)
+    self.PowerUp = PowerUpPandora(self.position)
   
   -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
   elseif randomNumber == 10 then
-    self.PowerUp = PowerUpResurrect(position)
+    self.PowerUp = PowerUpResurrect(self.position)
   
   -- Teleporter:
   elseif randomNumber == 11 then
-    self.PowerUp = PowerUpTeleport()
+    self.PowerUp = PowerUpTeleport(self.position)
   
   -- Power:
   elseif randomNumber == 12 then
-    self.PowerUp = PowerUpPower()
+    self.PowerUp = PowerUpPower(self.position)
   
   -- Schild:
   elseif randomNumber == 13 then
-    self.PowerUp = PowerUpShield()
+    self.PowerUp = PowerUpShield(self.position)
   
   -- Schneller bewegen:
   elseif randomNumber == 14 then
-    self.PowerUp = PowerUpSpeed()
+    self.PowerUp = PowerUpSpeed(self.position)
  
   -- Werfen:
   elseif randomNumber == 15 then
-    self.PowerUp = PowerUpThrow()
+    self.PowerUp = PowerUpThrow(self.position)
     end
   
 end

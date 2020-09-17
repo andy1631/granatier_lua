@@ -43,6 +43,7 @@ function Bomb:explode()
   for i=1,self.power,1 do
     if map.fields[self.cords.x+i][self.cords.y]:getType() == "arena_wall" then
       map.fields[self.cords.x+i][self.cords.y]:setType("arena_ground")
+      map.fields[self.cords.x+i][self.cords.y]:spawnPowerUp()
       break
     end
     if map.fields[self.cords.x+i][self.cords.y]:getType() == "arena_greenwall" then
@@ -52,6 +53,7 @@ function Bomb:explode()
   for i=1,self.power,1 do
     if map.fields[self.cords.x-i][self.cords.y]:getType() == "arena_wall" then
       map.fields[self.cords.x-i][self.cords.y]:setType("arena_ground")
+      map.fields[self.cords.x-i][self.cords.y]:spawnPowerUp()
       break
     end
     if map.fields[self.cords.x-i][self.cords.y]:getType() == "arena_greenwall" then
@@ -61,6 +63,7 @@ function Bomb:explode()
   for i=1,self.power,1 do
     if map.fields[self.cords.x][self.cords.y+i]:getType() == "arena_wall" then
       map.fields[self.cords.x][self.cords.y+i]:setType("arena_ground")
+      map.fields[self.cords.x][self.cords.y+i]:spawnPowerUp()
       break
     end
     if map.fields[self.cords.x][self.cords.y+i]:getType() == "arena_greenwall" then
@@ -70,6 +73,7 @@ function Bomb:explode()
   for i=1,self.power,1 do
     if map.fields[self.cords.x][self.cords.y-i]:getType() == "arena_wall" then
       map.fields[self.cords.x][self.cords.y-i]:setType("arena_ground")
+      map.fields[self.cords.x][self.cords.y-i]:spawnPowerUp()
       break
     end
     if map.fields[self.cords.x][self.cords.y-i]:getType() == "arena_greenwall" then

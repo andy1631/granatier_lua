@@ -1,7 +1,7 @@
 PowerUp = require "powerUp"
 Class = require 'lib.hump.class'
 
-local PowerUpSlow = Class.include{__includes = PowerUp}
+local PowerUpSlow = Class{__includes = PowerUp}
 
 function PowerUpSlow:init(pos) 
   PowerUp.init(self, pos)
