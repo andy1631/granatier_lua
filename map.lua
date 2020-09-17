@@ -82,13 +82,11 @@ function Map:draw()
       self.fields[i][j]:draw() 
     end
   end
-  
-  for key, value in pairs(self.players) do
-    self.players[key]:draw()
-  end
-  
   for key, value in pairs(self.bombs) do
     self.bombs[key]:draw()
+  end
+  for key, value in pairs(self.players) do
+    self.players[key]:draw()
   end
 end
 
