@@ -113,6 +113,10 @@ function Field:setType(t)
   self.Texture = tove.newGraphics(self.Texture)
   self.Texture:rescale(40)
 end
+
+function Field:getType()
+  return self.type
+end
 --Festlegen des Types als HitBox
 
 return Field
