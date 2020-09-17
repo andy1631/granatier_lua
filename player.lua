@@ -65,6 +65,7 @@ Player = Class{}
   end
   function Player:move(x, y)
     self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
+    if x == 0 then self.velocity.x = 0 elseif y == 0 then self.velocity.y = 0 end
   end
   --Bewegen des Spielers
   function Player:update(dt)
