@@ -18,6 +18,8 @@ function Bomb:init(pos, power,cords)
   self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
   self.bomb = tove.newGraphics(self.bomb)
   self.bomb:rescale(35)
+  self.scale = 35
+  self.scaleFactor = -1.5
 end
 
 function Bomb:draw()
@@ -29,6 +31,13 @@ end
 
 function Bomb:update(dt)
   self.time = self.time - dt
+  if self.scale == 32 then
+    self.scaleFactor = 1.5
+  elseif self.scale == 35 then
+    self.scaleFactor = -1.5
+  end
+  self.scale = self.scale + self.scaleFactor
+  self.bomb:rescale(self.scale)
   if self.time <= 0 then
     self:explode()
     end
