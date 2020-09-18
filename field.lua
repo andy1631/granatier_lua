@@ -59,7 +59,7 @@ end
 function Field:update(dt)
   if self.PowerUp ~= nil then
     local collide, dx, dy = map.players[0].hitbox:collidesWith(self.hitbox)
-    if collide and (dx~=0 or dy~=0) then    
+    if collide and (dx>1 or dx<-1 or dy>1 or dy<-1) then    
       if self.pandora then
           self:spawnPowerUp()
       end
