@@ -11,10 +11,10 @@ function Bomb:init(pos, power,cords)
   self.position = pos
   self.power = power
   self.time = 3
-  self.hitbox = HC.circle(self.position.x,self.position.y, 17.5)
+  --self.hitbox = HC.circle(self.position.x,self.position.y, 17.5)
+  self.hitbox = HC.rectangle(self.position.x - 20, self.position.y - 20, 40, 40)
   self.toDelete = false
   self.cords=cords
-  self.hitbox.solid = true
   self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
   self.bomb = tove.newGraphics(self.bomb)
   self.bomb:rescale(35)
@@ -31,7 +31,18 @@ function Bomb:update(dt)
   self.time = self.time - dt
   if self.time <= 0 then
     self:explode()
+  end
+  
+  local solid = true
+  
+  if not self.hitbox.solid and HC.collisions(self.hitbox) ~= {} then
+    for shape, delta in pairs(HC.collisions(self.hitbox)) do
+      if vector.new(delta.x,delta.y):len() ~= 0 then
+        solid = false
+      end
     end
+  end
+  self.hitbox.solid = solid
 end
 
 function Bomb:explode()

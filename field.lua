@@ -69,13 +69,7 @@ function Field:update(dt)
 end
 
 function Field:spawnPowerUp()
-  local randomNumber = math.random(8, 10)
-  -- local pandora = false
-  --if pandora == false then
-    -- randomNumber = 9
-  --else
-    --randomNumber = 6
-  --end
+  local randomNumber = math.random(1, 15)
   -- Spiegel:
   if randomNumber == 1 then
     self.PowerUp = PowerUpMirror(self.position)
