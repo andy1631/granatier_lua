@@ -1,3 +1,4 @@
+--Loads the rewuired Modules
 HC = require 'lib.HC'
 Class = require 'lib.hump.class'
 Player = require 'player'
@@ -36,12 +37,13 @@ function Map:init(x,y)
       end
     end
   
-  -- Hintergrund anzeigen lassen:
+  -- Show the background
   background = love.filesystem.read("resources/SVG/background.svg")
   background = tove.newGraphics(background)
   background:rescale(1200)
 end
 
+--Spawns the Player
 function Map:spawn(player)
   self.players[self.playerCount] = player
   local num=love.math.random(1,table.getn(self.spawns))
@@ -69,8 +71,15 @@ function Map:update(dt)
     end
   end
   
+  for key, value in pairs(self.fields) do
+    for k, v in pairs (value) do
+      v:update(dt)
+    end
+  end
+  
 end
 
+--shows the map
 function Map:draw()
   love.graphics.reset()
   love.graphics.translate(600, 337.5)
@@ -90,6 +99,7 @@ function Map:draw()
   end
 end
 
+--Method to set bombs and set bombs to a whole field
 function Map:setBomb()
   local col={}
   local cords={}
@@ -119,10 +129,12 @@ function Map:setBomb()
   end
 end
 
+--Set the types for Fields
 function Map:changeType(x,y,typ)
   self.fields[x][y]:setType(typ)
 end
 
+--adds spawnpoints to the map
 function Map:addSpawn(x,y)
   table.insert(self.spawns,Vector(x,y))
 end

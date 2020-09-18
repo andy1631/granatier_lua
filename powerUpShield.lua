@@ -10,7 +10,7 @@ function PowerUpShield:init(pos)
 end
 
 function PowerUpShield:usePowerUp(player)
-  
+  player.stats.shield = true
 end
 
 return PowerUpShield

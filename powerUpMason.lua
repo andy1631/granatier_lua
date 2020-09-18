@@ -10,7 +10,7 @@ function PowerUpMason:init(pos)
 end
 
 function PowerUpMason:usePowerUp(player)
-  
+  -- player.stats.mason = true
 end
 
 return PowerUpMason

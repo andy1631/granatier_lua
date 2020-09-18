@@ -10,7 +10,8 @@ function PowerUpBomb:init(pos)
 end
 
 function PowerUpBomb:usePowerUp(player)
-  
+  player.stats.bombs = player.stats.bombs + 1
+  -- HC.remove(self.hitbox)
 end
 
 return PowerUpBomb

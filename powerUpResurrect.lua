@@ -10,7 +10,7 @@ function PowerUpResurrect:init(pos)
 end
 
 function PowerUpResurrect:usePowerUp(player)
-  
+  -- player.stats.resurrect = true
 end
 
 return PowerUpResurrect

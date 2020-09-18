@@ -10,7 +10,7 @@ function PowerUpSpeed:init(pos)
 end
 
 function PowerUpSpeed:usePowerUp(player)
-  
+  player.stats.speedBoost = player.stats.speedBoost + 1
 end
 
 return PowerUpSpeed
