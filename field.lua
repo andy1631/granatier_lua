@@ -34,6 +34,7 @@ function Field:init(pos, size, t , cords)
   self.bombs=0
   self.Texture = tove.newGraphics(self.Texture)
   self.Texture:rescale(40)
+  local pandora = false
 end
 --Festlegen der Position der Mauer
 
@@ -57,19 +58,33 @@ end
 
 function Field:update(dt)
   if self.PowerUp ~= nil then
+<<<<<<< Updated upstream
     local collide, dx, dy = map.players[0].hitbox:collidesWith(self.hitbox)
     if collide and (dx~=0 or dy~=0) then            
         self.PowerUp:usePowerUp(map.players[0])
         self.PowerUp = nil
         source = love.audio.newSource( 'resources/sounds/wow.wav' , 'static' )
         love.audio.play(source)
+=======
+    if map.players[0].hitbox:collidesWith(self.hitbox) then
+      if self.pandora then
+        self:spawnPowerUp()
+      end
+      self.PowerUp:usePowerUp(map.players[0])
+      self.PowerUp = nil
+>>>>>>> Stashed changes
     end
   end
 end
 
 function Field:spawnPowerUp()
-  local randomNumber = math.random(1, 15)
-  randomNumber = 2
+  local randomNumber = math.random(8, 10)
+  -- local pandora = false
+  --if pandora == false then
+    -- randomNumber = 9
+  --else
+    --randomNumber = 6
+  --end
   -- Spiegel:
   if randomNumber == 1 then
     self.PowerUp = PowerUpMirror(self.position)
@@ -105,7 +120,8 @@ function Field:spawnPowerUp()
   -- Zufallbox:
   elseif randomNumber == 9 then
     self.PowerUp = PowerUpPandora(self.position)
-  
+    self.pandora = true
+    self:spawnPowerUp()
   -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
   elseif randomNumber == 10 then
     self.PowerUp = PowerUpResurrect(self.position)

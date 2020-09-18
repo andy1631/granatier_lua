@@ -1,5 +1,6 @@
 PowerUp = require "powerUp"
 Class = require 'lib.hump.class'
+PowerUpKick = require "powerUpKick"
 
 local PowerUpPandora = Class{__includes = PowerUp}
 
@@ -11,6 +12,7 @@ end
 
 function PowerUpPandora:usePowerUp(player)
   -- Zufälliges Power-Up auswählen:
+  -- PowerUpKick:spawnPowerUp()
 end
 
 return PowerUpPandora
