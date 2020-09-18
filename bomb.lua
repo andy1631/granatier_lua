@@ -19,7 +19,7 @@ function Bomb:init(pos, power,cords)
   self.bomb = tove.newGraphics(self.bomb)
   self.bomb:rescale(35)
   self.scale = 35
-  self.scaleFactor = -1.5
+  self.scaleFactor = -0.25
 end
 
 function Bomb:draw()
@@ -31,10 +31,10 @@ end
 
 function Bomb:update(dt)
   self.time = self.time - dt
-  if self.scale == 32 then
-    self.scaleFactor = 1.5
-  elseif self.scale == 35 then
-    self.scaleFactor = -1.5
+  if self.scale <= 32 then
+    self.scaleFactor = 12*dt
+  elseif self.scale >= 35 then
+    self.scaleFactor = -12*dt
   end
   self.scale = self.scale + self.scaleFactor
   self.bomb:rescale(self.scale)
