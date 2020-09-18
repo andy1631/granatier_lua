@@ -59,7 +59,7 @@ end
 function Field:update(dt)
   if self.PowerUp ~= nil then
     local collide, dx, dy = map.players[0].hitbox:collidesWith(self.hitbox)
-    if collide and (dx~=0 or dy~=0) then    
+    if collide and (dx>1 or dx<-1 or dy>1 or dy<-1) then    
       if self.pandora then
           self:spawnPowerUp()
       end
@@ -72,13 +72,13 @@ function Field:update(dt)
 end
 
 function Field:spawnPowerUp()
-  local randomNumber = math.random(4, 6)
   -- local pandora = false
   --if pandora == false then
     -- randomNumber = 9
   --else
     --randomNumber = 6
   --end
+  local randomNumber = math.random(1, 15)
   -- Spiegel:
   if randomNumber == 1 then
     self.PowerUp = PowerUpMirror(self.position)

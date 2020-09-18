@@ -8,7 +8,8 @@ Player = Class{}
 
 --Player wird als Objekt festgelegt
    function Player:init(x, y, id)
-    self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
+    --self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
+    self.hitbox = HC.circle(x or 0, y or 0, 20)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
     self.velocity = Vector.new(0, 0)
@@ -61,7 +62,7 @@ Player = Class{}
     love.graphics.rotate(dir)
     love.graphics.translate(-(self.position.x), -(self.position.y))
     --love.graphics.setColor(255,255,255,1)
-    --self.hitbox:draw('line')
+    self.hitbox:draw('line')
     --Zeigen der Spielfigur und zeichnen der HitBox
   end
   function Player:move(x, y)
@@ -98,7 +99,7 @@ Player = Class{}
     end
     local vec = self:getRelPos()
     if map.fields[vec.x][vec.y]:getType() == 'arena_ice' then
-      self.frictionRatio=0.1
+      self.frictionRatio=0.05
     else
       self.frictionRatio=0.3
     end
@@ -113,7 +114,7 @@ Player = Class{}
 
     for shape, delta in pairs(HC.collisions(self.hitbox)) do
       if shape.solid then
-        self:collision(vector.new(delta.x, delta.y))
+        self:collision(vector.new(delta.x, delta.y),shape)
       end
     end
   end
@@ -123,18 +124,30 @@ Player = Class{}
     self.hitbox:moveTo(self.position.x, self.position.y)
   end
   
-  function Player:collision(v)
-    if (v.y > 0 and v.x == 0 and self.direction == 'up') 
-    or (v.y < 0 and v.x == 0 and self.direction == 'down')
-    or (v.x > 0 and v.y == 0 and self.direction == 'left')
-    or (v.x < 0 and v.y == 0 and self.direction == 'right')
-    then
-    self.velocity.x = 0
-    self.velocity.y = 0
+  function Player:collision(v, s)
+--    if (v.y > 0 and v.x == 0 and self.direction == 'up') 
+--    or (v.y < 0 and v.x == 0 and self.direction == 'down')
+--    or (v.x > 0 and v.y == 0 and self.direction == 'left')
+--    or (v.x < 0 and v.y == 0 and self.direction == 'right')
+--    then
+--    self.velocity.x = 0
+--    self.velocity.y = 0
     self.hitbox:move(v.x, v.y)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX or 0, posY or 0)
-    end
+    
+--    local x, y = s:center()
+    
+--    if self.direction == 'up' then
+--      if self.position.x > x + 20 or self.position.x < x - 20 then
+--        if self.position.x > x + 20 then x = x + 40 elseif self.position.x < x - 20 then x = x - 40 end
+--        self:setPosition(x ,self.position.y) 
+--      end
+--    elseif self.direction == 'down' then
+--    elseif self.direction == 'left' then
+--    elseif self.direction == 'right' then
+--    end
+    --end
   end
   --Bewegung der Hitbox
   function Player:setId(id)
