@@ -60,6 +60,8 @@ function Field:update(dt)
     if map.players[0].hitbox:collidesWith(self.hitbox) then
       self.PowerUp:usePowerUp(map.players[0])
       self.PowerUp = nil
+      source = love.audio.newSource( 'resources/sounds/wow.wav' , 'static' )
+      love.audio.play(source)
     end
   end
 end
