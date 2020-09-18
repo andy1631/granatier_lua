@@ -71,6 +71,12 @@ function Map:update(dt)
     end
   end
   
+  for key, value in pairs(self.fields) do
+    for k, v in pairs (value) do
+      v:update(dt)
+    end
+  end
+  
 end
 
 --shows the map

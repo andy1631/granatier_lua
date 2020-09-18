@@ -10,7 +10,7 @@ function PowerUpCoffee:init(pos)
 end
 
 function PowerUpCoffee:usePowerUp(player)
-  
+  player.stats.hyperactive = true
 end
 
 return PowerUpCoffee

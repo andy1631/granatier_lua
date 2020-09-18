@@ -10,7 +10,7 @@ function PowerUpSlow:init(pos)
 end
 
 function PowerUpSlow:usePowerUp(player)
-  
+  player.stats.slow = true
 end
 
 return PowerUpSlow

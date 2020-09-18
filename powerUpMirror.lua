@@ -10,7 +10,7 @@ function PowerUpMirror:init(pos)
 end
 
 function PowerUpMirror:usePowerUp(player)
-  
+  player.stats.mirror = true
 end
 
 return PowerUpMirror
