@@ -145,6 +145,15 @@ function Player:getRelPos()
   return cords[index]
 end
 
+function Player:playerOnField(pos)
+    local collide, dx, dy = map.fields[pos.x][pos.y].hitbox:collidesWith(self.hitbox)
+    if collide and (dx~=0 or dy~=0) then            
+      return true
+    else
+      return false
+    end
+  end
+
 function Player:die() 
   
   end

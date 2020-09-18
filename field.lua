@@ -63,7 +63,6 @@ function Field:update(dt)
         self.PowerUp = nil
         source = love.audio.newSource( 'resources/sounds/wow.wav' , 'static' )
         love.audio.play(source)
-      
     end
   end
 end
