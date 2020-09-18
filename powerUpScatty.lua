@@ -10,7 +10,7 @@ function PowerUpScatty:init(pos)
 end
 
 function PowerUpScatty:usePowerUp(player)
-  
+  player.stats.scatty = true
 end
 
 return PowerUpScatty

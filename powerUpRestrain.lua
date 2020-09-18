@@ -10,7 +10,7 @@ function PowerUpRestrain:init(pos)
 end
 
 function PowerUpRestrain:usePowerUp(player)
-  
+  player.stats.restrain = true
 end
 
 return PowerUpRestrain

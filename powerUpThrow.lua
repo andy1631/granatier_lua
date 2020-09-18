@@ -10,7 +10,7 @@ function PowerUpThrow:init(pos)
 end
 
 function PowerUpThrow:usePowerUp(player)
-  
+  player.stats.throw = true
 end
 
 return PowerUpThrow

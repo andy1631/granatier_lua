@@ -10,7 +10,7 @@ function PowerUpPower:init(pos)
 end
 
 function PowerUpPower:usePowerUp(player)
-  
+  player.stats.power = player.stats.power + 1
 end
 
 return PowerUpPower

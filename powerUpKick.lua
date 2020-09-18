@@ -10,7 +10,7 @@ function PowerUpKick:init(pos)
 end
 
 function PowerUpKick:usePowerUp(player)
-  
+  player.stats.kick = true
 end
 
 return PowerUpKick

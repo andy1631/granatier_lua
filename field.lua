@@ -44,7 +44,7 @@ end
 
 function Field:draw()
   if self.type ~= 'air' then
-    --self.hitbox:draw((self.type == 'wall') and 'fill' or 'line')
+    self.hitbox:draw((self.type == 'wall') and 'fill' or 'line')
     love.graphics.translate(self.position.x, self.position.y)
     self.Texture:draw()
     love.graphics.translate(-self.position.x, -self.position.y)
@@ -55,12 +55,22 @@ function Field:draw()
 end
 --Zeichnen der Linie der Hitbox
 
+function Field:update(dt)
+  if self.PowerUp ~= nil then
+    if map.players[0].hitbox:collidesWith(self.hitbox) then
+      self.PowerUp:usePowerUp(map.players[0])
+      self.PowerUp = nil
+    end
+  end
+end
+
 function Field:spawnPowerUp()
   local randomNumber = math.random(1, 15)
+  randomNumber = 2
   -- Spiegel:
   if randomNumber == 1 then
     self.PowerUp = PowerUpMirror(self.position)
-  
+
   -- Kaffee:
   elseif randomNumber == 2 then
     self.PowerUp = PowerUpCoffee(self.position)
@@ -77,9 +87,10 @@ function Field:spawnPowerUp()
   elseif randomNumber == 5 then
     self.PowerUp = PowerUpSlow(self.position)
   
-  -- bombe:
+  -- Bombe:
   elseif randomNumber == 6 then
     self.PowerUp = PowerUpBomb(self.position)
+  
   -- Fußball:
   elseif randomNumber == 7 then
     self.PowerUp = PowerUpKick(self.position)

@@ -28,10 +28,6 @@ function PowerUp:init(pos)
   -- print("Ein neues Power-Up erscheint!")
 end
 
-function PowerUp:usePowerUp()
-  print("Ein Power-Up wird benutzt!")
-end
-
 function PowerUp:draw()
   love.graphics.translate(self.position.x, self.position.y)
   self.Texture:draw()

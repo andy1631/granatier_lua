@@ -10,7 +10,7 @@ function PowerUpPandora:init(pos)
 end
 
 function PowerUpPandora:usePowerUp(player)
-  
+  -- Zufälliges Power-Up auswählen:
 end
 
 return PowerUpPandora
