@@ -59,7 +59,10 @@ end
 function Field:update(dt)
   if self.PowerUp ~= nil then
     local collide, dx, dy = map.players[0].hitbox:collidesWith(self.hitbox)
-    if collide and (dx~=0 or dy~=0) then            
+    if collide and (dx~=0 or dy~=0) then    
+      if self.pandora then
+          self:spawnPowerUp()
+      end
         self.PowerUp:usePowerUp(map.players[0])
         self.PowerUp = nil
         source = love.audio.newSource( 'resources/sounds/wow.wav' , 'static' )
@@ -98,7 +101,7 @@ function Field:spawnPowerUp()
   
   -- Bombe:
   elseif randomNumber == 6 then
-    self.PowerUp = PowerUpBomb(self.position)
+    self.PowerUp = PowerUpMason(self.position)
   
   -- Fußball:
   elseif randomNumber == 7 then
@@ -106,13 +109,13 @@ function Field:spawnPowerUp()
   
   -- Schaufel:
   elseif randomNumber == 8 then
-    self.PowerUp = PowerUpMason(self.position)
+    self.PowerUp = PowerUpBomb(self.position)
   
   -- Zufallbox:
   elseif randomNumber == 9 then
     self.PowerUp = PowerUpPandora(self.position)
     self.pandora = true
-    self:spawnPowerUp()
+    -- self:spawnPowerUp()
   -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
   elseif randomNumber == 10 then
     self.PowerUp = PowerUpResurrect(self.position)
