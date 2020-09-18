@@ -61,7 +61,7 @@ Player = Class{}
     love.graphics.rotate(dir)
     love.graphics.translate(-(self.position.x), -(self.position.y))
     --love.graphics.setColor(255,255,255,1)
-    --self.hitbox:draw('line')
+    self.hitbox:draw('line')
     --Zeigen der Spielfigur und zeichnen der HitBox
   end
   function Player:move(x, y)
