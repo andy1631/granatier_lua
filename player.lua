@@ -76,6 +76,12 @@ Player = Class{}
      if self.direction == 'up' then y = -1 elseif self.direction == 'down' then y = 1 else y = 0 end
         self:move(x,y)
     end
+    local vec = self:getRelPos()
+    if map.fields[vec.x][vec.y]:getType() == 'arena_ice' then
+      self.frictionRatio=0.1
+    else
+      self.frictionRatio=0.3
+    end
 
     local frictionVector = self.velocity * self.frictionRatio
 
@@ -115,7 +121,32 @@ Player = Class{}
     self.id = id
     self.hitbox.PlayerId = self.id
   end
+  
   --Zuweisen der HitBox zu einem Spieler
 
+function Player:getRelPos()
+  local col={}
+  local cords={}
+  for shape, delta in pairs(HC.collisions(self.hitbox)) do
+    if shape.cords ~= nil then
+      col[#col+1] = vector.new(delta.x,delta.y):len()
+      cords[#cords+1] = shape.cords
+    end
+  end
+  col[0]=0
+  local index=0
+  for k,v in pairs(col) do
+    if v~=0 then
+      if col[index]<v then
+      index=k
+      end
+    end
+  end
+  return cords[index]
+end
+
+function Player:die() 
+  
+  end
 return Player
 --Rückgabe des Objekts Player
