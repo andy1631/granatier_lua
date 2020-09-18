@@ -72,7 +72,7 @@ function Field:update(dt)
 end
 
 function Field:spawnPowerUp()
-  local randomNumber = math.random(8, 10)
+  local randomNumber = math.random(4, 6)
   -- local pandora = false
   --if pandora == false then
     -- randomNumber = 9

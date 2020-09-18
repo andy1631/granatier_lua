@@ -16,6 +16,7 @@ Player = Class{}
     self.frictionRatio = 0.3
     self.direction = "right"
     self.movement = false
+    self.powerUpTime = 10
     --Position des Spielers und Standardwerte
     self.stats = {
       speedBoost = 0, 
@@ -69,7 +70,26 @@ Player = Class{}
   end
   --Bewegen des Spielers
   function Player:update(dt)
-    
+    if self.stats.slow then
+      self.acceleration = 15
+      self.powerUpTime = self.powerUpTime - dt
+    else
+      self.acceleration = 30
+    end
+    if self.powerUpTime <= 0 then
+      self.powerUpTime = 10 -- Die Zeit des aktiven Power-Ups zurücksetzen
+      self.speedBoost = 0
+      self.bombs = 1
+      self.power = 1
+      self.stats.shield = false
+      self.stats.throw = false
+      self.stats.kick = false
+      self.stats.slow = false
+      self.stats.hyperactive = false
+      self.stats.mirror = false
+      self.stats.scatty = false
+      self.stats.restrain = false
+    end
     if self.movement then
       local x, y
      if self.direction == 'left' then x = -1 elseif self.direction == 'right' then x = 1 else x = 0 end
