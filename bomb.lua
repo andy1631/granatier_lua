@@ -58,12 +58,17 @@ function Bomb:explode()
   source = love.audio.newSource( 'resources/sounds/explode.wav' , 'static' )
   love.audio.play(source)
   self.toDelete = true
+  local fieldsCords={}
   map.fields[self.cords.x][self.cords.y].bombs=0
   map.players[0].stats.bombs=map.players[0].stats.bombs+1
   if map.fields[self.cords.x][self.cords.y]:getType() == "arena_ground" then
       map.fields[self.cords.x][self.cords.y].PowerUp=nil
+      table.insert(fieldsCords, vector.new(self.cords.x,self.cords.y))
   end
   for i=1,self.power,1 do
+    if self.cords.x+i > map.x then
+      break
+    end
     if map.fields[self.cords.x+i][self.cords.y]:getType() == "arena_wall" then
       map.fields[self.cords.x+i][self.cords.y]:setType("arena_ground")
       map.fields[self.cords.x+i][self.cords.y]:spawnPowerUp()
@@ -73,11 +78,18 @@ function Bomb:explode()
       break
     end
     if map.fields[self.cords.x+i][self.cords.y]:getType() == "arena_ground" then
+      if map.fields[self.cords.x+i][self.cords.y].PowerUp ~=nil then
       map.fields[self.cords.x+i][self.cords.y].PowerUp=nil
+      break
+      end
+      table.insert(fieldsCords, vector.new(self.cords.x+i,self.cords.y))
       break
     end
   end
   for i=1,self.power,1 do
+    if self.cords.x-i < 1 then
+      break
+    end
     if map.fields[self.cords.x-i][self.cords.y]:getType() == "arena_wall" then
       map.fields[self.cords.x-i][self.cords.y]:setType("arena_ground")
       map.fields[self.cords.x-i][self.cords.y]:spawnPowerUp()
@@ -87,11 +99,17 @@ function Bomb:explode()
       break
     end
     if map.fields[self.cords.x-i][self.cords.y]:getType() == "arena_ground" then
+      if map.fields[self.cords.x-i][self.cords.y].PowerUp ~=nil then
       map.fields[self.cords.x-i][self.cords.y].PowerUp=nil
       break
+      end
+      table.insert(fieldsCords, vector.new(self.cords.x-i,self.cords.y))
     end
   end
   for i=1,self.power,1 do
+    if self.cords.y+i > map.y then
+      break
+    end
     if map.fields[self.cords.x][self.cords.y+i]:getType() == "arena_wall" then
       map.fields[self.cords.x][self.cords.y+i]:setType("arena_ground")
       map.fields[self.cords.x][self.cords.y+i]:spawnPowerUp()
@@ -101,11 +119,17 @@ function Bomb:explode()
       break
     end
     if map.fields[self.cords.x][self.cords.y+i]:getType() == "arena_ground" then
+      if map.fields[self.cords.x][self.cords.y+i].PowerUp ~=nil then
       map.fields[self.cords.x][self.cords.y+i].PowerUp=nil
       break
+      end
+      table.insert(fieldsCords, vector.new(self.cords.x,self.cords.y+i))
     end
   end
   for i=1,self.power,1 do
+    if self.cords.y-i < 1 then
+      break
+    end
     if map.fields[self.cords.x][self.cords.y-i]:getType() == "arena_wall" then
       map.fields[self.cords.x][self.cords.y-i]:setType("arena_ground")
       map.fields[self.cords.x][self.cords.y-i]:spawnPowerUp()
@@ -115,8 +139,16 @@ function Bomb:explode()
       break
     end
     if map.fields[self.cords.x][self.cords.y-i]:getType() == "arena_ground" then
+      if map.fields[self.cords.x][self.cords.y-i].PowerUp ~=nil then
       map.fields[self.cords.x][self.cords.y-i].PowerUp=nil
       break
+      end
+      table.insert(fieldsCords, vector.new(self.cords.x,self.cords.y-i))
+    end
+  end
+  for k,v in pairs(fieldsCords) do
+    for j,l in pairs(fieldsCords) do
+    
     end
   end
   HC.remove(self.hitbox)

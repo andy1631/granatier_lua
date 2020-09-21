@@ -14,8 +14,8 @@ function Map:init(x,y)
     self.x=10
     self.y=10
   else
-    self.x=x
-    self.y=y
+    self.x=tonumber(x)
+    self.y=tonumber(y)
   end
   self.width = self.x * 40
   self.height = self.y * 40
