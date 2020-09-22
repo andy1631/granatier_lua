@@ -7,7 +7,6 @@ tove = require 'lib.tove'
 Player = Class{}
 
 --Player wird als Objekt festgelegt
-<<<<<<< Updated upstream
    function Player:init(x, y, id)
     --self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
     self.hitbox = HC.circle(x or 0, y or 0, 20)
@@ -45,58 +44,6 @@ Player = Class{}
     return string.format("x = %.16g, y = %.16g", self.position:unpack())
   end
   --ÜBergabe der aktuellen Position des Spielers als String
-  function Player:draw()
-    local dir=0
-    love.graphics.translate(self.position.x, self.position.y)
-    if self.direction == "up" then
-      love.graphics.rotate(-math.pi / 2)
-      dir = math.pi / 2
-    elseif self.direction == "down" then
-      love.graphics.rotate(math.pi / 2)
-      dir = -math.pi / 2
-    elseif self.direction == "left" then
-      love.graphics.rotate(math.pi)
-      dir = -math.pi
-    end
-    --Rotation des Spielers bei Richtungswechsel
-    myPlayer:draw()
-    love.graphics.rotate(dir)
-    love.graphics.translate(-(self.position.x), -(self.position.y))
-    --love.graphics.setColor(255,255,255,1)
-    self.hitbox:draw('line')
-    --Zeigen der Spielfigur und zeichnen der HitBox
-=======
-function Player:init(x, y, id)
-  --self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
-  self.hitbox = HC.circle(x or 0, y or 0, 20)
-  local posX, posY = self.hitbox:center()
-  self.position = Vector.new(posX or 0, posY or 0)
-  self.velocity = Vector.new(0, 0)
-  self.acceleration = 30
-  self.frictionRatio = 0.3
-  self.direction = "right"
-  self.movement = false
-  --Position des Spielers und Standardwerte
-  self.stats = {
-    speedBoost = 0, 
-    bombs = 1,
-    power = 1,
-    shield = false,
-    throw = false,
-    kick = false,
-    slow = false,
-    hyperactive = false,
-    mirror = false,
-    scatty = false,
-    restrain = false
-  }
-  --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
-  self.id = id or 0
-  self.hitbox.playerId = self.id
-  player = love.filesystem.read("resources/player2.svg")
-  myPlayer = tove.newGraphics(player)
-  myPlayer:rescale(38)
-end
 --Anzeige der SVG-Spielers
 function Player:__tostring()
   return string.format("x = %.16g, y = %.16g", self.position:unpack())
@@ -114,7 +61,6 @@ function Player:draw()
   elseif self.direction == "left" then
     love.graphics.rotate(math.pi)
     dir = -math.pi
->>>>>>> Stashed changes
   end
   --Rotation des Spielers bei Richtungswechsel
   myPlayer:draw()
@@ -129,15 +75,7 @@ function Player:move(x, y)
   if x == 0 then self.velocity.x = 0 elseif y == 0 then self.velocity.y = 0 end
 end
 --Bewegen des Spielers
-function Player:update(dt)
 
-  if self.movement then
-    local x, y
-    if self.direction == 'left' then x = -1 elseif self.direction == 'right' then x = 1 else x = 0 end
-    if self.direction == 'up' then y = -1 elseif self.direction == 'down' then y = 1 else y = 0 end
-    self:move(x,y)
-  end
-<<<<<<< Updated upstream
   --Bewegen des Spielers
   function Player:update(dt)
     if self.stats.slow then
@@ -166,11 +104,8 @@ function Player:update(dt)
      if self.direction == 'up' then y = -1 elseif self.direction == 'down' then y = 1 else y = 0 end
         self:move(x,y)
     end
-    local vec = self:getRelPos()
-=======
   local vec = self:getRelPos()
   if vec ~= nil then
->>>>>>> Stashed changes
     if map.fields[vec.x][vec.y]:getType() == 'arena_ice' then
       self.frictionRatio=0.05
     else
