@@ -7,43 +7,43 @@ tove = require 'lib.tove'
 Player = Class{}
 
 --Player wird als Objekt festgelegt
-   function Player:init(x, y, id)
-    --self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
-    self.hitbox = HC.circle(x or 0, y or 0, 20)
-    local posX, posY = self.hitbox:center()
-    self.position = Vector.new(posX or 0, posY or 0)
-    self.velocity = Vector.new(0, 0)
-    self.acceleration = 30
-    self.frictionRatio = 0.3
-    self.direction = "right"
-    self.movement = false
-    self.powerUpTime = 10
-    --Position des Spielers und Standardwerte
-    self.stats = {
-      speedBoost = 0, 
-      bombs = 1,
-      power = 1,
-      shield = false,
-      throw = false,
-      kick = false,
-      slow = false,
-      hyperactive = false,
-      mirror = false,
-      scatty = false,
-      restrain = false
-    }
-    --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
-    self.id = id or 0
-    self.hitbox.playerId = self.id
-    player = love.filesystem.read("resources/player2.svg")
-    myPlayer = tove.newGraphics(player)
-    myPlayer:rescale(38)
-  end
-  --Anzeige der SVG-Spielers
-  function Player:__tostring()
-    return string.format("x = %.16g, y = %.16g", self.position:unpack())
-  end
-  --ÜBergabe der aktuellen Position des Spielers als String
+function Player:init(x, y, id)
+  --self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
+  self.hitbox = HC.circle(x or 0, y or 0, 20)
+  local posX, posY = self.hitbox:center()
+  self.position = Vector.new(posX or 0, posY or 0)
+  self.velocity = Vector.new(0, 0)
+  self.acceleration = 30
+  self.frictionRatio = 0.3
+  self.direction = "right"
+  self.movement = false
+  self.powerUpTime = 10
+  --Position des Spielers und Standardwerte
+  self.stats = {
+    speedBoost = 0, 
+    bombs = 1,
+    power = 1,
+    shield = false,
+    throw = false,
+    kick = false,
+    slow = false,
+    hyperactive = false,
+    mirror = false,
+    scatty = false,
+    restrain = false
+  }
+  --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
+  self.id = id or 0
+  self.hitbox.playerId = self.id
+  player = love.filesystem.read("resources/player2.svg")
+  myPlayer = tove.newGraphics(player)
+  myPlayer:rescale(38)
+end
+--Anzeige der SVG-Spielers
+function Player:__tostring()
+  return string.format("x = %.16g, y = %.16g", self.position:unpack())
+end
+--ÜBergabe der aktuellen Position des Spielers als String
 --Anzeige der SVG-Spielers
 function Player:__tostring()
   return string.format("x = %.16g, y = %.16g", self.position:unpack())
@@ -76,34 +76,34 @@ function Player:move(x, y)
 end
 --Bewegen des Spielers
 
-  --Bewegen des Spielers
-  function Player:update(dt)
-    if self.stats.slow then
-      self.acceleration = 15
-      self.powerUpTime = self.powerUpTime - dt
-    else
-      self.acceleration = 30
-    end
-    if self.powerUpTime <= 0 then
-      self.powerUpTime = 10 -- Die Zeit des aktiven Power-Ups zurücksetzen
-      self.speedBoost = 0
-      self.bombs = 1
-      self.power = 1
-      self.stats.shield = false
-      self.stats.throw = false
-      self.stats.kick = false
-      self.stats.slow = false
-      self.stats.hyperactive = false
-      self.stats.mirror = false
-      self.stats.scatty = false
-      self.stats.restrain = false
-    end
-    if self.movement then
-      local x, y
-     if self.direction == 'left' then x = -1 elseif self.direction == 'right' then x = 1 else x = 0 end
-     if self.direction == 'up' then y = -1 elseif self.direction == 'down' then y = 1 else y = 0 end
-        self:move(x,y)
-    end
+--Bewegen des Spielers
+function Player:update(dt)
+  if self.stats.slow then
+    self.acceleration = 15
+    self.powerUpTime = self.powerUpTime - dt
+  else
+    self.acceleration = 30
+  end
+  if self.powerUpTime <= 0 then
+    self.powerUpTime = 10 -- Die Zeit des aktiven Power-Ups zurücksetzen
+    self.speedBoost = 0
+    self.bombs = 1
+    self.power = 1
+    self.stats.shield = false
+    self.stats.throw = false
+    self.stats.kick = false
+    self.stats.slow = false
+    self.stats.hyperactive = false
+    self.stats.mirror = false
+    self.stats.scatty = false
+    self.stats.restrain = false
+  end
+  if self.movement then
+    local x, y
+    if self.direction == 'left' then x = -1 elseif self.direction == 'right' then x = 1 else x = 0 end
+    if self.direction == 'up' then y = -1 elseif self.direction == 'down' then y = 1 else y = 0 end
+    self:move(x,y)
+  end
   local vec = self:getRelPos()
   if vec ~= nil then
     if map.fields[vec.x][vec.y]:getType() == 'arena_ice' then

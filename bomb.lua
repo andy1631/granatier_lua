@@ -41,9 +41,9 @@ function Bomb:update(dt)
   if self.time <= 0 then
     self:explode()
   end
-  
+
   local solid = true
-  
+
   if not self.hitbox.solid and HC.collisions(self.hitbox) ~= {} then
     for shape, delta in pairs(HC.collisions(self.hitbox)) do
       if vector.new(delta.x,delta.y):len() ~= 0 then
@@ -62,8 +62,8 @@ function Bomb:explode()
   map.fields[self.cords.x][self.cords.y].bombs=0
   map.players[0].stats.bombs=map.players[0].stats.bombs+1
   if map.fields[self.cords.x][self.cords.y]:getType() == "arena_ground" then
-      map.fields[self.cords.x][self.cords.y].PowerUp=nil
-      table.insert(fieldsCords, vector.new(self.cords.x,self.cords.y))
+    map.fields[self.cords.x][self.cords.y].PowerUp=nil
+    table.insert(fieldsCords, vector.new(self.cords.x,self.cords.y))
   end
   for i=1,self.power,1 do
     if self.cords.x+i > map.x then
@@ -79,8 +79,8 @@ function Bomb:explode()
     end
     if map.fields[self.cords.x+i][self.cords.y]:getType() == "arena_ground" then
       if map.fields[self.cords.x+i][self.cords.y].PowerUp ~=nil then
-      map.fields[self.cords.x+i][self.cords.y].PowerUp=nil
-      break
+        map.fields[self.cords.x+i][self.cords.y].PowerUp=nil
+        break
       end
       table.insert(fieldsCords, vector.new(self.cords.x+i,self.cords.y))
       break
@@ -100,8 +100,8 @@ function Bomb:explode()
     end
     if map.fields[self.cords.x-i][self.cords.y]:getType() == "arena_ground" then
       if map.fields[self.cords.x-i][self.cords.y].PowerUp ~=nil then
-      map.fields[self.cords.x-i][self.cords.y].PowerUp=nil
-      break
+        map.fields[self.cords.x-i][self.cords.y].PowerUp=nil
+        break
       end
       table.insert(fieldsCords, vector.new(self.cords.x-i,self.cords.y))
     end
@@ -120,8 +120,8 @@ function Bomb:explode()
     end
     if map.fields[self.cords.x][self.cords.y+i]:getType() == "arena_ground" then
       if map.fields[self.cords.x][self.cords.y+i].PowerUp ~=nil then
-      map.fields[self.cords.x][self.cords.y+i].PowerUp=nil
-      break
+        map.fields[self.cords.x][self.cords.y+i].PowerUp=nil
+        break
       end
       table.insert(fieldsCords, vector.new(self.cords.x,self.cords.y+i))
     end
@@ -140,15 +140,15 @@ function Bomb:explode()
     end
     if map.fields[self.cords.x][self.cords.y-i]:getType() == "arena_ground" then
       if map.fields[self.cords.x][self.cords.y-i].PowerUp ~=nil then
-      map.fields[self.cords.x][self.cords.y-i].PowerUp=nil
-      break
+        map.fields[self.cords.x][self.cords.y-i].PowerUp=nil
+        break
       end
       table.insert(fieldsCords, vector.new(self.cords.x,self.cords.y-i))
     end
   end
   for k,v in pairs(fieldsCords) do
     for j,l in pairs(fieldsCords) do
-    
+
     end
   end
   HC.remove(self.hitbox)

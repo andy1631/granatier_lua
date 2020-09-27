@@ -5,7 +5,7 @@ Xml = require 'lib.xml2lua.xml2lua'
 MapParser= Class{}
 
 function MapParser:init()
-   self.filePath="resources/arenas/granatier.xml"
+  self.filePath="resources/arenas/granatier.xml"
 end
 
 function MapParser:parse()
@@ -60,7 +60,7 @@ function MapParser:parse()
       map:changeType(j,i,temp)
     end
   end
-  
+
   map:spawn(Player())
 end
 

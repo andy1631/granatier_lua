@@ -27,16 +27,16 @@ function Map:init(x,y)
   self.spawns = {}
 
   --if self.type == 'arena_greenwall' then
-    for i = 1, self.x, 1 do
-      self.fields[i] = {}
-      for j = 1, self.y, 1 do
+  for i = 1, self.x, 1 do
+    self.fields[i] = {}
+    for j = 1, self.y, 1 do
 
-        local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)),40, 'arena_wall', vector.new(i,j))
+      local field = Field(self.position + vector.new(i * (self.width / self.x), j * (self.height / self.y)),40, 'arena_wall', vector.new(i,j))
 
-        self.fields[i][j] = field
-      end
+      self.fields[i][j] = field
     end
-  
+  end
+
   -- Show the background
   background = love.filesystem.read("resources/SVG/background.svg")
   background = tove.newGraphics(background)
@@ -63,20 +63,20 @@ function Map:update(dt)
   for key, value in pairs(self.players) do
     self.players[key]:update(dt)
   end
-  
+
   for key, value in pairs(self.bombs) do
     self.bombs[key]:update(dt)
     if self.bombs[key].toDelete then
       table.remove(self.bombs,key)
     end
   end
-  
+
   for key, value in pairs(self.fields) do
     for k, v in pairs (value) do
       v:update(dt)
     end
   end
-  
+
 end
 
 --shows the map
@@ -108,14 +108,14 @@ function Map:setBomb()
       if shape.cords ~= nil then
         col[#col+1] = vector.new(delta.x,delta.y):len()
         cords[#cords+1] = shape.cords
-        end
+      end
     end
     col[0]=0
     local index=0
     for k,v in pairs(col) do
       if v~=0 then
         if col[index]<v then
-        index=k
+          index=k
         end
       end
     end

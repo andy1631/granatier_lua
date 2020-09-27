@@ -61,12 +61,12 @@ function Field:update(dt)
     local collide, dx, dy = map.players[0].hitbox:collidesWith(self.hitbox)
     if collide and (dx>1 or dx<-1 or dy>1 or dy<-1) then    
       if self.pandora then
-          self:spawnPowerUp()
+        self:spawnPowerUp()
       end
-        self.PowerUp:usePowerUp(map.players[0])
-        self.PowerUp = nil
-        source = love.audio.newSource( 'resources/sounds/wow.wav' , 'static' )
-        love.audio.play(source)
+      self.PowerUp:usePowerUp(map.players[0])
+      self.PowerUp = nil
+      source = love.audio.newSource( 'resources/sounds/wow.wav' , 'static' )
+      love.audio.play(source)
     end
   end
 end
@@ -74,73 +74,73 @@ end
 function Field:spawnPowerUp()
   -- local pandora = false
   --if pandora == false then
-    -- randomNumber = 9
+  -- randomNumber = 9
   --else
-    --randomNumber = 6
+  --randomNumber = 6
   --end
   local randomNumber = math.random(1, 15)
   -- Spiegel:
   if randomNumber == 1 then
     self.PowerUp = PowerUpMirror(self.position)
 
-  -- Kaffee:
+    -- Kaffee:
   elseif randomNumber == 2 then
     self.PowerUp = PowerUpCoffee(self.position)
-  
-  -- Fessel:
+
+    -- Fessel:
   elseif randomNumber == 3 then
     self.PowerUp = PowerUpRestrain(self.position)
-  
-  -- Wirft Bomben zu zufälligen Positionen (Scatty):
+
+    -- Wirft Bomben zu zufälligen Positionen (Scatty):
   elseif randomNumber == 4 then
     self.PowerUp = PowerUpScatty(self.position)
-  
-  -- Schnecke:
+
+    -- Schnecke:
   elseif randomNumber == 5 then
     self.PowerUp = PowerUpSlow(self.position)
-  
-  -- Bombe:
+
+    -- Bombe:
   elseif randomNumber == 6 then
     self.PowerUp = PowerUpMason(self.position)
-  
-  -- Fußball:
+
+    -- Fußball:
   elseif randomNumber == 7 then
     self.PowerUp = PowerUpKick(self.position)
-  
-  -- Schaufel:
+
+    -- Schaufel:
   elseif randomNumber == 8 then
     self.PowerUp = PowerUpBomb(self.position)
-  
-  -- Zufallbox:
+
+    -- Zufallbox:
   elseif randomNumber == 9 then
     self.PowerUp = PowerUpPandora(self.position)
     self.pandora = true
     -- self:spawnPowerUp()
-  -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
+    -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
   elseif randomNumber == 10 then
     self.PowerUp = PowerUpResurrect(self.position)
-  
-  -- Teleporter:
+
+    -- Teleporter:
   elseif randomNumber == 11 then
     self.PowerUp = PowerUpTeleport(self.position)
-  
-  -- Power:
+
+    -- Power:
   elseif randomNumber == 12 then
     self.PowerUp = PowerUpPower(self.position)
-  
-  -- Schild:
+
+    -- Schild:
   elseif randomNumber == 13 then
     self.PowerUp = PowerUpShield(self.position)
-  
-  -- Schneller bewegen:
+
+    -- Schneller bewegen:
   elseif randomNumber == 14 then
     self.PowerUp = PowerUpSpeed(self.position)
- 
-  -- Werfen:
+
+    -- Werfen:
   elseif randomNumber == 15 then
     self.PowerUp = PowerUpThrow(self.position)
-    end
-  
+  end
+
 end
 
 function Field:setType(t)
