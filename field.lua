@@ -1,21 +1,21 @@
 HC = require 'lib.HC'
 Class = require 'lib.hump.class'
 tove = require 'lib.tove'
-PowerUpBomb = require "powerUpBomb"
-PowerUpCoffee = require "powerUpCoffee"
-PowerUpKick = require "powerUpKick"
-PowerUpMason = require "powerUpMason"
-PowerUpMirror = require "powerUpMirror"
-PowerUpPandora = require "powerUpPandora"
-PowerUpPower = require "powerUpPower"
-PowerUpRestrain = require "powerUpRestrain"
-PowerUpResurrect = require "powerUpResurrect"
-PowerUpScatty = require "powerUpScatty"
-PowerUpShield = require "powerUpShield"
-PowerUpSlow = require "powerUpSlow"
-PowerUpSpeed = require "powerUpSpeed"
-PowerUpTeleport = require "powerUpTeleport"
-PowerUpThrow = require "powerUpThrow"
+PowerUpBomb = require "Powerups.powerUpBomb"
+PowerUpCoffee = require "Powerups.powerUpCoffee"
+PowerUpKick = require "Powerups.powerUpKick"
+PowerUpMason = require "Powerups.powerUpMason"
+PowerUpMirror = require "Powerups.powerUpMirror"
+PowerUpPandora = require "Powerups.powerUpPandora"
+PowerUpPower = require "Powerups.powerUpPower"
+PowerUpRestrain = require "Powerups.powerUpRestrain"
+PowerUpResurrect = require "Powerups.powerUpResurrect"
+PowerUpScatty = require "Powerups.powerUpScatty"
+PowerUpShield = require "Powerups.powerUpShield"
+PowerUpSlow = require "Powerups.powerUpSlow"
+PowerUpSpeed = require "Powerups.powerUpSpeed"
+PowerUpTeleport = require "Powerups.powerUpTeleport"
+PowerUpThrow = require "Powerups.powerUpThrow"
 --Laden den oben gennanten Module
 
 Field = Class{}

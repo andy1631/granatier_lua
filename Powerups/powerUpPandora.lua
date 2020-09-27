@@ -1,6 +1,5 @@
 PowerUp = require "powerUp"
 Class = require 'lib.hump.class'
-PowerUpKick = require "powerUpKick"
 
 local PowerUpPandora = Class{__includes = PowerUp}
 
@@ -12,7 +11,9 @@ end
 
 function PowerUpPandora:usePowerUp(player)
   -- Zufälliges Power-Up auswählen:
-  -- PowerUpKick:spawnPowerUp()
+--  local x = (self.position.x - map.position.x) / 40
+--  local y = (self.position.y - map.position.y) / 40
+--  map.fields[x][y]:spawnPowerUp()
 end
 
 return PowerUpPandora
