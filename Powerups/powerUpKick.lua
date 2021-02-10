@@ -1,16 +1,16 @@
 PowerUp = require "powerUp"
-Class = require 'lib.hump.class'
+Class = require "lib.hump.class"
 
-local PowerUpKick = Class{__includes = PowerUp}
+local PowerUpKick = Class {__includes = PowerUp}
 
-function PowerUpKick:init(pos) 
-  self.Texture = love.filesystem.read("resources/SVG/bonus_kick.svg")
-  self.Texture = tove.newGraphics(self.Texture)
-  PowerUp.init(self, pos)
+function PowerUpKick:init(pos)
+    self.Texture = love.filesystem.read("resources/SVG/bonus_kick.svg")
+    self.Texture = Tove.newGraphics(self.Texture)
+    PowerUp.init(self, pos)
 end
 
 function PowerUpKick:usePowerUp(player)
-  player.stats.kick = true
+    player.stats.kick = true
 end
 
 return PowerUpKick

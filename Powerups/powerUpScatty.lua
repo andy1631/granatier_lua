@@ -1,16 +1,16 @@
 PowerUp = require "powerUp"
-Class = require 'lib.hump.class'
+Class = require "lib.hump.class"
 
-local PowerUpScatty = Class{__includes = PowerUp}
+local PowerUpScatty = Class {__includes = PowerUp}
 
-function PowerUpScatty:init(pos) 
-  self.Texture = love.filesystem.read("resources/SVG/bonus_bad_scatty.svg")
-  self.Texture = tove.newGraphics(self.Texture)
-  PowerUp.init(self, pos)
+function PowerUpScatty:init(pos)
+    self.Texture = love.filesystem.read("resources/SVG/bonus_bad_scatty.svg")
+    self.Texture = Tove.newGraphics(self.Texture)
+    PowerUp.init(self, pos)
 end
 
 function PowerUpScatty:usePowerUp(player)
-  player.stats.scatty = true
+    player.stats.scatty = true
 end
 
 return PowerUpScatty

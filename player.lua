@@ -1,23 +1,23 @@
-HC = require "lib.HC"
-Vector = require "lib.hump.vector"
+--HC = require "lib.HC"
 Class = require "lib.hump.class"
-tove = require "lib.tove"
+--Tove = require "lib.tove"
 --Laden der oben genannten Module
 
 Player = Class {}
 
 --Player wird als Objekt festgelegt
-function Player:init(x, y, id)
+function Player:init(x, y, id, origin, size)
     --self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
-    self.hitbox = HC.circle(x or 0, y or 0, 20)
-    self.position = Vector.new(x or 0, y or 0)
+    self.origin = origin
+    self.position = Vector.new(x, y)
+    self.hitbox = HC.circle(origin.x + self.position.x, origin.y + self.position.y, size / 2)
     self.velocity = Vector.new(0, 0)
-    self.acceleration = 30
+    self.acceleration = size * 0.75
     self.frictionRatio = 0.3
     self.direction = "right"
     self.movement = false
     self.powerUpTime = 10
-    self.size = 38
+    self.size = size - 2
     --Position des Spielers und Standardwerte
     self.stats = {
         speedBoost = 0,
@@ -36,13 +36,10 @@ function Player:init(x, y, id)
     self.id = id or 0
     self.hitbox.playerId = self.id
     self.texture = love.filesystem.read("resources/player2.svg")
-    self.texture = tove.newGraphics(self.texture)
+    self.texture = Tove.newGraphics(self.texture)
     self.texture:rescale(self.size)
 end
 --Anzeige der SVG-Spielers
-function Player:__tostring()
-    return string.format("x = %.16g, y = %.16g", self.position:unpack())
-end
 --ÜBergabe der aktuellen Position des Spielers als String
 --Anzeige der SVG-Spielers
 function Player:__tostring()
@@ -64,7 +61,11 @@ function Player:draw()
         posCorrect = Vector.new(self.size, self.size)
     end
     --Rotation des Spielers bei Richtungswechsel
-    self.texture:draw(self.position.x + posCorrect.x, self.position.y + posCorrect.y, dir)
+    self.texture:draw(
+        self.origin.x + self.position.x + posCorrect.x,
+        self.origin.y + self.position.y + posCorrect.y,
+        dir
+    )
     --love.graphics.rotate(dir)
     --love.graphics.translate(-(self.position.x), -(self.position.y))
     --love.graphics.setColor(255,255,255,1)
@@ -138,18 +139,18 @@ function Player:update(dt)
 
     self.hitbox:move(self.velocity.x * dt, self.velocity.y * dt)
     local x, y = self.hitbox:center()
-    self.position = Vector.new(x, y)
+    self.position = Vector.new(x, y) - self.origin
 
     for shape, delta in pairs(HC.collisions(self.hitbox)) do
         if shape.solid then
-            self:collision(vector.new(delta.x, delta.y), shape)
+            self:collision(Vector.new(delta.x, delta.y), shape)
         end
     end
 end
 --Update-Funktion (Aktualisieren der UI)
 function Player:setPosition(x, y)
     self.position = Vector.new(x, y)
-    self.hitbox:moveTo(self.position.x, self.position.y)
+    self.hitbox:moveTo(self.origin.x + self.position.x, self.origin.y + self.position.y)
 end
 
 function Player:collision(v, s)
@@ -162,7 +163,7 @@ function Player:collision(v, s)
     --    self.velocity.y = 0
     self.hitbox:move(v.x, v.y)
     local posX, posY = self.hitbox:center()
-    self.position = Vector.new(posX or 0, posY or 0)
+    self.position = Vector.new(posX - self.origin.x, posY - self.origin.y)
 
     --    local x, y = s:center()
 
@@ -190,12 +191,12 @@ function Player:getRelPos()
     local cords = {}
     for shape, delta in pairs(HC.collisions(self.hitbox)) do
         if shape.cords ~= nil then
-            col[#col + 1] = vector.new(delta.x, delta.y):len()
+            col[#col + 1] = Vector.new(delta.x, delta.y):len()
             cords[#cords + 1] = shape.cords
         end
     end
-    col[0] = 0
-    local index = 0
+    --col[0] = 0
+    local index = 1
     for k, v in pairs(col) do
         if v ~= 0 then
             if col[index] < v then

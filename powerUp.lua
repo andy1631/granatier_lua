@@ -1,5 +1,4 @@
 Player = require "player"
-Vector = require "lib.hump.vector"
 Class = require "lib.hump.class"
 
 --local PowerUp = {}

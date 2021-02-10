@@ -1,16 +1,16 @@
 PowerUp = require "powerUp"
-Class = require 'lib.hump.class'
+Class = require "lib.hump.class"
 
-local PowerUpSpeed = Class{__includes = PowerUp}
+local PowerUpSpeed = Class {__includes = PowerUp}
 
-function PowerUpSpeed:init(pos) 
-  self.Texture = love.filesystem.read("resources/SVG/bonus_speed.svg")
-  self.Texture = tove.newGraphics(self.Texture)
-  PowerUp.init(self, pos)
+function PowerUpSpeed:init(pos)
+    self.Texture = love.filesystem.read("resources/SVG/bonus_speed.svg")
+    self.Texture = Tove.newGraphics(self.Texture)
+    PowerUp.init(self, pos)
 end
 
 function PowerUpSpeed:usePowerUp(player)
-  player.stats.speedBoost = player.stats.speedBoost + 1
+    player.stats.speedBoost = player.stats.speedBoost + 1
 end
 
 return PowerUpSpeed
