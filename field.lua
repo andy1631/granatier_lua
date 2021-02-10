@@ -1,6 +1,6 @@
 HC = require "lib.HC"
 Class = require "lib.hump.class"
-tove = require "lib.tove"
+Tove = require "lib.tove"
 PowerUpBomb = require "Powerups.powerUpBomb"
 PowerUpCoffee = require "Powerups.powerUpCoffee"
 PowerUpKick = require "Powerups.powerUpKick"
@@ -25,14 +25,14 @@ function Field:init(pos, size, t, cords)
     self.type = t
     self.hitbox = HC.rectangle(pos.x, pos.y, size, size)
     local x, y = self.hitbox:center()
-    self.position = vector.new(x, y)
+    self.position = Vector.new(x, y)
 
     self.cords = cords
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
     self.hitbox.cords = self.cords
     self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
     self.bombs = 0
-    self.Texture = tove.newGraphics(self.Texture)
+    self.Texture = Tove.newGraphics(self.Texture)
     self.Texture:rescale(40)
     local pandora = false
 end
@@ -45,7 +45,7 @@ end
 
 function Field:draw()
     if self.type ~= "air" then
-        --self.hitbox:draw((self.type == 'wall') and 'fill' or 'line') -- show hitbox
+        --self.hitbox:draw((self.type == 'wall') and 'fill' or 'line') -- shows hitbox
         self.Texture:draw(self.position.x, self.position.y)
     end
     if self.PowerUp ~= nil then
@@ -131,7 +131,7 @@ function Field:setType(t)
     self.type = t
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
     self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
-    self.Texture = tove.newGraphics(self.Texture)
+    self.Texture = Tove.newGraphics(self.Texture)
     self.Texture:rescale(40)
 end
 
