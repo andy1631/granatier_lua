@@ -80,7 +80,6 @@ function Bomb:explode()
                 break
             end
             table.insert(fieldsCords, Vector.new(self.cords.x + i, self.cords.y))
-            break
         end
     end
     for i = 1, self.power, 1 do
