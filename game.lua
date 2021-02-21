@@ -19,17 +19,13 @@ end
 
 function game:keypressed(key, scancode, isrepeat)
     if key == "w" then
-        map.players[0].direction = "up"
-        map.players[0].movement = true
+        map.players[0]:walk("up")
     elseif key == "a" then
-        map.players[0].direction = "left"
-        map.players[0].movement = true
+        map.players[0]:walk("left")
     elseif key == "s" then
-        map.players[0].direction = "down"
-        map.players[0].movement = true
+        map.players[0]:walk("down")
     elseif key == "d" then
-        map.players[0].direction = "right"
-        map.players[0].movement = true
+        map.players[0]:walk("right")
     end
 
     if key == "q" then

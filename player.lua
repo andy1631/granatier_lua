@@ -12,7 +12,7 @@ function Player:init(x, y, id, origin, size)
     self.position = Vector.new(x, y)
     self.hitbox = HC.circle(origin.x + self.position.x, origin.y + self.position.y, size / 2)
     self.velocity = Vector.new(0, 0)
-    self.acceleration = size * 0.75
+    self.acceleration = size * 1.25
     self.frictionRatio = 0.3
     self.direction = "right"
     self.movement = false
@@ -71,9 +71,18 @@ function Player:draw()
     --love.graphics.setColor(255,255,255,1)
     --self.hitbox:draw('line')
     --Zeigen der Spielfigur und zeichnen der HitBox
+
+    --love.graphics.print("mirror: " .. tostring(self.stats.mirror), 0, 0)
+    --love.graphics.print("velocity: " .. tostring(self.velocity), 0, 15)
+    --love.graphics.print("Timer: " .. tostring(self.powerUpTime), 0, 30)
+    --love.graphics.print("direction: " .. tostring(self.direction), 0, 45)
 end
 function Player:move(x, y)
     self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
+    if self.stats.slow then
+        --love.window.showMessageBox("info", "slow did something")
+        self.velocity = self.velocity / 1.5
+    end
     if x == 0 then
         self.velocity.x = 0
     elseif y == 0 then
@@ -84,26 +93,30 @@ end
 
 --Bewegen des Spielers
 function Player:update(dt)
-    if self.stats.slow then
+    --[[if self.stats.slow then
         self.acceleration = 15
         self.powerUpTime = self.powerUpTime - dt
     else
         self.acceleration = 30
+        end]]
+    if self.stats.slow or self.stats.hyperactive or self.stats.mirror or self.stats.restrain then
+        self.powerUpTime = self.powerUpTime - dt
     end
     if self.powerUpTime <= 0 then
         self.powerUpTime = 10 -- Die Zeit des aktiven Power-Ups zurücksetzen
-        self.speedBoost = 0
-        self.bombs = 1
-        self.power = 1
-        self.stats.shield = false
-        self.stats.throw = false
-        self.stats.kick = false
+        --self.speedBoost = 0
+        --self.bombs = 1
+        --self.power = 1
+        --self.stats.shield = false
+        --self.stats.throw = false
+        --self.stats.kick = false
         self.stats.slow = false
         self.stats.hyperactive = false
         self.stats.mirror = false
         self.stats.scatty = false
         self.stats.restrain = false
     end
+
     if self.movement then
         local x, y
         if self.direction == "left" then
@@ -178,6 +191,27 @@ function Player:collision(v, s)
     --    end
     --end
 end
+
+function Player:walk(dir)
+    if self.stats.mirror then
+        --love.graphics.showMessageBox("mirror", dir)
+        if dir == "left" then
+            self.direction = "right"
+        elseif dir == "right" then
+            self.direction = "left"
+        elseif dir == "up" then
+            self.direction = "down"
+        elseif dir == "down" then
+            self.direction = "up"
+        else
+            self.direction = dir
+        end
+    else
+        self.direction = dir
+    end
+    self.movement = true
+end
+
 --Bewegung der Hitbox
 function Player:setId(id)
     self.id = id
