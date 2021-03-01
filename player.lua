@@ -143,7 +143,7 @@ function Player:update(dt)
             self.frictionRatio = 0.3
         end
     else
-        self:die()
+        self:fallOutOfWorld()
     end
 
     local frictionVector = self.velocity * self.frictionRatio
@@ -250,9 +250,13 @@ function Player:playerOnField(pos)
     end
 end
 
+function Player:explode()
+  self:die()
+end
+
 function Player:fallOutOfWorld()
 
-
+  self:die()
 end
 
 function Player:die()
