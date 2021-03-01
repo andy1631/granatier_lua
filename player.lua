@@ -250,6 +250,11 @@ function Player:playerOnField(pos)
     end
 end
 
+function Player:fallOutOfWorld()
+
+
+end
+
 function Player:die()
 end
 return Player
