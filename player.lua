@@ -18,6 +18,11 @@ function Player:init(x, y, id, origin, size)
     self.movement = false
     self.powerUpTime = 10
     self.size = size - 2
+    self.fall = false
+    self.falltime = -1
+    self.dead = false
+    self.fallen= false
+    
     --Position des Spielers und Standardwerte
     self.stats = {
         speedBoost = 0,
@@ -61,11 +66,16 @@ function Player:draw()
         posCorrect = Vector.new(self.size, self.size)
     end
     --Rotation des Spielers bei Richtungswechsel
+    if self.fall == true then
+      self.texture:rescale(self.size*(self.falltime/5))
+    end
+    if self.fallen == false then
     self.texture:draw(
         self.origin.x + self.position.x + posCorrect.x,
         self.origin.y + self.position.y + posCorrect.y,
         dir
     )
+    end
     --love.graphics.rotate(dir)
     --love.graphics.translate(-(self.position.x), -(self.position.y))
     --love.graphics.setColor(255,255,255,1)
@@ -78,16 +88,16 @@ function Player:draw()
     --love.graphics.print("direction: " .. tostring(self.direction), 0, 45)
 end
 function Player:move(x, y)
-    self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
-    if self.stats.slow then
-        --love.window.showMessageBox("info", "slow did something")
-        self.velocity = self.velocity / 1.5
-    end
-    if x == 0 then
-        self.velocity.x = 0
-    elseif y == 0 then
-        self.velocity.y = 0
-    end
+      self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
+      if self.stats.slow then
+          --love.window.showMessageBox("info", "slow did something")
+          self.velocity = self.velocity / 1.5
+      end
+      if x == 0 then
+          self.velocity.x = 0
+      elseif y == 0 then
+          self.velocity.y = 0
+      end
 end
 --Bewegen des Spielers
 
@@ -116,7 +126,20 @@ function Player:update(dt)
         self.stats.scatty = false
         self.stats.restrain = false
     end
-
+    if self.fall == true then
+      if self.falltime == 5 then
+        source = love.audio.newSource("resources/sounds/deepfall.wav", "static")
+        love.audio.play(source)
+      end
+      if self.falltime - dt >= 0 then
+      self.falltime = self.falltime - dt
+      else
+      self.fall = false
+      self.falltime = -1
+      self.fallen = true
+      self:die()
+      end
+    end
     if self.movement then
         local x, y
         if self.direction == "left" then
@@ -193,6 +216,7 @@ function Player:collision(v, s)
 end
 
 function Player:walk(dir)
+  if self.dead == false then
     if self.stats.mirror then
         --love.graphics.showMessageBox("mirror", dir)
         if dir == "left" then
@@ -210,6 +234,7 @@ function Player:walk(dir)
         self.direction = dir
     end
     self.movement = true
+  end
 end
 
 --Bewegung der Hitbox
@@ -255,8 +280,12 @@ function Player:explode()
 end
 
 function Player:fallOutOfWorld()
-
-  self:die()
+  if self.dead == false then
+  self.velocity = Vector.new(0, 0)
+  self.dead = true
+  self.fall=true
+  self.falltime = 5
+  end
 end
 
 function Player:die()
