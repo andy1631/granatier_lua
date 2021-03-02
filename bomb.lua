@@ -19,11 +19,49 @@ function Bomb:init(pos, power, cords)
     self.bomb:rescale(35)
     self.scale = 35
     self.scaleFactor = -0.25
+    self.north = 0
+    self.south = 0
+    self.west = 0
+    self.east = 0
+    self.isExploding = false
+    self.explodeState = 0
+    self.explodeTime = 0
 end
 
 function Bomb:draw()
     --self.hitbox:draw()
-    self.bomb:draw(self.position.x, self.position.y)
+    if not self.isExploding then
+      self.bomb:draw(self.position.x, self.position.y)
+    end
+
+    --love.graphics.print(tostring(self.isExploding),0,0)
+    if self.isExploding == true then
+      if self.explodeState == 0 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_0.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+      end
+      if self.explodeState == 1 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_1.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+      end
+      if self.explodeState == 2 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_2.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+      end
+      if self.explodeState == 3 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_3.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+      end
+      if self.explodeState == 4 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_4.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+      end
+    end
 end
 
 function Bomb:update(dt)
@@ -35,19 +73,36 @@ function Bomb:update(dt)
     end
     self.scale = self.scale + self.scaleFactor
     self.bomb:rescale(self.scale)
-    if self.time <= 0 then
+    if self.time <= 0 and not self.isExploding then
         self:explode()
+        
     end
 
     if not self.hitbox:collidesWith(map.players[0].hitbox) then
         self.hitbox.solid = true
+    end
+    
+    if self.isExploding then
+      self.explodeTime = self.explodeTime + dt
+      if self.explodeTime >= 1.5 then
+        self.toDelete = true 
+      elseif self.explodeTime >= 1.2 then
+        self.explodeState = 4
+      elseif self.explodeTime >= 0.9 then
+        self.explodeState = 3
+      elseif self.explodeTime >= 0.6 then
+        self.explodeState = 2
+      elseif self.explodeTime >= 0.3 then
+        self.explodeState = 1
+      end
     end
 end
 
 function Bomb:explode()
     source = love.audio.newSource("resources/sounds/explode.wav", "static")
     love.audio.play(source)
-    self.toDelete = true
+    --self.toDelete = true
+    self.isExploding = true
     local fieldsCords = {}
     map.fields[self.cords.x][self.cords.y].bombs = 0
     map.players[0].stats.bombs = map.players[0].stats.bombs + 1
