@@ -39,16 +39,9 @@ function Bomb:update(dt)
         self:explode()
     end
 
-    local solid = true
-
-    if not self.hitbox.solid and HC.collisions(self.hitbox) ~= {} then
-        for shape, delta in pairs(HC.collisions(self.hitbox)) do
-            if Vector.new(delta.x, delta.y):len() ~= 0 then
-                solid = false
-            end
-        end
+    if not self.hitbox:collidesWith(map.players[0].hitbox) then
+        self.hitbox.solid = true
     end
-    self.hitbox.solid = solid
 end
 
 function Bomb:explode()
