@@ -21,7 +21,8 @@ function Player:init(x, y, id, origin, size)
     self.fall = false
     self.falltime = -1
     self.dead = false
-    self.fallen= false
+    self.fallen = false
+    self.exploded = false
     
     --Position des Spielers und Standardwerte
     self.stats = {
@@ -165,6 +166,9 @@ function Player:update(dt)
         else
             self.frictionRatio = 0.3
         end
+        if map.fields[vec.x][vec.y]:getType() == "air" then
+          self:fallOutOfWorld()
+        end
     else
         self:fallOutOfWorld()
     end
@@ -276,6 +280,9 @@ function Player:playerOnField(pos)
 end
 
 function Player:explode()
+  source = love.audio.newSource("resources/sounds/die.wav", "static")
+  love.audio.play(source)
+  self.dead = true
   self:die()
 end
 
