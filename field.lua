@@ -70,60 +70,67 @@ function Field:update(dt)
 end
 
 function Field:spawnPowerUp()
-    -- local pandora = false
-    --if pandora == false then
-    -- randomNumber = 9
-    --else
-    --randomNumber = 6
-    --end
-    local randomNumber = math.random(1, 15)
-    -- Spiegel:
-    if randomNumber == 1 then
-        -- Kaffee:
-        self.PowerUp = PowerUpMirror(self.position)
-    elseif randomNumber == 2 then
-        -- Fessel:
-        self.PowerUp = PowerUpCoffee(self.position)
-    elseif randomNumber == 3 then
-        -- Wirft Bomben zu zufälligen Positionen (Scatty):
-        self.PowerUp = PowerUpRestrain(self.position)
-    elseif randomNumber == 4 then
-        -- Schnecke:
-        self.PowerUp = PowerUpScatty(self.position)
-    elseif randomNumber == 5 then
-        -- Bombe:
-        self.PowerUp = PowerUpSlow(self.position)
-    elseif randomNumber == 6 then
-        -- Fußball:
-        self.PowerUp = PowerUpMason(self.position)
-    elseif randomNumber == 7 then
-        -- Schaufel:
-        self.PowerUp = PowerUpKick(self.position)
-    elseif randomNumber == 8 then
-        -- Zufallbox:
-        self.PowerUp = PowerUpBomb(self.position)
-    elseif randomNumber == 9 then
-        -- self:spawnPowerUp()
-        -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
-        self.PowerUp = PowerUpPandora(self.position)
-        self.pandora = true
-    elseif randomNumber == 10 then
-        -- Teleporter:
-        self.PowerUp = PowerUpResurrect(self.position)
-    elseif randomNumber == 11 then
-        -- Power:
-        self.PowerUp = PowerUpTeleport(self.position)
-    elseif randomNumber == 12 then
-        -- Schild:
-        self.PowerUp = PowerUpPower(self.position)
-    elseif randomNumber == 13 then
-        -- Schneller bewegen:
-        self.PowerUp = PowerUpShield(self.position)
-    elseif randomNumber == 14 then
-        -- Werfen:
-        self.PowerUp = PowerUpSpeed(self.position)
-    elseif randomNumber == 15 then
-        self.PowerUp = PowerUpThrow(self.position)
+  local randomNumber = math.random(1, 15)
+  -- Spiegel:
+  if randomNumber == 1 then
+    self.PowerUp = PowerUpMirror(self.position)
+
+  -- Kaffee:
+  elseif randomNumber == 2 then
+    self.PowerUp = PowerUpCoffee(self.position)
+  
+  -- Fessel:
+  elseif randomNumber == 3 then
+    self.PowerUp = PowerUpRestrain(self.position)
+  
+  -- Wirft Bomben zu zufälligen Positionen (Scatty):
+  elseif randomNumber == 4 then
+    self.PowerUp = PowerUpScatty(self.position)
+  
+  -- Schnecke:
+  elseif randomNumber == 5 then
+    self.PowerUp = PowerUpSlow(self.position)
+  
+  -- Bombe:
+  elseif randomNumber == 6 then
+    self.PowerUp = PowerUpMason(self.position)
+  
+  -- Fußball:
+  elseif randomNumber == 7 then
+    self.PowerUp = PowerUpKick(self.position)
+  
+  -- Schaufel:
+  elseif randomNumber == 8 then
+    self.PowerUp = PowerUpBomb(self.position)
+  
+  -- Zufallbox:
+  elseif randomNumber == 9 then
+    self.PowerUp = PowerUpPandora(self.position)
+    self.pandora = true
+    -- self:spawnPowerUp()
+  -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
+  elseif randomNumber == 10 then
+    self.PowerUp = PowerUpResurrect(self.position)
+  
+  -- Teleporter:
+  elseif randomNumber == 11 then
+    self.PowerUp = PowerUpTeleport(self.position)
+  
+  -- Power:
+  elseif randomNumber == 12 then
+    self.PowerUp = PowerUpPower(self.position)
+  
+  -- Schild:
+  elseif randomNumber == 13 then
+    self.PowerUp = PowerUpShield(self.position)
+  
+  -- Schneller bewegen:
+  elseif randomNumber == 14 then
+    self.PowerUp = PowerUpSpeed(self.position)
+ 
+  -- Werfen:
+  elseif randomNumber == 15 then
+    self.PowerUp = PowerUpThrow(self.position)
     end
 end
 
