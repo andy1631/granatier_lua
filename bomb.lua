@@ -27,10 +27,10 @@ function Bomb:init(pos, power, cords)
     self.explodeState = 0
     self.explodeTime = 0
     self.size = 35
-    northCords = {}
-    southCords = {}
-    eastCords = {}
-    westCords = {}
+    self.northCords = {}
+    self.southCords = {}
+    self.eastCords = {}
+    self.westCords = {}
 end
 
 function Bomb:draw()
@@ -223,6 +223,7 @@ function Bomb:explode()
             map.fields[self.cords.x + i][self.cords.y]:setType("arena_ground")
             map.fields[self.cords.x + i][self.cords.y]:spawnPowerUp()
             self.east = self.east + map.fieldSize
+            table.insert(self.eastCords, self.east)
             break
         end
         if map.fields[self.cords.x + i][self.cords.y]:getType() == "arena_greenwall" then
@@ -237,6 +238,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x + i][self.cords.y]:getType() ~= "arena_greenwall" then
           self.east = self.east + map.fieldSize
+          table.insert(self.eastCords, self.east)
           table.insert(fieldsCords, Vector.new(self.cords.x + i, self.cords.y))
         end
     end
@@ -248,6 +250,7 @@ function Bomb:explode()
             map.fields[self.cords.x - i][self.cords.y]:setType("arena_ground")
             map.fields[self.cords.x - i][self.cords.y]:spawnPowerUp()
             self.west = self.west + map.fieldSize
+            table.insert(self.westCords, self.west)
             break
         end
         if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_greenwall" then
@@ -262,6 +265,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x - i][self.cords.y]:getType() ~= "arena_greenwall" then
           self.west = self.west + map.fieldSize
+          table.insert(self.westCords, self.west)
           table.insert(fieldsCords, Vector.new(self.cords.x - i, self.cords.y))
         end
     end
@@ -273,6 +277,7 @@ function Bomb:explode()
             map.fields[self.cords.x][self.cords.y + i]:setType("arena_ground")
             map.fields[self.cords.x][self.cords.y + i]:spawnPowerUp()
             self.south = self.south + map.fieldSize
+            table.insert(self.southCords, self.south)
             break
         end
         if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_greenwall" then
@@ -287,6 +292,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x][self.cords.y + i]:getType() ~= "arena_greenwall" then
           self.south = self.south + map.fieldSize
+          table.insert(self.southCords, self.south)
           table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y + i))
         end
     end
@@ -298,6 +304,7 @@ function Bomb:explode()
             map.fields[self.cords.x][self.cords.y - i]:setType("arena_ground")
             map.fields[self.cords.x][self.cords.y - i]:spawnPowerUp()
             self.north = self.north + map.fieldSize
+            table.insert(self.northCords, self.north)
             break
         end
         if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_greenwall" then
@@ -312,6 +319,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x][self.cords.y - i]:getType() ~= "arena_greenwall" then
           self.north = self.north + map.fieldSize
+          table.insert(self.northCords, self.north)
           table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
         end
     end
