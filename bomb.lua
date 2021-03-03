@@ -40,6 +40,44 @@ function Bomb:draw()
     end
 
     --love.graphics.print(tostring(self.isExploding),0,0)
+    self:explodeAnimation()
+end
+
+function Bomb:update(dt)
+    self.time = self.time - dt
+    if self.scale <= 32 then
+        self.scaleFactor = 12 * dt
+    elseif self.scale >= 35 then
+        self.scaleFactor = -12 * dt
+    end
+    self.scale = self.scale + self.scaleFactor
+    self.bomb:rescale(self.scale)
+    if self.time <= 0 and not self.isExploding then
+        self:explode()
+        
+    end
+
+    if not self.hitbox:collidesWith(map.players[0].hitbox) then
+        self.hitbox.solid = true
+    end
+    
+    if self.isExploding then
+      self.explodeTime = self.explodeTime + dt
+      if self.explodeTime >= 1.0 then
+        self.toDelete = true 
+      elseif self.explodeTime >= 0.8 then
+        self.explodeState = 4
+      elseif self.explodeTime >= 0.6 then
+        self.explodeState = 3
+      elseif self.explodeTime >= 0.4 then
+        self.explodeState = 2
+      elseif self.explodeTime >= 0.2 then
+        self.explodeState = 1
+      end
+    end
+end
+
+function Bomb:explodeAnimation()
     if self.isExploding == true then
       if self.explodeState == 0 then
         self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_0.svg")
@@ -205,40 +243,6 @@ function Bomb:draw()
             self.texture:draw(self.position.x-(v), self.position.y)
           end
         end
-      end
-    end
-end
-
-function Bomb:update(dt)
-    self.time = self.time - dt
-    if self.scale <= 32 then
-        self.scaleFactor = 12 * dt
-    elseif self.scale >= 35 then
-        self.scaleFactor = -12 * dt
-    end
-    self.scale = self.scale + self.scaleFactor
-    self.bomb:rescale(self.scale)
-    if self.time <= 0 and not self.isExploding then
-        self:explode()
-        
-    end
-
-    if not self.hitbox:collidesWith(map.players[0].hitbox) then
-        self.hitbox.solid = true
-    end
-    
-    if self.isExploding then
-      self.explodeTime = self.explodeTime + dt
-      if self.explodeTime >= 1.0 then
-        self.toDelete = true 
-      elseif self.explodeTime >= 0.8 then
-        self.explodeState = 4
-      elseif self.explodeTime >= 0.6 then
-        self.explodeState = 3
-      elseif self.explodeTime >= 0.4 then
-        self.explodeState = 2
-      elseif self.explodeTime >= 0.2 then
-        self.explodeState = 1
       end
     end
 end
