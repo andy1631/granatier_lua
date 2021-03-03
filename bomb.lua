@@ -26,6 +26,7 @@ function Bomb:init(pos, power, cords)
     self.isExploding = false
     self.explodeState = 0
     self.explodeTime = 0
+    self.size = 35
 end
 
 function Bomb:draw()
@@ -40,26 +41,126 @@ function Bomb:draw()
         self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_0.svg")
         self.texture = Tove.newGraphics(self.texture,self.size)
         self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_0.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y-(self.north))
+        end
+        if self.south > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_0.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y+(self.south))
+        end
+        if self.east > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_0.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x+(self.east), self.position.y)
+        end
+        if self.west > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_0.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x-(self.west), self.position.y)
+        end
       end
       if self.explodeState == 1 then
         self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_1.svg")
         self.texture = Tove.newGraphics(self.texture,self.size)
         self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_1.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y-(self.north))
+        end
+        if self.south > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_1.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y+(self.south))
+        end
+        if self.east > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_1.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x+(self.east), self.position.y)
+        end
+        if self.west > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_1.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x-(self.west), self.position.y)
+        end
       end
       if self.explodeState == 2 then
         self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_2.svg")
         self.texture = Tove.newGraphics(self.texture,self.size)
         self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_2.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y-(self.north))
+        end
+        if self.south > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_2.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y+(self.south))
+        end
+        if self.east > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_2.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x+(self.east), self.position.y)
+        end
+        if self.west > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_2.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x-(self.west), self.position.y)
+        end
       end
       if self.explodeState == 3 then
         self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_3.svg")
         self.texture = Tove.newGraphics(self.texture,self.size)
         self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_3.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y-(self.north))
+        end
+        if self.south > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_3.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y+(self.south))
+        end
+        if self.east > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_3.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x+(self.east), self.position.y)
+        end
+        if self.west > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_3.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x-(self.west), self.position.y)
+        end
       end
       if self.explodeState == 4 then
         self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_4.svg")
         self.texture = Tove.newGraphics(self.texture,self.size)
         self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_4.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y-(self.north))
+        end
+        if self.south > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_4.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x, self.position.y+(self.south))
+        end
+        if self.east > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_4.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x+(self.east), self.position.y)
+        end
+        if self.west > 0 then
+          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_4.svg")
+          self.texture = Tove.newGraphics(self.texture,(self.size*2))
+          self.texture:draw(self.position.x-(self.west), self.position.y)
+        end
       end
     end
 end
@@ -117,12 +218,14 @@ function Bomb:explode()
         if map.fields[self.cords.x + i][self.cords.y]:getType() == "arena_wall" then
             map.fields[self.cords.x + i][self.cords.y]:setType("arena_ground")
             map.fields[self.cords.x + i][self.cords.y]:spawnPowerUp()
+            self.east = self.east + map.fieldSize
             break
         end
         if map.fields[self.cords.x + i][self.cords.y]:getType() == "arena_greenwall" then
             break
         end
         if map.fields[self.cords.x + i][self.cords.y]:getType() == "arena_ground" then
+          self.east = self.east + map.fieldSize
             if map.fields[self.cords.x + i][self.cords.y].PowerUp ~= nil then
                 map.fields[self.cords.x + i][self.cords.y].PowerUp = nil
                 break
@@ -137,12 +240,14 @@ function Bomb:explode()
         if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_wall" then
             map.fields[self.cords.x - i][self.cords.y]:setType("arena_ground")
             map.fields[self.cords.x - i][self.cords.y]:spawnPowerUp()
+            self.west = self.west + map.fieldSize
             break
         end
         if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_greenwall" then
             break
         end
         if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_ground" then
+          self.west = self.west + map.fieldSize
             if map.fields[self.cords.x - i][self.cords.y].PowerUp ~= nil then
                 map.fields[self.cords.x - i][self.cords.y].PowerUp = nil
                 break
@@ -157,12 +262,14 @@ function Bomb:explode()
         if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_wall" then
             map.fields[self.cords.x][self.cords.y + i]:setType("arena_ground")
             map.fields[self.cords.x][self.cords.y + i]:spawnPowerUp()
+            self.south = self.south + map.fieldSize
             break
         end
         if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_greenwall" then
             break
         end
         if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_ground" then
+          self.south = self.south + map.fieldSize
             if map.fields[self.cords.x][self.cords.y + i].PowerUp ~= nil then
                 map.fields[self.cords.x][self.cords.y + i].PowerUp = nil
                 break
@@ -177,12 +284,14 @@ function Bomb:explode()
         if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_wall" then
             map.fields[self.cords.x][self.cords.y - i]:setType("arena_ground")
             map.fields[self.cords.x][self.cords.y - i]:spawnPowerUp()
+            self.north = self.north + map.fieldSize
             break
         end
         if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_greenwall" then
             break
         end
         if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_ground" then
+          self.north = self.north + map.fieldSize
             if map.fields[self.cords.x][self.cords.y - i].PowerUp ~= nil then
                 map.fields[self.cords.x][self.cords.y - i].PowerUp = nil
                 break
