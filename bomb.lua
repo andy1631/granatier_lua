@@ -27,6 +27,10 @@ function Bomb:init(pos, power, cords)
     self.explodeState = 0
     self.explodeTime = 0
     self.size = 35
+    northCords = {}
+    southCords = {}
+    eastCords = {}
+    westCords = {}
 end
 
 function Bomb:draw()
@@ -185,15 +189,15 @@ function Bomb:update(dt)
     
     if self.isExploding then
       self.explodeTime = self.explodeTime + dt
-      if self.explodeTime >= 1.5 then
+      if self.explodeTime >= 1.0 then
         self.toDelete = true 
-      elseif self.explodeTime >= 1.2 then
+      elseif self.explodeTime >= 0.8 then
         self.explodeState = 4
-      elseif self.explodeTime >= 0.9 then
-        self.explodeState = 3
       elseif self.explodeTime >= 0.6 then
+        self.explodeState = 3
+      elseif self.explodeTime >= 0.4 then
         self.explodeState = 2
-      elseif self.explodeTime >= 0.3 then
+      elseif self.explodeTime >= 0.2 then
         self.explodeState = 1
       end
     end
