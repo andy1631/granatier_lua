@@ -6,6 +6,7 @@ Field = require "field"
 Vector = require "lib.hump.vector"
 Bomb = require "bomb"
 Tove = require "lib.tove"
+StatusBar = require "statusBar"
 
 Map = Class {}
 
@@ -51,6 +52,8 @@ function Map:init(x, y)
     background = love.filesystem.read("resources/SVG/background.svg")
     background = Tove.newGraphics(background)
     background:rescale(1200)
+    self.statusBar = StatusBar()
+    self.statusBar:createTextBox()
 end
 
 --Spawns the Player
@@ -91,6 +94,7 @@ function Map:update(dt)
             v:update(dt)
         end
     end
+    self.statusBar:update()
 end
 
 --shows the map
@@ -109,6 +113,7 @@ function Map:draw()
     for key, value in pairs(self.players) do
         self.players[key]:draw()
     end
+    self.statusBar:draw()
 end
 
 --Method to set bombs and set bombs to a whole field
