@@ -10,7 +10,7 @@ function Player:init(x, y, id, origin, size)
     --self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
     self.origin = origin
     self.position = Vector.new(x, y)
-    self.hitbox = HC.circle(origin.x + self.position.x, origin.y + self.position.y, (size-1) / 2)
+    self.hitbox = HC.circle(origin.x + self.position.x, origin.y + self.position.y, (size - 1) / 2)
     self.velocity = Vector.new(0, 0)
     self.acceleration = size * 1.25
     self.frictionRatio = 0.3
@@ -23,7 +23,7 @@ function Player:init(x, y, id, origin, size)
     self.dead = false
     self.fallen = false
     self.exploded = false
-    
+
     --Position des Spielers und Standardwerte
     self.stats = {
         speedBoost = 0,
@@ -41,8 +41,8 @@ function Player:init(x, y, id, origin, size)
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
-    self.texture = love.filesystem.read("resources/player2.svg")
-    self.texture = Tove.newGraphics(self.texture,self.size)
+    self.texturePath = love.filesystem.read("resources/player2.svg")
+    self.texture = Tove.newGraphics(self.texturePath, self.size)
 end
 --Anzeige der SVG-Spielers
 --ÜBergabe der aktuellen Position des Spielers als String
@@ -67,14 +67,14 @@ function Player:draw()
     end
     --Rotation des Spielers bei Richtungswechsel
     if self.fall == true then
-      self.texture:rescale(self.size*(self.falltime/5))
+        self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
     end
     if self.fallen == false then
-    self.texture:draw(
-        self.origin.x + self.position.x + posCorrect.x,
-        self.origin.y + self.position.y + posCorrect.y,
-        dir
-    )
+        self.texture:draw(
+            self.origin.x + self.position.x + posCorrect.x,
+            self.origin.y + self.position.y + posCorrect.y,
+            dir
+        )
     end
     --love.graphics.rotate(dir)
     --love.graphics.translate(-(self.position.x), -(self.position.y))
@@ -88,16 +88,16 @@ function Player:draw()
     --love.graphics.print("direction: " .. tostring(self.direction), 0, 45)
 end
 function Player:move(x, y)
-      self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
-      if self.stats.slow then
-          --love.window.showMessageBox("info", "slow did something")
-          self.velocity = self.velocity / 1.5
-      end
-      if x == 0 then
-          self.velocity.x = 0
-      elseif y == 0 then
-          self.velocity.y = 0
-      end
+    self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
+    if self.stats.slow then
+        --love.window.showMessageBox("info", "slow did something")
+        self.velocity = self.velocity / 1.5
+    end
+    if x == 0 then
+        self.velocity.x = 0
+    elseif y == 0 then
+        self.velocity.y = 0
+    end
 end
 --Bewegen des Spielers
 
@@ -127,18 +127,18 @@ function Player:update(dt)
         self.stats.restrain = false
     end
     if self.fall == true then
-      if self.falltime == 5 then
-        source = love.audio.newSource("resources/sounds/deepfall.wav", "static")
-        love.audio.play(source)
-      end
-      if self.falltime - dt >= 0 then
-      self.falltime = self.falltime - dt
-      else
-      self.fall = false
-      self.falltime = -1
-      self.fallen = true
-      self:die()
-      end
+        if self.falltime == 5 then
+            source = love.audio.newSource("resources/sounds/deepfall.wav", "static")
+            love.audio.play(source)
+        end
+        if self.falltime - dt >= 0 then
+            self.falltime = self.falltime - dt
+        else
+            self.fall = false
+            self.falltime = -1
+            self.fallen = true
+            self:die()
+        end
     end
     if self.movement then
         local x, y
@@ -166,7 +166,7 @@ function Player:update(dt)
             self.frictionRatio = 0.3
         end
         if map.fields[vec.x][vec.y]:getType() == "air" then
-          self:fallOutOfWorld()
+            self:fallOutOfWorld()
         end
     else
         self:fallOutOfWorld()
@@ -219,25 +219,25 @@ function Player:collision(v, s)
 end
 
 function Player:walk(dir)
-  if self.dead == false then
-    if self.stats.mirror then
-        --love.graphics.showMessageBox("mirror", dir)
-        if dir == "left" then
-            self.direction = "right"
-        elseif dir == "right" then
-            self.direction = "left"
-        elseif dir == "up" then
-            self.direction = "down"
-        elseif dir == "down" then
-            self.direction = "up"
+    if self.dead == false then
+        if self.stats.mirror then
+            --love.graphics.showMessageBox("mirror", dir)
+            if dir == "left" then
+                self.direction = "right"
+            elseif dir == "right" then
+                self.direction = "left"
+            elseif dir == "up" then
+                self.direction = "down"
+            elseif dir == "down" then
+                self.direction = "up"
+            else
+                self.direction = dir
+            end
         else
             self.direction = dir
         end
-    else
-        self.direction = dir
+        self.movement = true
     end
-    self.movement = true
-  end
 end
 
 --Bewegung der Hitbox
@@ -272,32 +272,34 @@ end
 function Player:playerOnField(pos)
     local collide, dx, dy = map.fields[pos.x][pos.y].hitbox:collidesWith(self.hitbox)
     if dx ~= nil and dy ~= nil then
-      if collide then
-        return true
-      else
-        return false
-      end
+        if collide then
+            return true
+        else
+            return false
+        end
     else
-      return false
+        return false
     end
 end
 
 function Player:explode()
-  source = love.audio.newSource("resources/sounds/die.wav", "static")
-  love.audio.play(source)
-  self.dead = true
-  self.texture = love.filesystem.read("resources/SVG/score_star_enabled.svg")
-  self.texture = Tove.newGraphics(self.texture,self.size)
-  self:die()
+    source = love.audio.newSource("resources/sounds/die.wav", "static")
+    love.audio.play(source)
+    self.dead = true
+    self.texture = love.filesystem.read("resources/SVG/score_star_enabled.svg")
+    self.texture = Tove.newGraphics(self.texture, self.size)
+    self:die()
 end
 
 function Player:fallOutOfWorld()
-  if self.dead == false then
-  self.velocity = Vector.new(0, 0)
-  self.dead = true
-  self.fall=true
-  self.falltime = 5
-  end
+    if self.dead == false then
+        self.velocity.x = 0
+        self.velocity.y = 0
+        self.acceleration = 0
+        self.dead = true
+        self.fall = true
+        self.falltime = 2
+    end
 end
 
 function Player:die()

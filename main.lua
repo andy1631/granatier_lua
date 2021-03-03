@@ -1,28 +1,27 @@
-Gamestate = require 'lib.hump.gamestate'
-game = require 'game'
-menu = require 'menu'
+Gamestate = require "lib.hump.gamestate"
+game = require "game"
+menu = require "menu"
 
 local player
 function love.load()
-  if arg[#arg] == "-debug" then require("mobdebug").start() end
-  love.window.setMode(1200, 675, {resizable = true})
+    if arg[#arg] == "-debug" then
+        require("mobdebug").start()
+    end
+    love.window.setMode(1200, 675, {resizable = true})
 
-  Gamestate.registerEvents()
-  Gamestate.switch(game)
+    Gamestate.registerEvents()
+    Gamestate.switch(game)
 end
 
 function love.update(dt)
-
 end
 
 function love.draw()
-  -- love.graphics.rotate(180)
+    -- love.graphics.rotate(180)
 end
 
 function love.keypressed(key, scancode, isrepeat)
-
 end
 
 function love.keyreleased(key, scancode, isrepeat)
-
 end
