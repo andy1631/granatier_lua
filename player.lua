@@ -23,6 +23,7 @@ function Player:init(x, y, id, origin, size)
     self.dead = false
     self.fallen = false
     self.exploded = false
+    self.dirState = 0
     
     --Position des Spielers und Standardwerte
     self.stats = {
@@ -158,6 +159,7 @@ function Player:update(dt)
         end
         self:move(x, y)
     end
+    --while key is pressed ändere den state von o zu 1 dann 2 und 1... am Ende wieder 0
     local vec = self:getRelPos()
     if vec ~= nil then
         if map.fields[vec.x][vec.y]:getType() == "arena_ice" then
