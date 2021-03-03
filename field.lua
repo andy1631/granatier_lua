@@ -26,7 +26,7 @@ function Field:init(pos, size, t, cords)
     self.hitbox = HC.rectangle(pos.x, pos.y, size, size)
     local x, y = self.hitbox:center()
     self.position = Vector.new(x, y)
-
+    self.hitboxshow = false
     self.cords = cords
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
     self.hitbox.cords = self.cords
@@ -45,11 +45,15 @@ end
 
 function Field:draw()
     if self.type ~= "air" then
-        --self.hitbox:draw((self.type == 'wall') and 'fill' or 'line') -- shows hitbox
         self.Texture:draw(self.position.x, self.position.y)
     end
     if self.PowerUp ~= nil then
         self.PowerUp:draw()
+    end
+    if self.hitboxshow then
+        love.graphics.setColor(255,0,0,255)
+        self.hitbox:draw((self.type == 'wall') and 'fill' or 'line') -- shows hitbox
+        love.graphics.setColor(255,255,255,255)
     end
 end
 --Zeichnen der Linie der Hitbox

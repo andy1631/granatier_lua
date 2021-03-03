@@ -10,7 +10,7 @@ function Player:init(x, y, id, origin, size)
     --self.hitbox = HC.rectangle(x or 0, y or 0, 40, 40)
     self.origin = origin
     self.position = Vector.new(x, y)
-    self.hitbox = HC.circle(origin.x + self.position.x, origin.y + self.position.y, size / 2)
+    self.hitbox = HC.circle(origin.x + self.position.x, origin.y + self.position.y, (size-1) / 2)
     self.velocity = Vector.new(0, 0)
     self.acceleration = size * 1.25
     self.frictionRatio = 0.3
@@ -42,8 +42,7 @@ function Player:init(x, y, id, origin, size)
     self.id = id or 0
     self.hitbox.playerId = self.id
     self.texture = love.filesystem.read("resources/player2.svg")
-    self.texture = Tove.newGraphics(self.texture)
-    self.texture:rescale(self.size)
+    self.texture = Tove.newGraphics(self.texture,self.size)
 end
 --Anzeige der SVG-Spielers
 --ÜBergabe der aktuellen Position des Spielers als String
@@ -272,10 +271,14 @@ end
 
 function Player:playerOnField(pos)
     local collide, dx, dy = map.fields[pos.x][pos.y].hitbox:collidesWith(self.hitbox)
-    if collide and (dx ~= 0 or dy ~= 0) then
+    if dx ~= nil and dy ~= nil then
+      if collide then
         return true
-    else
+      else
         return false
+      end
+    else
+      return false
     end
 end
 
@@ -283,6 +286,8 @@ function Player:explode()
   source = love.audio.newSource("resources/sounds/die.wav", "static")
   love.audio.play(source)
   self.dead = true
+  self.texture = love.filesystem.read("resources/SVG/score_star_enabled.svg")
+  self.texture = Tove.newGraphics(self.texture,self.size)
   self:die()
 end
 
