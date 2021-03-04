@@ -27,6 +27,10 @@ function Bomb:init(pos, power, cords)
     self.explodeState = 0
     self.explodeTime = 0
     self.size = 35
+    self.northCords = {}
+    self.southCords = {}
+    self.eastCords = {}
+    self.westCords = {}
 end
 
 function Bomb:draw()
@@ -36,133 +40,7 @@ function Bomb:draw()
     end
 
     --love.graphics.print(tostring(self.isExploding),0,0)
-    if self.isExploding == true then
-      if self.explodeState == 0 then
-        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_0.svg")
-        self.texture = Tove.newGraphics(self.texture,self.size)
-        self.texture:draw(self.position.x, self.position.y)
-        if self.north > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_0.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y-(self.north))
-        end
-        if self.south > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_0.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y+(self.south))
-        end
-        if self.east > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_0.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x+(self.east), self.position.y)
-        end
-        if self.west > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_0.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x-(self.west), self.position.y)
-        end
-      end
-      if self.explodeState == 1 then
-        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_1.svg")
-        self.texture = Tove.newGraphics(self.texture,self.size)
-        self.texture:draw(self.position.x, self.position.y)
-        if self.north > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_1.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y-(self.north))
-        end
-        if self.south > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_1.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y+(self.south))
-        end
-        if self.east > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_1.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x+(self.east), self.position.y)
-        end
-        if self.west > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_1.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x-(self.west), self.position.y)
-        end
-      end
-      if self.explodeState == 2 then
-        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_2.svg")
-        self.texture = Tove.newGraphics(self.texture,self.size)
-        self.texture:draw(self.position.x, self.position.y)
-        if self.north > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_2.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y-(self.north))
-        end
-        if self.south > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_2.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y+(self.south))
-        end
-        if self.east > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_2.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x+(self.east), self.position.y)
-        end
-        if self.west > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_2.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x-(self.west), self.position.y)
-        end
-      end
-      if self.explodeState == 3 then
-        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_3.svg")
-        self.texture = Tove.newGraphics(self.texture,self.size)
-        self.texture:draw(self.position.x, self.position.y)
-        if self.north > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_3.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y-(self.north))
-        end
-        if self.south > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_3.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y+(self.south))
-        end
-        if self.east > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_3.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x+(self.east), self.position.y)
-        end
-        if self.west > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_3.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x-(self.west), self.position.y)
-        end
-      end
-      if self.explodeState == 4 then
-        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_4.svg")
-        self.texture = Tove.newGraphics(self.texture,self.size)
-        self.texture:draw(self.position.x, self.position.y)
-        if self.north > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_4.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y-(self.north))
-        end
-        if self.south > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_4.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x, self.position.y+(self.south))
-        end
-        if self.east > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_4.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x+(self.east), self.position.y)
-        end
-        if self.west > 0 then
-          self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_4.svg")
-          self.texture = Tove.newGraphics(self.texture,(self.size*2))
-          self.texture:draw(self.position.x-(self.west), self.position.y)
-        end
-      end
-    end
+    self:explodeAnimation()
 end
 
 function Bomb:update(dt)
@@ -185,16 +63,186 @@ function Bomb:update(dt)
     
     if self.isExploding then
       self.explodeTime = self.explodeTime + dt
-      if self.explodeTime >= 1.5 then
+      if self.explodeTime >= 1.0 then
         self.toDelete = true 
-      elseif self.explodeTime >= 1.2 then
+      elseif self.explodeTime >= 0.8 then
         self.explodeState = 4
-      elseif self.explodeTime >= 0.9 then
-        self.explodeState = 3
       elseif self.explodeTime >= 0.6 then
+        self.explodeState = 3
+      elseif self.explodeTime >= 0.4 then
         self.explodeState = 2
-      elseif self.explodeTime >= 0.3 then
+      elseif self.explodeTime >= 0.2 then
         self.explodeState = 1
+      end
+    end
+end
+
+function Bomb:explodeAnimation()
+    if self.isExploding == true then
+      if self.explodeState == 0 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_0.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          for k, v in pairs(self.northCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_0.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y-(v))
+          end
+        end
+        if self.south > 0 then
+          for k, v in pairs(self.southCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_0.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y+(v))
+          end
+        end
+        if self.east > 0 then
+          for k, v in pairs(self.eastCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_0.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x+(v), self.position.y)
+          end
+        end
+        if self.west > 0 then
+          for k, v in pairs(self.westCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_0.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x-(v), self.position.y)
+          end
+        end
+      end
+      if self.explodeState == 1 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_1.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          for k, v in pairs(self.northCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_1.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y-(v))
+          end
+        end
+        if self.south > 0 then
+          for k, v in pairs(self.southCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_1.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y+(v))
+          end
+        end
+        if self.east > 0 then
+          for k, v in pairs(self.eastCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_1.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x+(v), self.position.y)
+          end
+        end
+        if self.west > 0 then
+          for k, v in pairs(self.westCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_1.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x-(v), self.position.y)
+          end
+        end
+      end
+      if self.explodeState == 2 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_2.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          for k, v in pairs(self.northCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_2.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y-(v))
+          end
+        end
+        if self.south > 0 then
+          for k, v in pairs(self.southCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_2.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y+(v))
+          end
+        end
+        if self.east > 0 then
+          for k, v in pairs(self.eastCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_2.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x+(v), self.position.y)
+          end
+        end
+        if self.west > 0 then
+          for k, v in pairs(self.westCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_2.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x-(v), self.position.y)
+          end
+        end
+      end
+      if self.explodeState == 3 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_3.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          for k, v in pairs(self.northCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_3.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y-(v))
+          end
+        end
+        if self.south > 0 then
+          for k, v in pairs(self.southCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_3.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y+(v))
+          end
+        end
+        if self.east > 0 then
+          for k, v in pairs(self.eastCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_3.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x+(v), self.position.y)
+          end
+        end
+        if self.west > 0 then
+          for k, v in pairs(self.westCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_3.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x-(v), self.position.y)
+          end
+        end
+      end
+      if self.explodeState == 4 then
+        self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_4.svg")
+        self.texture = Tove.newGraphics(self.texture,self.size)
+        self.texture:draw(self.position.x, self.position.y)
+        if self.north > 0 then
+          for k, v in pairs(self.northCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_4.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y-(v))
+          end
+        end
+        if self.south > 0 then
+          for k, v in pairs(self.southCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_4.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x, self.position.y+(v))
+          end
+        end
+        if self.east > 0 then
+          for k, v in pairs(self.eastCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_4.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x+(v), self.position.y)
+          end
+        end
+        if self.west > 0 then
+          for k, v in pairs(self.westCords) do
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_4.svg")
+            self.texture = Tove.newGraphics(self.texture,(self.size*2))
+            self.texture:draw(self.position.x-(v), self.position.y)
+          end
+        end
       end
     end
 end
@@ -219,6 +267,7 @@ function Bomb:explode()
             map.fields[self.cords.x + i][self.cords.y]:setType("arena_ground")
             map.fields[self.cords.x + i][self.cords.y]:spawnPowerUp()
             self.east = self.east + map.fieldSize
+            table.insert(self.eastCords, self.east)
             break
         end
         if map.fields[self.cords.x + i][self.cords.y]:getType() == "arena_greenwall" then
@@ -233,6 +282,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x + i][self.cords.y]:getType() ~= "arena_greenwall" then
           self.east = self.east + map.fieldSize
+          table.insert(self.eastCords, self.east)
           table.insert(fieldsCords, Vector.new(self.cords.x + i, self.cords.y))
         end
     end
@@ -244,6 +294,7 @@ function Bomb:explode()
             map.fields[self.cords.x - i][self.cords.y]:setType("arena_ground")
             map.fields[self.cords.x - i][self.cords.y]:spawnPowerUp()
             self.west = self.west + map.fieldSize
+            table.insert(self.westCords, self.west)
             break
         end
         if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_greenwall" then
@@ -258,6 +309,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x - i][self.cords.y]:getType() ~= "arena_greenwall" then
           self.west = self.west + map.fieldSize
+          table.insert(self.westCords, self.west)
           table.insert(fieldsCords, Vector.new(self.cords.x - i, self.cords.y))
         end
     end
@@ -269,6 +321,7 @@ function Bomb:explode()
             map.fields[self.cords.x][self.cords.y + i]:setType("arena_ground")
             map.fields[self.cords.x][self.cords.y + i]:spawnPowerUp()
             self.south = self.south + map.fieldSize
+            table.insert(self.southCords, self.south)
             break
         end
         if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_greenwall" then
@@ -283,6 +336,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x][self.cords.y + i]:getType() ~= "arena_greenwall" then
           self.south = self.south + map.fieldSize
+          table.insert(self.southCords, self.south)
           table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y + i))
         end
     end
@@ -294,6 +348,7 @@ function Bomb:explode()
             map.fields[self.cords.x][self.cords.y - i]:setType("arena_ground")
             map.fields[self.cords.x][self.cords.y - i]:spawnPowerUp()
             self.north = self.north + map.fieldSize
+            table.insert(self.northCords, self.north)
             break
         end
         if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_greenwall" then
@@ -308,6 +363,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x][self.cords.y - i]:getType() ~= "arena_greenwall" then
           self.north = self.north + map.fieldSize
+          table.insert(self.northCords, self.north)
           table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
         end
     end
