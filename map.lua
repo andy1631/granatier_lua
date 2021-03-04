@@ -53,7 +53,7 @@ function Map:init(x, y)
     background = Tove.newGraphics(background)
     background:rescale(1200)
     self.statusBar = StatusBar()
-    self.statusBar:createTextBox()
+    self.statusBar:createTextBox(self.playerCount)
 end
 
 --Spawns the Player

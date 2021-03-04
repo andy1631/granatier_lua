@@ -7,7 +7,7 @@ function StatusBar:init()
   
 end
 
-function StatusBar:createTextBox()
+function StatusBar:createTextBox(playerCount)
   self.textbox = {
     x = 1200,
     y = 140,
@@ -45,17 +45,16 @@ function StatusBar:draw()
   -- love.graphics.printf(self.textbox.text, self.textbox.x, self.textbox.y, self.textbox.width, 'left')
   -- Spieler 1 mit Text und Power-Ups:
   self.Player1Tex:draw(150, 270) -- x, y
-  love.graphics.setColor(53, 47, 174) -- Farbe auf Blau setzen
-  love.graphics.printf("Spieler 1", 152, 262, 100, 'center')
+  love.graphics.printf({{0, 0, 255, 255}, "Spieler 1"}, 152, 262, 100, 'center') -- Farbe auf Blau setzen
   -- Zeichnen der Power-Ups unterhalb von Spieler 1:
   self.ShieldTex:draw(148, 310)
   self.ThrowTex:draw(178, 310)
   self.KickTex:draw(208, 310)
   self.RestrainTex:draw(238, 310)
-  --love.graphics. -- Rechteck der Text-Box
+  -- love.graphics. -- Rechteck der Text-Box
   -- Spieler 2 mit Text und Power-Ups:
   self.Player2Tex:draw(150, 348)
-  love.graphics.printf("Spieler 2", 152, 340, 100, 'center')
+  love.graphics.printf({{255, 0, 0, 255}, "Spieler 2"}, 152, 340, 100, 'center')
   -- Zeichnen der Power-Ups unterhalb von Spieler 2:
   self.ShieldTex:draw(148, 388)
   self.ThrowTex:draw(178, 388)
