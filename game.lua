@@ -1,6 +1,5 @@
-Player = require "player"
-Map = require "map"
 MapParser = require "mapParser"
+Player = require "player"
 
 local game = {}
 

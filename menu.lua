@@ -1,6 +1,7 @@
+Gamestate = require "lib.hump.gamestate"
 local menu = {}
 
-local menuengine = require "lib.menuengine"
+local menuengine = require "lib.menuengine.menuengine"
 menuengine.stop_on_nil_functions = true
 
 local text = "Nothing was selected."
@@ -10,7 +11,7 @@ local mainmenu
 
 -- Start Game
 local function start_game()
-    text = "Start Game was selected!"
+    Gamestate.switch(game)
 end
 
 -- Options
@@ -25,8 +26,8 @@ end
 
 function menu:enter()
     -- many lines of code
-    love.window.setMode(600, 400)
-    love.graphics.setFont(love.graphics.newFont(20))
+    --love.window.setMode(600, 400)
+    --love.graphics.setFont(love.graphics.newFont(20))
 
     mainmenu = menuengine.new(200, 100)
     mainmenu:addEntry("Start Game", start_game)

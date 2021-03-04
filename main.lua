@@ -10,7 +10,7 @@ function love.load()
     love.window.setMode(1200, 675, {resizable = true})
 
     Gamestate.registerEvents()
-    Gamestate.switch(game)
+    Gamestate.switch(menu)
 end
 
 function love.update(dt)
