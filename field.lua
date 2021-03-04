@@ -74,7 +74,7 @@ function Field:update(dt)
 end
 
 function Field:spawnPowerUp()
-  local randomNumber = math.random(1, 15)
+  local randomNumber = math.random(1, 18)
   -- Spiegel:
   if randomNumber == 1 then
     self.PowerUp = PowerUpMirror(self.position)
@@ -96,14 +96,14 @@ function Field:spawnPowerUp()
     self.PowerUp = PowerUpSlow(self.position)
   
   -- Bombe:
-  elseif randomNumber == 6 then
-    self.PowerUp = PowerUpMason(self.position)
+elseif randomNumber == 6 then
+    self.PowerUp = PowerUpThrow(self.position)
   
   -- Fußball:
   elseif randomNumber == 7 then
     self.PowerUp = PowerUpKick(self.position)
   
-  -- Schaufel:
+  -- Werfen:
   elseif randomNumber == 8 then
     self.PowerUp = PowerUpBomb(self.position)
   
@@ -111,30 +111,29 @@ function Field:spawnPowerUp()
   elseif randomNumber == 9 then
     self.PowerUp = PowerUpPandora(self.position)
     self.pandora = true
-    -- self:spawnPowerUp()
-  -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect):
-  elseif randomNumber == 10 then
-    self.PowerUp = PowerUpResurrect(self.position)
-  
-  -- Teleporter:
-  elseif randomNumber == 11 then
-    self.PowerUp = PowerUpTeleport(self.position)
-  
   -- Power:
-  elseif randomNumber == 12 then
+  elseif randomNumber == 10 then
     self.PowerUp = PowerUpPower(self.position)
   
   -- Schild:
-  elseif randomNumber == 13 then
+  elseif randomNumber == 11 then
     self.PowerUp = PowerUpShield(self.position)
   
   -- Schneller bewegen:
-  elseif randomNumber == 14 then
+  elseif randomNumber == 12 then
     self.PowerUp = PowerUpSpeed(self.position)
+    
+    -- Teleporter:  --no fuctionality
+  elseif randomNumber == 26 then
+    self.PowerUp = PowerUpTeleport(self.position)
+    
+    -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect): --no functionality
+  elseif randomNumber == 27 then
+    self.PowerUp = PowerUpResurrect(self.position)
  
-  -- Werfen:
-  elseif randomNumber == 15 then
-    self.PowerUp = PowerUpThrow(self.position)
+  -- Mauern bauen:  no functionality
+  elseif randomNumber == 28 then
+    self.PowerUp = PowerUpMason(self.position)
     end
 end
 
