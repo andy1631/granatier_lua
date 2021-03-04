@@ -118,35 +118,37 @@ end
 
 --Method to set bombs and set bombs to a whole field
 function Map:setBomb()
-    --TODO use getRelPos()-------------------------------------------------------
-    local col = {}
-    local cords = {}
+  --TODO use getRelPos()-------------------------------------------------------
+  local col = {}
+  local cords = {}
+  if self.players[0].stats.restrain == false and self.players[0].dead == false and self.players[0].fallen == false then
     if self.players[0].stats.bombs > 0 then
-        for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
-            if shape.cords ~= nil then
-                col[#col + 1] = Vector.new(delta.x, delta.y):len()
-                cords[#cords + 1] = shape.cords
-            end
+      for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
+        if shape.cords ~= nil then
+          col[#col + 1] = Vector.new(delta.x, delta.y):len()
+          cords[#cords + 1] = shape.cords
         end
-        col[0] = 0
-        local index = 0
-        for k, v in pairs(col) do
-            if v ~= 0 then
-                if col[index] < v then
-                    index = k
-                end
-            end
+      end
+      col[0] = 0
+      local index = 0
+      for k, v in pairs(col) do
+        if v ~= 0 then
+          if col[index] < v then
+            index = k
+          end
         end
-        if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
-            table.insert(
-                self.bombs,
-                Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power, cords[index])
-            )
-            map.fields[cords[index].x][cords[index].y].bombs = 1
-            self.players[0].stats.bombs = self.players[0].stats.bombs - 1
-            love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
-        end
+      end
+      if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
+        table.insert(
+          self.bombs,
+          Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power, cords[index])
+        )
+        map.fields[cords[index].x][cords[index].y].bombs = 1
+        self.players[0].stats.bombs = self.players[0].stats.bombs - 1
+        love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
+      end
     end
+  end
 end
 
 --Set the types for Fields
