@@ -129,7 +129,7 @@ function Player:update(dt)
         self.stats.restrain = false
     end
     if self.fall == true then
-        if self.falltime == 5 then
+        if self.falltime == 2 then
             source = love.audio.newSource("resources/sounds/deepfall.wav", "static")
             love.audio.play(source)
         end
