@@ -159,9 +159,18 @@ function Player:update(dt)
         end
         self:move(x, y)
     end
-    if self.velocity.x > 0.01 then
+    
+    --if self.velocity.x > 0.01 then
+      --function love.load()
+        	--width, height = love.graphics.getWidth(), love.graphics.getHeight()
+     -- end  
       
-      end  
+      --function love.draw()
+       -- love.graphics.translate((self.position.x), (self.position.y))
+       -- love.graphics.rotate(-math.pi / 2)
+       -- love.graphics.translate(-(self.position.x), -(self.position.y))
+      --end
+  --end    
     --while key is pressed ändere den state von o zu 1 dann 2 und 1... am Ende wieder 0
     local vec = self:getRelPos()
     if vec ~= nil then
