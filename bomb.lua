@@ -356,7 +356,7 @@ function Bomb:explode()
             self.north = ((i-1+0.75)*map.fieldSize)
             table.insert(self.northCords, self.north)
             break
-        ends
+        end
         if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_greenwall" then
             break
         end
