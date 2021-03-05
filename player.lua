@@ -24,6 +24,8 @@ function Player:init(x, y, id, origin, size)
     self.fallen = false
     self.exploded = false
     self.dirState = 0
+    self.directionOffset = 0
+    self.rotationDirection = -1
 
     --Position des Spielers und Standardwerte
     self.stats = {
@@ -66,16 +68,20 @@ function Player:draw()
         dir = math.pi
         posCorrect = Vector.new(self.size, self.size)
     end
+    dir = dir + self.directionOffset
+    
     --Rotation des Spielers bei Richtungswechsel
     if self.fall == true then
         self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
     end
     if self.fallen == false then
+      if self.exploded == false then 
         self.texture:draw(
             self.origin.x + self.position.x + posCorrect.x,
             self.origin.y + self.position.y + posCorrect.y,
             dir
         )
+        end
     end
     --love.graphics.rotate(dir)
     --love.graphics.translate(-(self.position.x), -(self.position.y))
@@ -157,20 +163,22 @@ function Player:update(dt)
         else
             y = 0
         end
+        if self.velocity.length ~= 0 then 
+          if self.rotationDirection == -1 then
+            self.directionOffset = self.directionOffset - dt * 0.5
+            if self.directionOffset < -0.0872664626 then
+              self.rotationDirection = 1
+            end
+          else
+            self.directionOffset = self.directionOffset + dt * 0.5
+            if self.directionOffset > 0.0872664626 then
+              self.rotationDirection = -1
+            end
+          end
+        end
         self:move(x, y)
     end
-    
-    --if self.velocity.x > 0.01 then
-      --function love.load()
-        	--width, height = love.graphics.getWidth(), love.graphics.getHeight()
-     -- end  
-      
-      --function love.draw()
-       -- love.graphics.translate((self.position.x), (self.position.y))
-       -- love.graphics.rotate(-math.pi / 2)
-       -- love.graphics.translate(-(self.position.x), -(self.position.y))
-      --end
-  --end    
+       
     --while key is pressed ändere den state von o zu 1 dann 2 und 1... am Ende wieder 0
     local vec = self:getRelPos()
     if vec ~= nil then
