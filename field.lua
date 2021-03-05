@@ -75,8 +75,8 @@ end
 
 function Field:spawnPowerUp()
   math.randomseed(os.time())
-  local randomNumber = math.random(1, 18)
-  randomNumber  = 11
+  local randomNumber = math.random(1,18)
+  --randomNumber = 10
   -- Spiegel:
   if randomNumber == 1 then
     self.PowerUp = PowerUpMirror(self.position)

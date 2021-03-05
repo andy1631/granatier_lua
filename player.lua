@@ -167,13 +167,13 @@ function Player:update(dt)
         end
         if self.velocity.length ~= 0 then 
           if self.rotationDirection == -1 then
-            self.directionOffset = self.directionOffset - dt * 0.5
-            if self.directionOffset < -0.0872664626 then
+            self.directionOffset = self.directionOffset - dt * 0.3
+            if self.directionOffset < -0.0523598776 then
               self.rotationDirection = 1
             end
           else
-            self.directionOffset = self.directionOffset + dt * 0.5
-            if self.directionOffset > 0.0872664626 then
+            self.directionOffset = self.directionOffset + dt * 0.3
+            if self.directionOffset > 0.0523598776 then
               self.rotationDirection = -1
             end
           end
