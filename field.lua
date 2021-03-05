@@ -74,7 +74,8 @@ function Field:update(dt)
 end
 
 function Field:spawnPowerUp()
-  local randomNumber = math.random(1, 18)
+  local randomNumber = math.random(1,18)
+  --randomNumber = 10
   -- Spiegel:
   if randomNumber == 1 then
     self.PowerUp = PowerUpMirror(self.position)
