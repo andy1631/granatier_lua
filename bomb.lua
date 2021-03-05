@@ -12,7 +12,7 @@ function Bomb:init(pos, power, cords, origin)
     self.time = 3
     self.origin = origin
     --self.hitbox = HC.circle(self.position.x,self.position.y, 17.5)
-    self.hitbox = HC.rectangle(self.position.x - 20, self.position.y - 20, 40, 40)
+    self.hitbox = HC.rectangle(self.position.x - 20+self.origin.x, self.position.y - 20+self.origin.y, 40, 40)
     self.toDelete = false
     self.cords = cords
     self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
@@ -85,13 +85,13 @@ end
 
 function Bomb:arrowCheck()
   if map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_up" then
-    self.movedirection = Vector.new(0,-1)
+    self.movedirection = Vector.new(0,-5)
   elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_down" then
-    self.movedirection = Vector.new(0,1)
+    self.movedirection = Vector.new(0,5)
   elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_right" then
-    self.movedirection = Vector.new(1,0)
+    self.movedirection = Vector.new(5,0)
   elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_left" then
-    self.movedirection = Vector.new(-1,0)
+    self.movedirection = Vector.new(-5,0)
   end
 end
 
@@ -284,6 +284,7 @@ function Bomb:explode()
         if map.fields[self.cords.x + i][self.cords.y]:getType() == "arena_wall" then
             map.fields[self.cords.x + i][self.cords.y]:setType("arena_ground")
             map.fields[self.cords.x + i][self.cords.y]:spawnPowerUp()
+            map.fields[self.cords.x + i][self.cords.y].solid = false
             self.east = ((i-1+0.75)*map.fieldSize)
             table.insert(self.eastCords, self.east)
             break
@@ -313,6 +314,7 @@ function Bomb:explode()
         if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_wall" then
             map.fields[self.cords.x - i][self.cords.y]:setType("arena_ground")
             map.fields[self.cords.x - i][self.cords.y]:spawnPowerUp()
+            map.fields[self.cords.x - i][self.cords.y].solid = false
             self.west = ((i-1+0.75)*map.fieldSize)
             table.insert(self.westCords, self.west)
             break
@@ -342,6 +344,7 @@ function Bomb:explode()
         if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_wall" then
             map.fields[self.cords.x][self.cords.y + i]:setType("arena_ground")
             map.fields[self.cords.x][self.cords.y + i]:spawnPowerUp()
+            map.fields[self.cords.x ][self.cords.y+i].solid = false
             self.south = ((i-1+0.75)*map.fieldSize)
             table.insert(self.southCords, self.south)
             break
@@ -371,6 +374,7 @@ function Bomb:explode()
         if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_wall" then
             map.fields[self.cords.x][self.cords.y - i]:setType("arena_ground")
             map.fields[self.cords.x][self.cords.y - i]:spawnPowerUp()
+            map.fields[self.cords.x][self.cords.y-i].solid = false
             self.north = ((i-1+0.75)*map.fieldSize)
             table.insert(self.northCords, self.north)
             break
@@ -404,16 +408,44 @@ function Bomb:explode()
 end
 
 function Bomb:move(dt)
+  local oldCords = self.cords:clone()
   self.hitbox:move(self.movedirection.x*dt,self.movedirection.y*dt)
   for shapes,delta in pairs(HC.collisions(self.hitbox)) do
     if shapes.solid then
       self.hitbox:move(delta.x,delta.y)
-      self.movedirection = nil
+      if math.sqrt(delta.x^2+delta.y^2)>0 then
+        self.movedirection = nil
+      end
     end
   end
   local posx,posy = self.hitbox:center()
-  self.position.x = posx - self.origin.x
+  self.position.x = posx -self.origin.x
   self.position.y = posy - self.origin.y
+  self.cords = self:getRelPos()
+  if oldCords ~= self.cords then
+      map.fields[oldCords.x][oldCords.y].bombs = 0
+      map.fields[self.cords.x][self.cords.y].bombs = 1
+  end
+  
 end
   
+function Bomb:getRelPos()
+    local col = {}
+    local cords = {}
+    for shape, delta in pairs(HC.collisions(self.hitbox)) do
+            col[#col + 1] = Vector.new(delta.x, delta.y):len()
+            cords[#cords + 1] = shape.cords
+    end
+    --col[0] = 0
+    local index = 1
+    for k, v in pairs(col) do
+        if v ~= 0 then
+            if col[index] < v then
+                index = k
+            end
+        end
+    end
+    return cords[index]
+end
+
 return Bomb
