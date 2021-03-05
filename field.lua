@@ -21,11 +21,12 @@ PowerUpThrow = require "Powerups.powerUpThrow"
 Field = Class {}
 --Field als Objekt festlegen
 
-function Field:init(pos, size, t, cords)
+function Field:init(pos, size, t, cords,origin)
+    self.origin = origin
     self.type = t
     self.hitbox = HC.rectangle(pos.x, pos.y, size, size)
     local x, y = self.hitbox:center()
-    self.position = Vector.new(x, y)
+    self.position = Vector.new(x, y) - origin
     self.hitboxshow = false
     self.cords = cords
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
@@ -45,7 +46,7 @@ end
 
 function Field:draw()
     if self.type ~= "air" then
-        self.Texture:draw(self.position.x, self.position.y)
+        self.Texture:draw(self.position.x+self.origin.x, self.position.y+self.origin.y)
     end
     if self.PowerUp ~= nil then
         self.PowerUp:draw()
@@ -78,63 +79,63 @@ function Field:spawnPowerUp()
   --randomNumber = 10
   -- Spiegel:
   if randomNumber == 1 then
-    self.PowerUp = PowerUpMirror(self.position)
+    self.PowerUp = PowerUpMirror(self.position,self.origin)
 
   -- Kaffee:
   elseif randomNumber == 2 then
-    self.PowerUp = PowerUpCoffee(self.position)
+    self.PowerUp = PowerUpCoffee(self.position,self.origin)
   
   -- Fessel:
   elseif randomNumber == 3 then
-    self.PowerUp = PowerUpRestrain(self.position)
+    self.PowerUp = PowerUpRestrain(self.position,self.origin)
   
   -- Wirft Bomben zu zufälligen Positionen (Scatty):
   elseif randomNumber == 4 then
-    self.PowerUp = PowerUpScatty(self.position)
+    self.PowerUp = PowerUpScatty(self.position,self.origin)
   
   -- Schnecke:
   elseif randomNumber == 5 then
-    self.PowerUp = PowerUpSlow(self.position)
+    self.PowerUp = PowerUpSlow(self.position,self.origin)
   
   -- Bombe:
 elseif randomNumber == 6 then
-    self.PowerUp = PowerUpThrow(self.position)
+    self.PowerUp = PowerUpThrow(self.position,self.origin)
   
   -- Fußball:
   elseif randomNumber == 7 then
-    self.PowerUp = PowerUpKick(self.position)
+    self.PowerUp = PowerUpKick(self.position,self.origin)
   
   -- Werfen:
   elseif randomNumber == 8 then
-    self.PowerUp = PowerUpBomb(self.position)
+    self.PowerUp = PowerUpBomb(self.position,self.origin)
   
   -- Zufallbox:
   elseif randomNumber == 9 then
-    self.PowerUp = PowerUpPandora(self.position)
+    self.PowerUp = PowerUpPandora(self.position,self.origin)
     self.pandora = true
   -- Power:
   elseif randomNumber == 10 then
-    self.PowerUp = PowerUpPower(self.position)
+    self.PowerUp = PowerUpPower(self.position,self.origin)
   
   -- Schild:
   elseif randomNumber == 11 then
-    self.PowerUp = PowerUpShield(self.position)
+    self.PowerUp = PowerUpShield(self.position,self.origin)
   
   -- Schneller bewegen:
   elseif randomNumber == 12 then
-    self.PowerUp = PowerUpSpeed(self.position)
+    self.PowerUp = PowerUpSpeed(self.position,self.origin)
     
     -- Teleporter:  --no fuctionality
   elseif randomNumber == 26 then
-    self.PowerUp = PowerUpTeleport(self.position)
+    self.PowerUp = PowerUpTeleport(self.position,self.origin)
     
     -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect): --no functionality
   elseif randomNumber == 27 then
-    self.PowerUp = PowerUpResurrect(self.position)
+    self.PowerUp = PowerUpResurrect(self.position,self.origin)
  
   -- Mauern bauen:  no functionality
   elseif randomNumber == 28 then
-    self.PowerUp = PowerUpMason(self.position)
+    self.PowerUp = PowerUpMason(self.position,self.origin)
     end
 end
 

@@ -41,7 +41,8 @@ function Map:init(x, y)
                 self.position + Vector.new(i * (self.width / self.x), j * (self.height / self.y)),
                 40,
                 "arena_wall",
-                Vector.new(i, j)
+                Vector.new(i, j),
+                self.position
             )
 
             self.fields[i][j] = field
@@ -64,12 +65,12 @@ function Map:spawn()
     table.remove(self.spawns, rnd)
     self.players[self.playerCount] =
         Player(
-        self.fields[relX][relY].position.x - self.position.x,
-        self.fields[relX][relY].position.y - self.position.y,
+        self.fields[relX][relY].position.x,
+        self.fields[relX][relY].position.y,
         self.playerCount,
         self.position,
         self.fieldSize
-    ) -- TODO relative position for field?
+    )
     self.playerCount = self.playerCount + 1
 end
 
@@ -141,7 +142,7 @@ function Map:setBomb()
       if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
         table.insert(
           self.bombs,
-          Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power, cords[index])
+          Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power, cords[index],self.position)
         )
         map.fields[cords[index].x][cords[index].y].bombs = 1
         self.players[0].stats.bombs = self.players[0].stats.bombs - 1
