@@ -44,7 +44,9 @@ function Player:init(x, y, id, origin, size)
     self.id = id or 0
     self.hitbox.playerId = self.id
     self.texturePath = love.filesystem.read("resources/player2.svg")
-    self.texture = Tove.newGraphics(self.texturePath, self.size)
+    self.playertexture = Tove.newGraphics(self.texturePath, self.size)
+    self.deadtexture = Tove.newGraphics(love.filesystem.read("resources/SVG/score_star_enabled.svg"), self.size)
+    self.texture = self.playertexture
 end
 --Anzeige der SVG-Spielers
 --ÜBergabe der aktuellen Position des Spielers als String
@@ -286,15 +288,24 @@ function Player:playerOnField(pos)
 end
 
 function Player:explode()
-    source = love.audio.newSource("resources/sounds/die.wav", "static")
-    love.audio.play(source)
-    self.dead = true
-    self.texture = love.filesystem.read("resources/SVG/score_star_enabled.svg")
-    self.texture = Tove.newGraphics(self.texture, self.size)
-    self:die()
+  if map.death == true then
+    if self.dead == false then
+      source = love.audio.newSource("resources/sounds/die.wav", "static")
+      love.audio.play(source)
+      self.dead = true
+      self.exploded = true
+      self.texture = self.deadtexture
+      self:die()
+    elseif self.exploded == true then
+      self.texture = nil
+      source = love.audio.newSource("resources/sounds/joint.wav", "static")
+      love.audio.play(source)
+    end
+  end
 end
 
 function Player:fallOutOfWorld()
+  if map.death == true then
     if self.dead == false then
         self.velocity.x = 0
         self.velocity.y = 0
@@ -303,6 +314,7 @@ function Player:fallOutOfWorld()
         self.fall = true
         self.falltime = 2
     end
+  end
 end
 
 function Player:die()
