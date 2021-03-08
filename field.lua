@@ -158,6 +158,7 @@ function Field:getData()
     }
     return data
 end
+
 function Field:setData(data)
     self.type = data.type
     self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
