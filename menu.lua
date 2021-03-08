@@ -11,12 +11,12 @@ local mainmenu
 
 -- Start Game
 local function start_game()
-    Gamestate.switch(game)
+    Gamestate.switch(game, "127.0.0.1", 12345)
 end
 
 -- Options
 local function options()
-    text = "Options was selected!"
+    Gamestate.switch(game)
 end
 
 -- Quit Game

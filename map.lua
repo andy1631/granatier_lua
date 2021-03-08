@@ -7,8 +7,9 @@ Vector = require "lib.hump.vector"
 Bomb = require "bomb"
 Tove = require "lib.tove"
 StatusBar = require "statusBar"
+Bitser = require "lib.bitser.bitser"
 
-Map = Class {}
+Map = Bitser.registerClass("Map", Class {})
 
 function Map:init(x, y)
     if x == nil or y == nil then
@@ -54,8 +55,16 @@ function Map:init(x, y)
     background:rescale(1200)
     self.statusBar = StatusBar()
     self.statusBar:createTextBox(self.playerCount)
+    --Bitser.register("Map:spawn", self.spawn)
+    --Bitser.register("Map:update", self.update)
+    --Bitser.register("Map:draw", self.draw)
+    --Bitser.register("Map:setBomb", self.setBomb)
+    --Bitser.register("Map:changeType", self.changeType)
+    --Bitser.register("Map:addSpawn", self.addSpawn)
+    --Bitser.register("Map:resize", self.resize)
 end
 
+--Bitser.register('Map:init', Map.init)
 --Spawns the Player
 function Map:spawn()
     local rnd = love.math.random(1, table.getn(self.spawns))
@@ -94,7 +103,7 @@ function Map:update(dt)
             v:update(dt)
         end
     end
-    self.statusBar:update()
+    --self.statusBar:update()
 end
 
 --shows the map
@@ -113,7 +122,7 @@ function Map:draw()
     for key, value in pairs(self.players) do
         self.players[key]:draw()
     end
-    self.statusBar:draw()
+    --self.statusBar:draw()
 end
 
 --Method to set bombs and set bombs to a whole field
