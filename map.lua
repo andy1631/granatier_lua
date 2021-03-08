@@ -5,11 +5,11 @@ Player = require "player"
 Field = require "field"
 Vector = require "lib.hump.vector"
 Bomb = require "bomb"
-Tove = require "lib.tove"
-StatusBar = require "statusBar"
+--Tove = require "lib.tove"
+--StatusBar = require "statusBar"
 Bitser = require "lib.bitser.bitser"
 
-Map = Bitser.registerClass("Map", Class {})
+Map = Bitser.registerClass("Map", Class{})
 
 function Map:init(x, y)
     if x == nil or y == nil then
@@ -50,11 +50,11 @@ function Map:init(x, y)
     end
 
     -- Show the background
-    background = love.filesystem.read("resources/SVG/background.svg")
-    background = Tove.newGraphics(background)
-    background:rescale(1200)
-    self.statusBar = StatusBar()
-    self.statusBar:createTextBox(self.playerCount)
+    --self.background = love.filesystem.read("resources/SVG/background.svg")
+    --self.background = Bitser.register("background", Tove.newGraphics(self.background))
+    --self.background:rescale(1200)
+    --self.statusBar = StatusBar()
+    --self.statusBar:createTextBox(self.playerCount)
     --Bitser.register("Map:spawn", self.spawn)
     --Bitser.register("Map:update", self.update)
     --Bitser.register("Map:draw", self.draw)
@@ -78,7 +78,7 @@ function Map:spawn()
         self.playerCount,
         self.position,
         self.fieldSize
-    ) -- TODO relative position for field?
+        ) -- TODO relative position for field?
     self.playerCount = self.playerCount + 1
 end
 
@@ -109,7 +109,7 @@ end
 --shows the map
 function Map:draw()
     love.graphics.reset()
-    background:draw(600, 337.5) -- Hintergrund zeichnen lassen
+    --self.background:draw(600, 337.5) -- Hintergrund zeichnen lassen
 
     for i = 1, self.x, 1 do
         for j = 1, self.y, 1 do

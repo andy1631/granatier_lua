@@ -58,6 +58,7 @@ function game:update(dt)
             end
         end
         local dump = Bitser.dumps(map)
+        map = Bitser.loads(dump)
         --local bytes = {string.byte(dump, 1, -1)}
         --local data = ""
         --for k, v in pairs(bytes) do

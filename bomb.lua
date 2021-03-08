@@ -14,9 +14,9 @@ function Bomb:init(pos, power, cords)
     self.hitbox = HC.rectangle(self.position.x - 20, self.position.y - 20, 40, 40)
     self.toDelete = false
     self.cords = cords
-    self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
-    self.bomb = Tove.newGraphics(self.bomb)
-    self.bomb:rescale(35)
+    --self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
+    --self.bomb = Tove.newGraphics(self.bomb)
+    --self.bomb:rescale(35)
     self.scale = 35
     self.scaleFactor = -0.25
     self.north = 0
@@ -36,11 +36,11 @@ end
 function Bomb:draw()
     --self.hitbox:draw()
     if not self.isExploding then
-      self.bomb:draw(self.position.x, self.position.y)
+      --self.bomb:draw(self.position.x, self.position.y)
     end
 
     --love.graphics.print(tostring(self.isExploding),0,0)
-    self:explodeAnimation()
+    --self:explodeAnimation()
 end
 
 function Bomb:update(dt)
@@ -51,7 +51,7 @@ function Bomb:update(dt)
         self.scaleFactor = -12 * dt
     end
     self.scale = self.scale + self.scaleFactor
-    self.bomb:rescale(self.scale)
+    --self.bomb:rescale(self.scale)
     if self.time <= 0 and not self.isExploding then
         self:explode()
         
@@ -265,7 +265,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x + i][self.cords.y]:getType() == "arena_wall" then
             map.fields[self.cords.x + i][self.cords.y]:setType("arena_ground")
-            map.fields[self.cords.x + i][self.cords.y]:spawnPowerUp()
+            --map.fields[self.cords.x + i][self.cords.y]:spawnPowerUp()
             self.east = self.east + map.fieldSize
             table.insert(self.eastCords, self.east)
             break
@@ -292,7 +292,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_wall" then
             map.fields[self.cords.x - i][self.cords.y]:setType("arena_ground")
-            map.fields[self.cords.x - i][self.cords.y]:spawnPowerUp()
+            --map.fields[self.cords.x - i][self.cords.y]:spawnPowerUp()
             self.west = self.west + map.fieldSize
             table.insert(self.westCords, self.west)
             break
@@ -319,7 +319,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_wall" then
             map.fields[self.cords.x][self.cords.y + i]:setType("arena_ground")
-            map.fields[self.cords.x][self.cords.y + i]:spawnPowerUp()
+            --map.fields[self.cords.x][self.cords.y + i]:spawnPowerUp()
             self.south = self.south + map.fieldSize
             table.insert(self.southCords, self.south)
             break
@@ -346,7 +346,7 @@ function Bomb:explode()
         end
         if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_wall" then
             map.fields[self.cords.x][self.cords.y - i]:setType("arena_ground")
-            map.fields[self.cords.x][self.cords.y - i]:spawnPowerUp()
+            --map.fields[self.cords.x][self.cords.y - i]:spawnPowerUp()
             self.north = self.north + map.fieldSize
             table.insert(self.northCords, self.north)
             break

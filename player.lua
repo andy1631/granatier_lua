@@ -43,8 +43,8 @@ function Player:init(x, y, id, origin, size)
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
-    self.texturePath = love.filesystem.read("resources/player2.svg")
-    self.texture = Tove.newGraphics(self.texturePath, self.size)
+    --self.texturePath = love.filesystem.read("resources/player2.svg")
+    --self.texture = Tove.newGraphics(self.texturePath, self.size)
 end
 --Anzeige der SVG-Spielers
 --ÜBergabe der aktuellen Position des Spielers als String
@@ -72,11 +72,11 @@ function Player:draw()
         self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
     end
     if self.fallen == false then
-        self.texture:draw(
-            self.origin.x + self.position.x + posCorrect.x,
-            self.origin.y + self.position.y + posCorrect.y,
-            dir
-        )
+    --self.texture:draw(
+    --    self.origin.x + self.position.x + posCorrect.x,
+    --   self.origin.y + self.position.y + posCorrect.y,
+    --   dir
+    --)
     end
     --love.graphics.rotate(dir)
     --love.graphics.translate(-(self.position.x), -(self.position.y))
@@ -88,6 +88,7 @@ function Player:draw()
     --love.graphics.print("velocity: " .. tostring(self.velocity), 0, 15)
     --love.graphics.print("Timer: " .. tostring(self.powerUpTime), 0, 30)
     --love.graphics.print("direction: " .. tostring(self.direction), 0, 45)
+    self.hitbox:draw()
 end
 function Player:move(x, y)
     self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
@@ -306,6 +307,49 @@ function Player:fallOutOfWorld()
 end
 
 function Player:die()
+end
+
+function Player:getData()
+    local data = {
+        id = self.id,
+        position = {x = self.position.x, y = self.position.y},
+        hitbox = {x, y = self.hitbox:center(), r = self.hitbox._radius},
+        velocity = {x = self.velocity.x, y = self.velocity.y},
+        acceleration = self.acceleration / self.size,
+        frictionRatio = self.frictionRatio,
+        direction = self.direction,
+        movement = self.movement,
+        powerUpTime = self.powerUpTime,
+        fall = self.fall,
+        falltime = self.falltime,
+        dead = self.dead,
+        fallen = self.fallen,
+        exploded = self.exploded,
+        dirState = self.dirState,
+        stats = self.stats
+    }
+    return data
+end
+
+function Player:setData(data)
+    self.id = data.id
+    self.position.x = data.position.x
+    self.position.y = data.position.y
+    self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
+    self.velocity.x = data.velocity.x
+    self.velocity.y = data.velocity.y
+    self.acceleration = data.acceleration * self.size
+    self.frictionRatio = data.frictionRatio
+    self.direction = data.direction
+    self.movement = data.movement
+    self.powerUpTime = data.powerUpTime
+    self.fall = data.fall
+    self.falltime = data.falltime
+    self.dead = data.dead
+    self.fallen = data.fallen
+    self.exploded = data.exploded
+    self.dirState = data.dirState
+    self.stats = data.stats
 end
 return Player
 --Rückgabe des Objekts Player
