@@ -162,6 +162,7 @@ function setData(data)
   self.cords.y = data.cords.y
   self.bombs = data.bombs
   self.pandora = data.pandora
+  self:spawnPowerUp(data.powerup)
   end
 
 return Field
