@@ -48,7 +48,7 @@ end
 function Bomb:update(dt)
     self:arrowCheck()
     if self.movedirection ~= nil then
-      self:move(dt)
+      self:move()
     else
       self.time = self.time - dt
     end
@@ -61,7 +61,6 @@ function Bomb:update(dt)
     self.bomb:rescale(self.scale)
     if self.time <= 0 and not self.isExploding then
         self:explode()
-        
     end
     if not self.hitbox:collidesWith(map.players[0].hitbox) then
         self.hitbox.solid = true
@@ -85,13 +84,34 @@ end
 
 function Bomb:arrowCheck()
   if map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_up" then
-    self.movedirection = Vector.new(0,-5)
+    self.movedirection = Vector.new(0,-40)
   elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_down" then
-    self.movedirection = Vector.new(0,5)
+    self.movedirection = Vector.new(0,40)
   elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_right" then
-    self.movedirection = Vector.new(5,0)
+    self.movedirection = Vector.new(40,0)
   elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_left" then
-    self.movedirection = Vector.new(-5,0)
+    self.movedirection = Vector.new(-40,0)
+  end
+end
+
+function Bomb:move()
+  local oldCords = self.cords:clone()
+  self.hitbox:move(self.movedirection.x,self.movedirection,y)
+  for shapes,delta in pairs(HC.collisions(self.hitbox)) do
+    if shapes.solid then
+      self.hitbox:move(delta.x,delta.y)
+      if math.sqrt(delta.x^2+delta.y^2)>0 then
+        self.movedirection = nil
+      end
+    end
+  end
+  local posx,posy = self.hitbox:center()
+  self.position.x = posx -self.origin.x
+  self.position.y = posy - self.origin.y
+  self.cords = self:getRelPos()
+  if oldCords ~= self.cords then
+      map.fields[oldCords.x][oldCords.y].bombs = 0
+      map.fields[self.cords.x][self.cords.y].bombs = 1
   end
 end
 
@@ -411,9 +431,9 @@ function Bomb:explode()
     HC.remove(self.hitbox)
 end
 
-function Bomb:move(dt)
+function Bomb:moveOld(dt)
   local oldCords = self.cords:clone()
-  self.hitbox:move(self.movedirection.x*dt,self.movedirection.y*dt)
+  self.hitbox:move(self.movedirection.x*(dt*50),self.movedirection.y*(dt*50))
   for shapes,delta in pairs(HC.collisions(self.hitbox)) do
     if shapes.solid then
       self.hitbox:move(delta.x,delta.y)
