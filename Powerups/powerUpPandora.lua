@@ -3,10 +3,10 @@ Class = require "lib.hump.class"
 
 local PowerUpPandora = Class {__includes = PowerUp}
 
-function PowerUpPandora:init(pos)
+function PowerUpPandora:init(pos,origin)
     self.Texture = love.filesystem.read("resources/SVG/bonus_neutral_pandora.svg")
     self.Texture = Tove.newGraphics(self.Texture)
-    PowerUp.init(self, pos)
+    PowerUp.init(self, pos,origin)
 end
 
 function PowerUpPandora:usePowerUp(player)

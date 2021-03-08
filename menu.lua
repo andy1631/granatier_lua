@@ -1,4 +1,5 @@
-Gamestate = require "lib.hump.gamestate"
+Gamestate = require 'lib.hump.gamestate'
+
 local menu = {}
 
 local menuengine = require "lib.menuengine.menuengine"

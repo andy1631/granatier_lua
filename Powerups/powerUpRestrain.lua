@@ -3,10 +3,10 @@ Class = require "lib.hump.class"
 
 local PowerUpRestrain = Class {__includes = PowerUp}
 
-function PowerUpRestrain:init(pos)
+function PowerUpRestrain:init(pos,origin)
     self.Texture = love.filesystem.read("resources/SVG/bonus_bad_restrain.svg")
     self.Texture = Tove.newGraphics(self.Texture)
-    PowerUp.init(self, pos)
+    PowerUp.init(self, pos,origin)
 end
 
 function PowerUpRestrain:usePowerUp(player)

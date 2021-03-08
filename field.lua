@@ -21,11 +21,12 @@ PowerUpThrow = require "Powerups.powerUpThrow"
 Field = Class {}
 --Field als Objekt festlegen
 
-function Field:init(pos, size, t, cords)
+function Field:init(pos, size, t, cords, origin)
+    self.origin = origin
     self.type = t
     self.hitbox = HC.rectangle(pos.x, pos.y, size, size)
     local x, y = self.hitbox:center()
-    self.position = Vector.new(x, y)
+    self.position = Vector.new(x, y) - origin
     self.hitboxshow = false
     self.cords = cords
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
@@ -45,7 +46,7 @@ end
 
 function Field:draw()
     if self.type ~= "air" then
-        self.Texture:draw(self.position.x, self.position.y)
+        self.Texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
     end
     if self.PowerUp ~= nil then
         self.PowerUp:draw()
@@ -174,7 +175,7 @@ function Field:setData(data)
     self.bombs = data.bombs
     self.pandora = data.pandora
     if data.powerup ~= nil then
-    self:spawnPowerUp(data.powerup)
+        self:spawnPowerUp(data.powerup)
     end
 end
 

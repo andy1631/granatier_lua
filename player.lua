@@ -23,8 +23,9 @@ function Player:init(x, y, id, origin, size)
     self.dead = false
     self.fallen = false
     self.exploded = false
-
     self.dirState = 0
+    self.directionOffset = 0
+    self.rotationDirection = -1
 
     --Position des Spielers und Standardwerte
     self.stats = {
@@ -66,19 +67,22 @@ function Player:draw()
         dir = math.pi
         posCorrect = Vector.new(self.size, self.size)
     end
+    dir = dir + self.directionOffset
+
     --Rotation des Spielers bei Richtungswechsel
     if self.fall == true then
         self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
     end
     if self.fallen == false then
-    self.texture:draw(
-       self.origin.x + self.position.x + posCorrect.x,
-       self.origin.y + self.position.y + posCorrect.y,
-       dir
-    )
+        if self.exploded == false then
+            self.texture:draw(
+                self.origin.x + self.position.x + posCorrect.x,
+                self.origin.y + self.position.y + posCorrect.y,
+                dir
+            )
+        end
     end
     --self.hitbox:draw('line')
-   
 
     --love.graphics.print("mirror: " .. tostring(self.stats.mirror), 0, 0)
     --love.graphics.print("velocity: " .. tostring(self.velocity), 0, 15)
@@ -154,8 +158,22 @@ function Player:update(dt)
         else
             y = 0
         end
+        if self.velocity.length ~= 0 then
+            if self.rotationDirection == -1 then
+                self.directionOffset = self.directionOffset - dt * 0.3
+                if self.directionOffset < -0.0523598776 then
+                    self.rotationDirection = 1
+                end
+            else
+                self.directionOffset = self.directionOffset + dt * 0.3
+                if self.directionOffset > 0.0523598776 then
+                    self.rotationDirection = -1
+                end
+            end
+        end
         self:move(x, y)
     end
+
     --while key is pressed ändere den state von o zu 1 dann 2 und 1... am Ende wieder 0
     local vec = self:getRelPos()
     if vec ~= nil then
@@ -305,7 +323,7 @@ function Player:die()
 end
 
 function Player:getData()
-  local hx, hy = self.hitbox:center()
+    local hx, hy = self.hitbox:center()
     local data = {
         id = self.id,
         position = {x = self.position.x, y = self.position.y},

@@ -42,7 +42,8 @@ function Map:init(x, y)
                 self.position + Vector.new(i * (self.width / self.x), j * (self.height / self.y)),
                 40,
                 "arena_wall",
-                Vector.new(i, j)
+                Vector.new(i, j),
+                self.position
             )
 
             self.fields[i][j] = field
@@ -65,13 +66,12 @@ function Map:spawn()
     table.remove(self.spawns, rnd)
     self.players[#self.players] =
         Player(
-        self.fields[relX][relY].position.x - self.position.x,
-        self.fields[relX][relY].position.y - self.position.y,
+        self.fields[relX][relY].position.x,
+        self.fields[relX][relY].position.y,
         self.playerCount,
         self.position,
         self.fieldSize
     )
-    -- TODO relative position for field?
     self.playerCount = self.playerCount + 1
 end
 
@@ -123,30 +123,37 @@ function Map:setBomb()
     --TODO use getRelPos()-------------------------------------------------------
     local col = {}
     local cords = {}
-    if self.players[0].stats.bombs > 0 then
-        for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
-            if shape.cords ~= nil then
-                col[#col + 1] = Vector.new(delta.x, delta.y):len()
-                cords[#cords + 1] = shape.cords
-            end
-        end
-        col[0] = 0
-        local index = 0
-        for k, v in pairs(col) do
-            if v ~= 0 then
-                if col[index] < v then
-                    index = k
+    if self.players[0].stats.restrain == false and self.players[0].dead == false and self.players[0].fallen == false then
+        if self.players[0].stats.bombs > 0 then
+            for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
+                if shape.cords ~= nil then
+                    col[#col + 1] = Vector.new(delta.x, delta.y):len()
+                    cords[#cords + 1] = shape.cords
                 end
             end
-        end
-        if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
-            table.insert(
-                self.bombs,
-                Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power, cords[index])
-            )
-            map.fields[cords[index].x][cords[index].y].bombs = 1
-            self.players[0].stats.bombs = self.players[0].stats.bombs - 1
-            love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
+            col[0] = 0
+            local index = 0
+            for k, v in pairs(col) do
+                if v ~= 0 then
+                    if col[index] < v then
+                        index = k
+                    end
+                end
+            end
+            if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
+                table.insert(
+                    self.bombs,
+                    Bomb(
+                        map.fields[cords[index].x][cords[index].y].position,
+                        self.players[0].stats.power,
+                        cords[index],
+                        self.position
+                    )
+                )
+                map.fields[cords[index].x][cords[index].y].bombs = 1
+                self.players[0].stats.bombs = self.players[0].stats.bombs - 1
+                love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
+            end
         end
     end
 end
@@ -188,18 +195,11 @@ end
 function Map:setData(data)
     if table.getn(data.players) ~= table.getn(self.players) then
         for i = 1, table.getn(data.players) - table.getn(self.players), 1 do
-           self.players[#self.players] =
-        Player(
-        0,
-        0,
-        #self.players,
-        self.position,
-        self.fieldSize
-    )
+            self.players[#self.players] = Player(0, 0, #self.players, self.position, self.fieldSize)
         end
     end
     for k, player in pairs(self.players) do
-        player:setData(data.players[k+1])
+        player:setData(data.players[k + 1])
     end
     if #self.fields == 0 then
         for k, field in pairs(data.fields) do

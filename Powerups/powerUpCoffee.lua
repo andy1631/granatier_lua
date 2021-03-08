@@ -3,10 +3,10 @@ Class = require "lib.hump.class"
 
 local PowerUpCoffee = Class {__includes = PowerUp}
 
-function PowerUpCoffee:init(pos)
+function PowerUpCoffee:init(pos,origin)
     self.Texture = love.filesystem.read("resources/SVG/bonus_bad_hyperactive.svg")
     self.Texture = Tove.newGraphics(self.Texture)
-    PowerUp.init(self, pos)
+    PowerUp.init(self, pos,origin)
 end
 
 function PowerUpCoffee:usePowerUp(player)
