@@ -376,4 +376,55 @@ function Bomb:explode()
     end
     HC.remove(self.hitbox)
 end
+
+function Bomb:getData()
+  local data = {
+      position = {x = self.position.x,y.self.position.y}
+      power = self.power
+      time = self.time
+      self.hitbox = HC.rectangle(self.hitbox.center.x,self.hitbox.center.y)
+      hitbox = {x,y = self.hitbox:center()}
+      toDelete = self.toDelete
+      cords = {x=self.cords.x,y=self.cords.y}
+      scale = self.scale
+      scaleFactor = self.scaleFactor
+      north = self.north
+      south = self.south
+      west = self.west
+      east = self.east
+      isExploding = self.isExploding
+      explodeState = self.explodeState
+      explodeTime = self.explodeTime
+      northCords = self.northCords
+      southCords = self.southCords
+      eastCords = self.eastCords
+      westCords = self.westCords
+    }
+    return data
+end
+
+function Bomb:setData(data)
+    self.position.x = data.position.x
+    self.position.y = data.position.y
+    self.power = data.power
+    self.time = data.time
+    self.hitbox:moveTo(data.hitbox.x,data.hitbox.y)
+    self.toDelete = data.toDelete
+    self.cords.x = data.cords.x
+    self.cords.y = data.cords.y
+    self.scale = data.scale
+    self.scaleFactor = data.scaleFactor
+    self.north = data.north
+    self.south = data.south
+    self.west = data.west
+    self.east = data.east
+    self.isExploding = data.IsExploding
+    self.explodeState = data.explodeState
+    self.explodeTime = data.explodeTime
+    self.northCords = data.northCords
+    self.southCords = data.southCords
+    self.eastCords = data.eastCords
+    self.westCords = data.westCords
+end
+
 return Bomb

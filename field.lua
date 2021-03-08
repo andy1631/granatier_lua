@@ -34,7 +34,7 @@ function Field:init(pos, size, t, cords)
     self.bombs = 0
     self.Texture = Tove.newGraphics(self.Texture)
     self.Texture:rescale(40)
-    local pandora = false
+    self.pandora = false
 end
 --Festlegen der Position der Mauer
 
@@ -149,6 +149,20 @@ function Field:getType()
     return self.type
 end
 --Festlegen des Types als HitBox
+
+function setData(data)
+  self.type = data.type
+  self.hitbox:moveTo(data.hitbox.x,data.hitbox.y)
+  self.hitbox.solid=data.hitbox.solid
+  self.hitbox.cords=self.cords
+  self.position.x = data.position.x
+  self.position.y = data.position.y
+  self.hitboxshow = data.hitboxshow
+  self.cords.x = data.cords.x
+  self.cords.y = data.cords.y
+  self.bombs = data.bombs
+  self.pandora = data.pandora
+  end
 
 return Field
 --Rückgabe des Objekts Field
