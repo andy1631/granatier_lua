@@ -158,6 +158,20 @@ function Field:getData()
     }
     return data
 end
+function Field:setData(data)
+    self.type = data.type
+    self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
+    self.hitbox.solid = data.hitbox.solid
+    self.hitbox.cords = self.cords
+    self.position.x = data.position.x
+    self.position.y = data.position.y
+    self.hitboxshow = data.hitboxshow
+    self.cords.x = data.cords.x
+    self.cords.y = data.cords.y
+    self.bombs = data.bombs
+    self.pandora = data.pandora
+    self:spawnPowerUp(data.powerup)
+end
 
 return Field
 --Rückgabe des Objekts Field
