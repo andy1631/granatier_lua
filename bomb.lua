@@ -119,169 +119,229 @@ end
 function Bomb:explodeAnimation()
     if self.isExploding == true then
         if self.explodeState == 0 then
-            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_0.svg")
-            self.texture = Tove.newGraphics(self.texture, self.size)
-            self.texture:draw(self.position.x, self.position.y)
             if self.north > 0 then
-                for k, v in pairs(self.northCords) do
+                for i = table.getn(self.northCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_0.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y - (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y - (self.northCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.south > 0 then
-                for k, v in pairs(self.southCords) do
+                for i = table.getn(self.southCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_0.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y + (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y + (self.southCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.east > 0 then
-                for k, v in pairs(self.eastCords) do
+                for i = table.getn(self.eastCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_0.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x + (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x + (self.eastCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
             if self.west > 0 then
-                for k, v in pairs(self.westCords) do
+                for i = table.getn(self.westCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_0.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x - (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x - (self.westCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_0.svg")
+            self.texture = Tove.newGraphics(self.texture, self.size)
+            self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
         end
         if self.explodeState == 1 then
-            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_1.svg")
-            self.texture = Tove.newGraphics(self.texture, self.size)
-            self.texture:draw(self.position.x, self.position.y)
             if self.north > 0 then
-                for k, v in pairs(self.northCords) do
+                for i = table.getn(self.northCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_1.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y - (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y - (self.northCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.south > 0 then
-                for k, v in pairs(self.southCords) do
+                for i = table.getn(self.southCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_1.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y + (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y + (self.southCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.east > 0 then
-                for k, v in pairs(self.eastCords) do
+                for i = table.getn(self.eastCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_1.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x + (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x + (self.eastCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
             if self.west > 0 then
-                for k, v in pairs(self.westCords) do
+                for i = table.getn(self.westCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_1.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x - (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x - (self.westCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_1.svg")
+            self.texture = Tove.newGraphics(self.texture, self.size)
+            self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
         end
         if self.explodeState == 2 then
-            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_2.svg")
-            self.texture = Tove.newGraphics(self.texture, self.size)
-            self.texture:draw(self.position.x, self.position.y)
             if self.north > 0 then
-                for k, v in pairs(self.northCords) do
+                for i = table.getn(self.northCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_2.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y - (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y - (self.northCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.south > 0 then
-                for k, v in pairs(self.southCords) do
+                for i = table.getn(self.southCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_2.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y + (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y + (self.southCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.east > 0 then
-                for k, v in pairs(self.eastCords) do
+                for i = table.getn(self.eastCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_2.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x + (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x + (self.eastCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
             if self.west > 0 then
-                for k, v in pairs(self.westCords) do
+                for i = table.getn(self.westCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_2.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x - (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x - (self.westCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_2.svg")
+            self.texture = Tove.newGraphics(self.texture, self.size)
+            self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
         end
         if self.explodeState == 3 then
-            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_3.svg")
-            self.texture = Tove.newGraphics(self.texture, self.size)
-            self.texture:draw(self.position.x, self.position.y)
             if self.north > 0 then
-                for k, v in pairs(self.northCords) do
+                for i = table.getn(self.northCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_3.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y - (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y - (self.northCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.south > 0 then
-                for k, v in pairs(self.southCords) do
+                for i = table.getn(self.southCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_3.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y + (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y + (self.southCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.east > 0 then
-                for k, v in pairs(self.eastCords) do
+                for i = table.getn(self.eastCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_3.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x + (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x + (self.eastCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
             if self.west > 0 then
-                for k, v in pairs(self.westCords) do
+                for i = table.getn(self.westCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_3.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x - (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x - (self.westCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_3.svg")
+            self.texture = Tove.newGraphics(self.texture, self.size)
+            self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
         end
         if self.explodeState == 4 then
-            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_4.svg")
-            self.texture = Tove.newGraphics(self.texture, self.size)
-            self.texture:draw(self.position.x, self.position.y)
             if self.north > 0 then
-                for k, v in pairs(self.northCords) do
+                for i = table.getn(self.northCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_north_4.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y - (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y - (self.northCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.south > 0 then
-                for k, v in pairs(self.southCords) do
+                for i = table.getn(self.southCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_south_4.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x, self.position.y + (v))
+                    self.texture:draw(
+                        self.position.x + self.origin.x,
+                        self.position.y + (self.southCords[i]) + self.origin.y
+                    )
                 end
             end
             if self.east > 0 then
-                for k, v in pairs(self.eastCords) do
+                for i = table.getn(self.eastCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_east_4.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x + (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x + (self.eastCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
             if self.west > 0 then
-                for k, v in pairs(self.westCords) do
+                for i = table.getn(self.westCords), 1, -1 do
                     self.texture = love.filesystem.read("resources/SVG/bomb_blast_west_4.svg")
                     self.texture = Tove.newGraphics(self.texture, (self.size * 2))
-                    self.texture:draw(self.position.x - (v), self.position.y)
+                    self.texture:draw(
+                        self.position.x + self.origin.x - (self.westCords[i]),
+                        self.position.y + self.origin.y
+                    )
                 end
             end
+            self.texture = love.filesystem.read("resources/SVG/bomb_blast_core_4.svg")
+            self.texture = Tove.newGraphics(self.texture, self.size)
+            self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
         end
     end
 end
@@ -483,7 +543,6 @@ function Bomb:setData(data)
     self.eastCords = data.eastCords
     self.westCords = data.westCords
 end
-
 function Bomb:moveOld(dt)
     local oldCords = self.cords:clone()
     self.hitbox:move(self.movedirection.x * (dt * 50), self.movedirection.y * (dt * 50))

@@ -82,52 +82,53 @@ function Field:spawnPowerUp(number)
     else
         randomNumber = number
     end
+    --randomNumber = 10
     -- Spiegel:
     if randomNumber == 1 then
         -- Kaffee:
-        self.PowerUp = PowerUpMirror(self.position)
+        self.PowerUp = PowerUpMirror(self.position, self.origin)
     elseif randomNumber == 2 then
         -- Fessel:
-        self.PowerUp = PowerUpCoffee(self.position)
+        self.PowerUp = PowerUpCoffee(self.position, self.origin)
     elseif randomNumber == 3 then
         -- Wirft Bomben zu zufälligen Positionen (Scatty):
-        self.PowerUp = PowerUpRestrain(self.position)
+        self.PowerUp = PowerUpRestrain(self.position, self.origin)
     elseif randomNumber == 4 then
         -- Schnecke:
-        self.PowerUp = PowerUpScatty(self.position)
+        self.PowerUp = PowerUpScatty(self.position, self.origin)
     elseif randomNumber == 5 then
         -- Bombe:
-        self.PowerUp = PowerUpSlow(self.position)
+        self.PowerUp = PowerUpSlow(self.position, self.origin)
     elseif randomNumber == 6 then
         -- Fußball:
-        self.PowerUp = PowerUpThrow(self.position)
+        self.PowerUp = PowerUpThrow(self.position, self.origin)
     elseif randomNumber == 7 then
         -- Werfen:
-        self.PowerUp = PowerUpKick(self.position)
+        self.PowerUp = PowerUpKick(self.position, self.origin)
     elseif randomNumber == 8 then
         -- Zufallbox:
-        self.PowerUp = PowerUpBomb(self.position)
+        self.PowerUp = PowerUpBomb(self.position, self.origin)
     elseif randomNumber == 9 then
         -- Power:
-        self.PowerUp = PowerUpPandora(self.position)
+        self.PowerUp = PowerUpPandora(self.position, self.origin)
         self.pandora = true
     elseif randomNumber == 10 then
         -- Schild:
-        self.PowerUp = PowerUpPower(self.position)
+        self.PowerUp = PowerUpPower(self.position, self.origin)
     elseif randomNumber == 11 then
         -- Schneller bewegen:
-        self.PowerUp = PowerUpShield(self.position)
+        self.PowerUp = PowerUpShield(self.position, self.origin)
     elseif randomNumber == 12 then
         -- Teleporter:  --no fuctionality
-        self.PowerUp = PowerUpSpeed(self.position)
+        self.PowerUp = PowerUpSpeed(self.position, self.origin)
     elseif randomNumber == 26 then
         -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect): --no functionality
-        self.PowerUp = PowerUpTeleport(self.position)
+        self.PowerUp = PowerUpTeleport(self.position, self.origin)
     elseif randomNumber == 27 then
         -- Mauern bauen:  no functionality
-        self.PowerUp = PowerUpResurrect(self.position)
+        self.PowerUp = PowerUpResurrect(self.position, self.origin)
     elseif randomNumber == 28 then
-        self.PowerUp = PowerUpMason(self.position)
+        self.PowerUp = PowerUpMason(self.position, self.origin)
     end
     if self.PowerUp ~= nil then
         self.powerupNo = randomNumber

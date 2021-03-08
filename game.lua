@@ -58,7 +58,7 @@ function game:update(dt)
             local dump = Bitser.dumps(map:getData())
             local compressed = LibDeflate:CompressDeflate(dump)
             local decompressed = LibDeflate:DecompressDeflate(compressed)
-            map:setData(Bitser.loads(decompressed))
+            -- map:setData(Bitser.loads(decompressed))
             --local bytes = {string.byte(dump, 1, -1)}
             --local data = ""
             --for k, v in pairs(bytes) do
