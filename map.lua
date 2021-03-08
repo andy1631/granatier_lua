@@ -6,10 +6,10 @@ Field = require "field"
 Vector = require "lib.hump.vector"
 Bomb = require "bomb"
 --Tove = require "lib.tove"
---StatusBar = require "statusBar"
+StatusBar = require "statusBar"
 Bitser = require "lib.bitser.bitser"
 
-Map = Bitser.registerClass("Map", Class{})
+Map = Class {}
 
 function Map:init(x, y)
     if x == nil or y == nil then
@@ -50,18 +50,10 @@ function Map:init(x, y)
     end
 
     -- Show the background
-    --self.background = love.filesystem.read("resources/SVG/background.svg")
-    --self.background = Bitser.register("background", Tove.newGraphics(self.background))
-    --self.background:rescale(1200)
-    --self.statusBar = StatusBar()
-    --self.statusBar:createTextBox(self.playerCount)
-    --Bitser.register("Map:spawn", self.spawn)
-    --Bitser.register("Map:update", self.update)
-    --Bitser.register("Map:draw", self.draw)
-    --Bitser.register("Map:setBomb", self.setBomb)
-    --Bitser.register("Map:changeType", self.changeType)
-    --Bitser.register("Map:addSpawn", self.addSpawn)
-    --Bitser.register("Map:resize", self.resize)
+    self.background = love.filesystem.read("resources/SVG/background.svg")
+    self.background = Tove.newGraphics(self.background, 1200)
+    self.statusBar = StatusBar()
+    self.statusBar:createTextBox(#self.players)
 end
 
 --Bitser.register('Map:init', Map.init)
@@ -71,14 +63,15 @@ function Map:spawn()
     local relX = self.spawns[rnd].x
     local relY = self.spawns[rnd].y
     table.remove(self.spawns, rnd)
-    self.players[self.playerCount] =
+    self.players[#self.players] =
         Player(
         self.fields[relX][relY].position.x - self.position.x,
         self.fields[relX][relY].position.y - self.position.y,
         self.playerCount,
         self.position,
         self.fieldSize
-        ) -- TODO relative position for field?
+    )
+    -- TODO relative position for field?
     self.playerCount = self.playerCount + 1
 end
 
@@ -103,13 +96,13 @@ function Map:update(dt)
             v:update(dt)
         end
     end
-    --self.statusBar:update()
+    self.statusBar:update()
 end
 
 --shows the map
 function Map:draw()
     love.graphics.reset()
-    --self.background:draw(600, 337.5) -- Hintergrund zeichnen lassen
+    self.background:draw(600, 337.5) -- Hintergrund zeichnen lassen
 
     for i = 1, self.x, 1 do
         for j = 1, self.y, 1 do
@@ -122,7 +115,7 @@ function Map:draw()
     for key, value in pairs(self.players) do
         self.players[key]:draw()
     end
-    --self.statusBar:draw()
+    self.statusBar:draw()
 end
 
 --Method to set bombs and set bombs to a whole field
@@ -169,6 +162,73 @@ function Map:addSpawn(x, y)
 end
 
 function Map:resize(w, h)
+end
+
+function Map:getData()
+    local data = {
+        players = {},
+        fields = {},
+        bombs = {}
+    }
+    for k, player in pairs(self.players) do
+        table.insert(data.players, player:getData())
+    end
+    for i, fields in pairs(self.fields) do
+        data.fields[i] = {}
+        for j, field in pairs(fields) do
+            data.fields[i][j] = field:getData()
+        end
+    end
+    for k, bomb in pairs(self.bombs) do
+        table.insert(data.bombs, bomb:getData())
+    end
+    return data
+end
+
+function Map:setData(data)
+    if table.getn(data.players) ~= table.getn(self.players) then
+        for i = 1, table.getn(data.players) - table.getn(self.players), 1 do
+           self.players[#self.players] =
+        Player(
+        0,
+        0,
+        #self.players,
+        self.position,
+        self.fieldSize
+    )
+        end
+    end
+    for k, player in pairs(self.players) do
+        player:setData(data.players[k+1])
+    end
+    if #self.fields == 0 then
+        for k, field in pairs(data.fields) do
+            table.insert(
+                self.fields,
+                Field(
+                    Vector.new(data.fields[k].position.x, data.fields[k].position.x),
+                    self.fieldSize,
+                    data.fields[k].type,
+                    Vector.new(data.fields[k].cords.x, data.fields[k].cords.y)
+                )
+            )
+        end
+    else
+        for i, fields in pairs(self.fields) do
+            for j, field in pairs(fields) do
+                field:setData(data.fields[i][j])
+            end
+        end
+    end
+
+    if table.getn(data.bombs) ~= table.getn(self.bombs) then
+        for i = 1, table.getn(data.bombs) - table.getn(self.bombs), 1 do
+            table.insert(self.bombs, Bomb(nil, 0, nil))
+        end
+    end
+    for k, bomb in pairs(self.bombs) do
+        bomb:setData(data.bombs[k])
+    end
 end
 
 return Map

@@ -18,7 +18,7 @@ PowerUpTeleport = require "Powerups.powerUpTeleport"
 PowerUpThrow = require "Powerups.powerUpThrow"
 --Laden den oben gennanten Module
 
-Field = Bitser.registerClass("Field", Class {})
+Field = Class {}
 --Field als Objekt festlegen
 
 function Field:init(pos, size, t, cords)
@@ -26,7 +26,7 @@ function Field:init(pos, size, t, cords)
     self.hitbox = HC.rectangle(pos.x, pos.y, size, size)
     local x, y = self.hitbox:center()
     self.position = Vector.new(x, y)
-    self.hitboxshow = true
+    self.hitboxshow = false
     self.cords = cords
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
     self.hitbox.cords = self.cords
@@ -67,6 +67,7 @@ function Field:update(dt)
             end
             self.PowerUp:usePowerUp(map.players[0])
             self.PowerUp = nil
+            self.powerupNo = nil
             source = love.audio.newSource("resources/sounds/wow.wav", "static")
             love.audio.play(source)
         end
@@ -146,9 +147,10 @@ end
 --Festlegen des Types als HitBox
 
 function Field:getData()
+    local hx, hy = self.hitbox:center()
     local data = {
         ["type"] = self.type,
-        hitbox = {x, y = self.hitbox:center(), solid = self.hitbox.solid},
+        hitbox = {x = hx, y = hy, solid = self.hitbox.solid},
         position = {x = self.position.x, y = self.position.y},
         hitboxshow = self.hitboxshow,
         cords = {x = self.cords.x, y = self.cords.y},
@@ -171,7 +173,9 @@ function Field:setData(data)
     self.cords.y = data.cords.y
     self.bombs = data.bombs
     self.pandora = data.pandora
+    if data.powerup ~= nil then
     self:spawnPowerUp(data.powerup)
+    end
 end
 
 return Field

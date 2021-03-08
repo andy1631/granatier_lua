@@ -5,9 +5,11 @@ Map = require "map"
 Player = require "player"
 Field = require "field"
 Bomb = require "bomb"
+LibDeflate = require "lib.LibDeflate"
 
 local host = false
-local updaterate = 0.1
+local updaterate = 0.03
+local timer = 0
 local connections = {}
 local game = {}
 
@@ -28,20 +30,14 @@ function game:enter(curr, address, port)
 end
 
 function game:update(dt)
+    timer = timer + dt
     if not host then
-        local data
-        local dump = ""
-        for i = 1, 2, 1 do
-            data = udp:receive()
-            if data ~= nil then
-                dump = dump .. data
-            end
-        end
-
-        if dump ~= "" then
-            local copy = Bitser.loads(dump)
-            if ok then
-                map = copy
+        if timer > updaterate then
+            local dump = udp:receive()
+            if dump ~= "" then
+                local data = Bitser.loads(dump)
+                local decompressed = LibDeflate:DecompressDeflate(data)
+                map:setData(decompressed)
             end
         end
     else
@@ -57,21 +53,25 @@ function game:update(dt)
                 end
             end
         end
-        local dump = Bitser.dumps(map)
-        map = Bitser.loads(dump)
-        --local bytes = {string.byte(dump, 1, -1)}
-        --local data = ""
-        --for k, v in pairs(bytes) do
-        --    data = data .. tostring(v) .. ","
-        --end
-        --for key, value in pairs(connections) do
-        --    for i = 1, 4 do
-        --        udp:sendto(data.sub(#data / 4 * (i - 1) + 1, i * (#data / 4)), value[1], value[2])
-        --    end
-        --end
-        for key, value in pairs(connections) do
-            udp:sendto(string.sub(dump, 1, #dump / 2), value[1], value[2])
-            udp:sendto(string.sub(dump, #dump / 2 + 1, -1), value[1], value[2])
+
+        if timer > updaterate then
+            local dump = Bitser.dumps(map:getData())
+            local compressed = LibDeflate:CompressDeflate(dump)
+            local decompressed = LibDeflate:DecompressDeflate(compressed)
+            map:setData(Bitser.loads(decompressed))
+            --local bytes = {string.byte(dump, 1, -1)}
+            --local data = ""
+            --for k, v in pairs(bytes) do
+            --    data = data .. tostring(v) .. ","
+            --end
+            --for key, value in pairs(connections) do
+            --    for i = 1, 4 do
+            --        udp:sendto(data.sub(#data / 4 * (i - 1) + 1, i * (#data / 4)), value[1], value[2])
+            --    end
+            --end
+            for key, value in pairs(connections) do
+                udp:sendto(compressed, value[1], value[2])
+            end
         end
     end
     map:update(dt)

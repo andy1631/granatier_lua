@@ -43,8 +43,8 @@ function Player:init(x, y, id, origin, size)
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
-    --self.texturePath = love.filesystem.read("resources/player2.svg")
-    --self.texture = Tove.newGraphics(self.texturePath, self.size)
+    self.texturePath = love.filesystem.read("resources/player2.svg")
+    self.texture = Tove.newGraphics(self.texturePath, self.size)
 end
 --Anzeige der SVG-Spielers
 --ÜBergabe der aktuellen Position des Spielers als String
@@ -56,7 +56,6 @@ end
 function Player:draw()
     local dir = 0
     local posCorrect = Vector.new(0, 0)
-    --love.graphics.translate(self.position.x, self.position.y)
     if self.direction == "up" then
         dir = -math.pi / 2
         posCorrect = Vector.new(0, self.size)
@@ -72,23 +71,19 @@ function Player:draw()
         self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
     end
     if self.fallen == false then
-    --self.texture:draw(
-    --    self.origin.x + self.position.x + posCorrect.x,
-    --   self.origin.y + self.position.y + posCorrect.y,
-    --   dir
-    --)
+    self.texture:draw(
+       self.origin.x + self.position.x + posCorrect.x,
+       self.origin.y + self.position.y + posCorrect.y,
+       dir
+    )
     end
-    --love.graphics.rotate(dir)
-    --love.graphics.translate(-(self.position.x), -(self.position.y))
-    --love.graphics.setColor(255,255,255,1)
     --self.hitbox:draw('line')
-    --Zeigen der Spielfigur und zeichnen der HitBox
+   
 
     --love.graphics.print("mirror: " .. tostring(self.stats.mirror), 0, 0)
     --love.graphics.print("velocity: " .. tostring(self.velocity), 0, 15)
     --love.graphics.print("Timer: " .. tostring(self.powerUpTime), 0, 30)
     --love.graphics.print("direction: " .. tostring(self.direction), 0, 45)
-    self.hitbox:draw()
 end
 function Player:move(x, y)
     self.velocity = (self.velocity + self.acceleration * Vector.new(x, y))
@@ -310,10 +305,11 @@ function Player:die()
 end
 
 function Player:getData()
+  local hx, hy = self.hitbox:center()
     local data = {
         id = self.id,
         position = {x = self.position.x, y = self.position.y},
-        hitbox = {x, y = self.hitbox:center(), r = self.hitbox._radius},
+        hitbox = {x = hx, y = hy},
         velocity = {x = self.velocity.x, y = self.velocity.y},
         acceleration = self.acceleration / self.size,
         frictionRatio = self.frictionRatio,
