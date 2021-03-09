@@ -335,11 +335,11 @@ function Player:die()
 end
 
 function Player:getData()
-    --local hx, hy = self.hitbox:center()
+    local hx, hy = self.hitbox:center()
     local data = {
         id = self.id,
-        --position = {x = self.position.x, y = self.position.y},
-        --hitbox = {x = hx, y = hy},
+        position = {x = self.position.x, y = self.position.y},
+        hitbox = {x = hx, y = hy},
         velocity = {x = self.velocity.x, y = self.velocity.y},
         acceleration = self.acceleration / self.size,
         frictionRatio = self.frictionRatio,
