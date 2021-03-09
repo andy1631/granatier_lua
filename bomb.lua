@@ -483,12 +483,16 @@ function Bomb:explode()
             table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
         end
     end
-    for k, v in pairs(fieldsCords) do -- TODO What is this?
-        for j, l in pairs(map.players) do
-            if l:playerOnField(v) == true then
-                l:explode()
-            end
+    for j, l in pairs(map.players) do
+      if l.stats.shield == false then
+        for k, v in pairs(fieldsCords) do
+          if l:playerOnField(v) == true then
+            l:explode()
+          end
         end
+      else
+        l.stats.shield = false
+      end
     end
     self.hitbox.solid = false
 end

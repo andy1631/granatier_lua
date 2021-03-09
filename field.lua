@@ -78,6 +78,7 @@ end
 function Field:spawnPowerUp(number)
     local randomNumber
     if number == nil then
+        math.randomseed(os.time())
         randomNumber = math.random(1, 18)
     else
         randomNumber = number
