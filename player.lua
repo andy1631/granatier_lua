@@ -302,44 +302,44 @@ function Player:playerOnField(pos)
 end
 
 function Player:explode()
-  if map.death == true then
-    if self.dead == false then
-      source = love.audio.newSource("resources/sounds/die.wav", "static")
-      love.audio.play(source)
-      self.dead = true
-      self.exploded = true
-      self.texture = self.deadtexture
-      self:die()
-    elseif self.exploded == true then
-      self.texture = nil
-      source = love.audio.newSource("resources/sounds/joint.wav", "static")
-      love.audio.play(source)
+    if map.death == true then
+        if self.dead == false then
+            source = love.audio.newSource("resources/sounds/die.wav", "static")
+            love.audio.play(source)
+            self.dead = true
+            self.exploded = true
+            self.texture = self.deadtexture
+            self:die()
+        elseif self.exploded == true then
+            self.texture = nil
+            source = love.audio.newSource("resources/sounds/joint.wav", "static")
+            love.audio.play(source)
+        end
     end
-  end
 end
 
 function Player:fallOutOfWorld()
-  if map.death == true then
-    if self.dead == false then
-        self.velocity.x = 0
-        self.velocity.y = 0
-        self.acceleration = 0
-        self.dead = true
-        self.fall = true
-        self.falltime = 2
+    if map.death == true then
+        if self.dead == false then
+            self.velocity.x = 0
+            self.velocity.y = 0
+            self.acceleration = 0
+            self.dead = true
+            self.fall = true
+            self.falltime = 2
+        end
     end
-  end
 end
 
 function Player:die()
 end
 
 function Player:getData()
-    local hx, hy = self.hitbox:center()
+    --local hx, hy = self.hitbox:center()
     local data = {
         id = self.id,
-        position = {x = self.position.x, y = self.position.y},
-        hitbox = {x = hx, y = hy},
+        --position = {x = self.position.x, y = self.position.y},
+        --hitbox = {x = hx, y = hy},
         velocity = {x = self.velocity.x, y = self.velocity.y},
         acceleration = self.acceleration / self.size,
         frictionRatio = self.frictionRatio,

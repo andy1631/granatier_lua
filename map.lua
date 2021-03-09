@@ -55,7 +55,7 @@ function Map:init(x, y)
     self.background = love.filesystem.read("resources/SVG/background.svg")
     self.background = Tove.newGraphics(self.background, 1200)
     self.statusBar = StatusBar()
-    self.statusBar:createTextBox(#self.players)
+    self.statusBar:createTextBox(self.playerCount)
 end
 
 --Bitser.register('Map:init', Map.init)
@@ -65,7 +65,7 @@ function Map:spawn()
     local relX = self.spawns[rnd].x
     local relY = self.spawns[rnd].y
     table.remove(self.spawns, rnd)
-    self.players[#self.players] =
+    self.players[self.playerCount] =
         Player(
         self.fields[relX][relY].position.x,
         self.fields[relX][relY].position.y,
@@ -74,6 +74,7 @@ function Map:spawn()
         self.fieldSize
     )
     self.playerCount = self.playerCount + 1
+    return self.players[self.playerCount-1]
 end
 
 function Map:update(dt)
@@ -174,6 +175,7 @@ end
 
 function Map:getData()
     local data = {
+        playerCount = self.playerCount,
         players = {},
         fields = {},
         bombs = {}
@@ -194,9 +196,9 @@ function Map:getData()
 end
 
 function Map:setData(data)
-    if table.getn(data.players) ~= table.getn(self.players) then
-        for i = 1, table.getn(data.players) - table.getn(self.players), 1 do
-            self.players[#self.players] = Player(0, 0, #self.players, self.position, self.fieldSize)
+    if data.playerCount ~= self.playerCount then
+        for i = 1, data.playerCount - self.playerCount, 1 do
+            self.players[self.playerCount] = Player(0, 0, self.playerCount, self.position, self.fieldSize)
         end
     end
     for k, player in pairs(self.players) do
@@ -224,7 +226,7 @@ function Map:setData(data)
 
     if table.getn(data.bombs) ~= table.getn(self.bombs) then
         for i = 1, table.getn(data.bombs) - table.getn(self.bombs), 1 do
-            table.insert(self.bombs, Bomb(nil, 0, nil))
+            table.insert(self.bombs, Bomb(Vector.new(0, 0), 0, Vector.new(0, 0), self.position))
         end
     end
     for k, bomb in pairs(self.bombs) do

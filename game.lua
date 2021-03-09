@@ -57,18 +57,6 @@ function game:update(dt)
         if timer > updaterate then
             local dump = Bitser.dumps(map:getData())
             local compressed = LibDeflate:CompressDeflate(dump)
-            --local decompressed = LibDeflate:DecompressDeflate(compressed)
-            -- map:setData(Bitser.loads(decompressed))
-            --local bytes = {string.byte(dump, 1, -1)}
-            --local data = ""
-            --for k, v in pairs(bytes) do
-            --    data = data .. tostring(v) .. ","
-            --end
-            --for key, value in pairs(connections) do
-            --    for i = 1, 4 do
-            --        udp:sendto(data.sub(#data / 4 * (i - 1) + 1, i * (#data / 4)), value[1], value[2])
-            --    end
-            --end
             for key, value in pairs(connections) do
                 udp:sendto(compressed, value[1], value[2])
             end

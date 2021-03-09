@@ -176,7 +176,9 @@ function Field:setData(data)
     self.cords.y = data.cords.y
     self.bombs = data.bombs
     self.pandora = data.pandora
-    if data.powerup ~= nil then
+    self.powerupNo = nil
+    self.powerup = nil
+    if data.PowerUp ~= nil then
         self:spawnPowerUp(data.powerup)
     end
 end
