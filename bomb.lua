@@ -33,9 +33,10 @@ function Bomb:init(pos, power, cords, origin)
   self.eastCords = {}
   self.westCords = {}
   self.movedirection = nil
-  self.stridex = 0
-  self.stridey = 0
+  self.stride = 0
   self.moveBomb = false
+  self.dir = nil
+  self.arrow = false
 end
 
 function Bomb:draw()
@@ -49,12 +50,12 @@ function Bomb:draw()
 end
 
 function Bomb:update(dt)
-  if self.movedirection ~= nil then
+  if self.arrow or self.moveBomb  then
     self:move(dt)
-  else
+  elseif not self.arrow then
     self:arrowCheck()
-    self.time = self.time - dt
   end
+  self.time = self.time - dt
   if self.scale <= 32 then
     self.scaleFactor = 12 * dt
   elseif self.scale >= 35 then
@@ -62,7 +63,7 @@ function Bomb:update(dt)
   end
   self.scale = self.scale + self.scaleFactor
   self.bomb:rescale(self.scale)
-  if self.time <= 0 and not self.isExploding then
+  if self.time <= 0 and not self.isExploding and not self.moveBomb then
     self:explode()
   end
 
@@ -87,99 +88,107 @@ function Bomb:update(dt)
 end
 
 function Bomb:arrowCheck()
-  if self.moveBomb ~= true then
+  if not self.moveBomb then
     if map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_up" then
       self.movedirection = Vector.new(0, -5)
+      self.dir = "up"
+      self.arrow = true
     elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_down" then
       self.movedirection = Vector.new(0, 5)
+      self.dir = "down"
+      self.arrow = true
     elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_right" then
       self.movedirection = Vector.new(5, 0)
+      self.dir = "right"
+      self.arrow = true
     elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_left" then
       self.movedirection = Vector.new(-5, 0)
+      self.dir = "left"
+      self.arrow = true
     end
   end
 end
 
 function Bomb:move(dt)
   if not self.isExploding then
-    self.moveBomb = true
-    if map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_up" then
-      if map.fields[self.cords.x][self.cords.y-1]:getType() == "arena_greenwall" then
-        self.moveBomb = false
-        self.movedirection = nil
-      elseif map.fields[self.cords.x][self.cords.y-1]:getType() == "arena_wall" then
-        self.moveBomb = false
-        self.movedirection = nil
+    if not self.moveBomb then
+      if self.dir == "up" then
+        if map.fields[self.cords.x][self.cords.y-1]:getType() ~= "arena_greenwall"
+        and map.fields[self.cords.x][self.cords.y-1]:getType() ~= "arena_wall" then
+          self.moveBomb = true
+        end
+      elseif self.dir == "down" then
+        if map.fields[self.cords.x][self.cords.y+1]:getType() ~= "arena_greenwall" 
+        and map.fields[self.cords.x][self.cords.y+1]:getType() ~= "arena_wall" then
+          self.moveBomb = true
+        end
+      elseif self.dir == "right" then
+        if map.fields[self.cords.x+1][self.cords.y]:getType() ~= "arena_greenwall" 
+        and map.fields[self.cords.x+1][self.cords.y]:getType() ~= "arena_wall" then
+          self.moveBomb = true
+        end
+      elseif self.dir == "left" then
+        if map.fields[self.cords.x-1][self.cords.y]:getType() ~= "arena_greenwall" 
+        and map.fields[self.cords.x-1][self.cords.y]:getType() ~= "arena_wall" then
+          self.moveBomb = true
+        end
       end
-    elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_down" then
-      if map.fields[self.cords.x][self.cords.y+1]:getType() == "arena_greenwall" then
-        self.moveBomb = false
-        self.movedirection = nil
-      elseif map.fields[self.cords.x][self.cords.y+1]:getType() == "arena_wall" then
-        self.moveBomb = false
-        self.movedirection = nil
-      end
-    elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_right" then
-      if map.fields[self.cords.x+1][self.cords.y]:getType() == "arena_greenwall" then
-        self.moveBomb = false
-        self.movedirection = nil
-      elseif map.fields[self.cords.x+1][self.cords.y]:getType() == "arena_wall" then
-        self.moveBomb = false
-        self.movedirection = nil
-      end
-    elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_left" then
-      if map.fields[self.cords.x-1][self.cords.y-1]:getType() == "arena_greenwall" then
-        self.moveBomb = false
-        self.movedirection = nil
-      elseif map.fields[self.cords.x-1][self.cords.y-1]:getType() == "arena_wall" then
-        self.moveBomb = false
-        self.movedirection = nil
+      if self.moveBomb then
+        map.fields[self.cords.x][self.cords.y].bombs = 0
       end
     end
-
+    
     if self.moveBomb then
-      local oldCords = self.cords:clone()
-      self.stridex = self.stridex + self.movedirection.x * (dt * 50)
-      self.stridey = self.stridey + self.movedirection.y * (dt * 50)
+      self.stride = self.stride + self.movedirection:len() * (dt * 50)
       self.hitbox:move(self.movedirection.x * (dt * 50), self.movedirection.y * (dt * 50))
-      for shapes, delta in pairs(HC.collisions(self.hitbox)) do
-        if shapes.solid then
-          self.hitbox:move(delta.x, delta.y)
-          if math.sqrt(delta.x ^ 2 + delta.y ^ 2) > 0 then
-            self.movedirection = nil
-            self.moveBomb = false
-          end
-        end
-      end
-      if self.stridex>=40 then
+      local posx, posy = self.hitbox:center()
+      self.position.x = posx - self.origin.x
+      self.position.y = posy - self.origin.y
+    end
+    
+    if self.stride>= map.fieldSize then
+      self.moveBomb = false
+      self.stride = 0
+      self.cords = self.cords + self.movedirection:normalized()
+      map.fields[self.cords.x][self.cords.y].bombs = 1
+      self.hitbox:moveTo(map.fields[self.cords.x][self.cords.y].position.x + self.origin.x,map.fields[self.cords.x][self.cords.y].position.y+self.origin.y)
+      self.position = map.fields[self.cords.x][self.cords.y].position:clone()
+    end
+      
+    if not self.moveBomb then
+      self:arrowCheck()
+    end
+      
+      --[[if self.stridex>=map.fieldSize then
         self.cords = self:getRelPos()
         self.stridex = 0
         if string.match(map.fields[self.cords.x][self.cords.y]:getType(),"arrow") then
           self.moveBomb = false
           self:arrowCheck()
         end
-      elseif self.stridex<=-40 then
+      elseif self.stridex<=-map.fieldSize then
         self.cords = self:getRelPos()
         self.stridex = 0
         if string.match(map.fields[self.cords.x][self.cords.y]:getType(),"arrow") then
           self.moveBomb = false
           self:arrowCheck()
         end
-      elseif self.stridey>=40 then
+      elseif self.stridey>=map.fieldSize then
         self.cords = self:getRelPos()
         self.stridey = 0
         if string.match(map.fields[self.cords.x][self.cords.y]:getType(),"arrow") then
           self.moveBomb = false
           self:arrowCheck()
         end
-      elseif self.stridey<=-40 then
+      elseif self.stridey<=-map.fieldSize then
         self.cords = self:getRelPos()
         self.stridey = 0
         if string.match(map.fields[self.cords.x][self.cords.y]:getType(),"arrow") then
           self.moveBomb = false
           self:arrowCheck()
         end
-      end
+      end]]
+      --[[local oldCords = self.cords:clone()
       local posx, posy = self.hitbox:center()
       self.position.x = posx - self.origin.x
       self.position.y = posy - self.origin.y
@@ -187,8 +196,7 @@ function Bomb:move(dt)
       if oldCords ~= self.cords then
         map.fields[oldCords.x][oldCords.y].bombs = 0
         map.fields[self.cords.x][self.cords.y].bombs = 1
-      end
-    end
+      end]]
   end
 end
 
