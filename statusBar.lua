@@ -96,30 +96,47 @@ function StatusBar:draw()
     self.MirrorBool = false
     self.ScattyBool = false
     self.RestrainBool = false--]]
+    -- Ausgabe, ob die Variable true oder false ist:
+    love.graphics.printf({{0, 0, 255, 255}, "Variable self.SlowBool vor ifs ist " .. tostring(self.SlowBool)}, self.x, self.y + 150, 100, 'center')
+    love.graphics.printf({{0, 0, 255, 255}, "Variable self.HyperBool vor ifs ist " .. tostring(self.HyperBool)}, self.x, self.y + 450, 100, 'center')
+    love.graphics.setColor(255, 255, 255, 255)
     if map.players[i-1].stats.slow == true then -- Falls das Slow-Power-Up eingesammelt wurde
       love.graphics.setColor(255, 255, 255, 255)
+      love.graphics.printf({{0, 0, 255, 255}, "if slow == true -> " .. tostring(self.SlowBool)}, self.x, self.y + 500, 100, 'center')
       self.SlowTex:draw(238, self.powerUpY)
       self.SlowBool = true
+      self.HyperBool = true
+      self.MirrorBool = false
+      self.ScattyBool = false
+      self.RestrainBool = false
     end
+    love.graphics.printf({{0, 0, 255, 255}, "Variable self.SlowBool vor if ist " .. tostring(self.SlowBool)}, self.x, self.y + 250, 100, 'center')
     if (map.players[i-1].stats.slow == false and self.SlowBool == true) then -- Falls das Slow-Power-Up eingesammelt wurde, muss es ausgegraut werden
+      love.graphics.printf({{0, 0, 255, 255}, "Variable self.SlowBool in if ist " .. tostring(self.SlowBool)}, self.x, self.y + 250, 100, 'center')
       love.graphics.setColor(255, 0, 0, 180)
       self.SlowTex:draw(238, self.powerUpY)
     end
     if map.players[i-1].stats.hyperactive == true then -- Falls das Hyperactive-Power-Up eingesammelt wurde
       love.graphics.setColor(255, 255, 255, 255)
+      love.graphics.printf({{0, 0, 255, 255}, "if hyper == true -> " .. tostring(self.HyperBool)}, self.x, self.y + 500, 100, 'center')
       self.HyperTex:draw(238, self.powerUpY)
       self.HyperBool = true
       self.SlowBool = false
       self.MirrorBool = false
       self.ScattyBool = false
       self.RestrainBool = false
+      love.graphics.printf({{0, 0, 255, 255}, "Variable self.HyperBool in if ist " .. tostring(self.HyperBool)}, self.x, self.y + 350, 100, 'center')
     end
+    --love.graphics.printf({{0, 0, 255, 255}, "stats.hyperactive == false -> "
+        --.. tostring(map.players[i-1].stats.hyperactive == false)}, self.x, self.y + 500, 100, 'center')
+    -- stats.hyperactive ist false, falls es nicht eingesammelt worden ist, trotzdem wird es nicht angezeigt
     if (map.players[i-1].stats.hyperactive == false and self.HyperBool == true) then -- Falls das Slow-Power-Up eingesammelt wurde, muss es ausgegraut werden
       love.graphics.setColor(255, 0, 0, 180)
       self.SlowTex:draw(238, self.powerUpY)
     end
     if map.players[i-1].stats.mirror == true then -- Falls das Spiegel-Power-Up eingesammelt wurde
       love.graphics.setColor(255, 255, 255, 255)
+      love.graphics.printf({{0, 0, 255, 255}, "if mirror == true -> " .. tostring(self.MirrorBool)}, self.x, self.y + 500, 100, 'center')
       self.MirrorTex:draw(238, self.powerUpY)
       self.MirrorBool = true
       self.SlowBool = false
@@ -133,6 +150,7 @@ function StatusBar:draw()
     end
     if map.players[i-1].stats.scatty == true then -- Falls das Scatty-Power-Up eingesammelt wurde
       love.graphics.setColor(255, 255, 255, 255)
+      love.graphics.printf({{0, 0, 255, 255}, "if scatty == true -> " .. tostring(self.ScattyBool)}, self.x, self.y + 500, 100, 'center')
       self.ScattyTex:draw(238, self.powerUpY)
       self.ScattyBool = true
       self.SlowBool = false
@@ -146,6 +164,7 @@ function StatusBar:draw()
     end
     if map.players[i-1].stats.restrain == true then -- Falls das Restrain-Power-Up eingesammelt wurde
       love.graphics.setColor(255, 255, 255, 255)
+      love.graphics.printf({{0, 0, 255, 255}, "if restrain == true -> " .. tostring(self.RestrainBool)}, self.x, self.y + 500, 100, 'center')
       self.RestrainTex:draw(238, self.powerUpY)
       self.RestrainBool = true
       self.SlowBool = false
@@ -153,6 +172,7 @@ function StatusBar:draw()
       self.MirrorBool = false
       self.ScattyBool = false
     end
+    love.graphics.printf({{0, 0, 255, 255}, "Variable self.RestrainBool vor ifs ist " .. tostring(self.RestrainBool)} .. " und map.player.restrain == " .. tostring(map.players[i-1].stats.restrain), self.x, self.y + 10, 100, 'center')
     if (map.players[i-1].stats.restrain == false and self.RestrainBool == true) then -- Falls das Slow-Power-Up eingesammelt wurde, muss es ausgegraut werden
       love.graphics.setColor(255, 0, 0, 180)
       self.SlowTex:draw(238, self.powerUpY)
