@@ -36,6 +36,7 @@ function Field:init(pos, size, t, cords, origin)
     self.Texture = Tove.newGraphics(self.Texture)
     self.Texture:rescale(40)
     self.pandora = false
+    math.randomseed(os.time())
 end
 --Festlegen der Position der Mauer
 
@@ -78,7 +79,6 @@ end
 function Field:spawnPowerUp(number)
     local randomNumber
     if number == nil then
-        math.randomseed(os.time())
         randomNumber = math.random(1, 18)
     else
         randomNumber = number
