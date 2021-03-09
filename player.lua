@@ -59,7 +59,6 @@ end
 function Player:draw()
     local dir = 0
     local posCorrect = Vector.new(0, 0)
-    --love.graphics.translate(self.position.x, self.position.y)
     if self.direction == "up" then
         dir = -math.pi / 2
         posCorrect = Vector.new(0, self.size)
@@ -71,25 +70,21 @@ function Player:draw()
         posCorrect = Vector.new(self.size, self.size)
     end
     dir = dir + self.directionOffset
-    
+
     --Rotation des Spielers bei Richtungswechsel
     if self.fall == true then
         self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
     end
     if self.fallen == false then
-      if self.exploded == false then 
-        self.texture:draw(
-            self.origin.x + self.position.x + posCorrect.x,
-            self.origin.y + self.position.y + posCorrect.y,
-            dir
-        )
+        if self.exploded == false then
+            self.texture:draw(
+                self.origin.x + self.position.x + posCorrect.x,
+                self.origin.y + self.position.y + posCorrect.y,
+                dir
+            )
         end
     end
-    --love.graphics.rotate(dir)
-    --love.graphics.translate(-(self.position.x), -(self.position.y))
-    --love.graphics.setColor(255,255,255,1)
     --self.hitbox:draw('line')
-    --Zeigen der Spielfigur und zeichnen der HitBox
 
     --love.graphics.print("mirror: " .. tostring(self.stats.mirror), 0, 0)
     --love.graphics.print("velocity: " .. tostring(self.velocity), 0, 15)
@@ -165,22 +160,22 @@ function Player:update(dt)
         else
             y = 0
         end
-        if self.velocity.length ~= 0 then 
-          if self.rotationDirection == -1 then
-            self.directionOffset = self.directionOffset - dt * 0.3
-            if self.directionOffset < -0.0523598776 then
-              self.rotationDirection = 1
+        if self.velocity.length ~= 0 then
+            if self.rotationDirection == -1 then
+                self.directionOffset = self.directionOffset - dt * 0.3
+                if self.directionOffset < -0.0523598776 then
+                    self.rotationDirection = 1
+                end
+            else
+                self.directionOffset = self.directionOffset + dt * 0.3
+                if self.directionOffset > 0.0523598776 then
+                    self.rotationDirection = -1
+                end
             end
-          else
-            self.directionOffset = self.directionOffset + dt * 0.3
-            if self.directionOffset > 0.0523598776 then
-              self.rotationDirection = -1
-            end
-          end
         end
         self:move(x, y)
     end
-       
+
     --while key is pressed ändere den state von o zu 1 dann 2 und 1... am Ende wieder 0
     local vec = self:getRelPos()
     if vec ~= nil then
@@ -337,6 +332,50 @@ function Player:fallOutOfWorld()
 end
 
 function Player:die()
+end
+
+function Player:getData()
+    local hx, hy = self.hitbox:center()
+    local data = {
+        id = self.id,
+        position = {x = self.position.x, y = self.position.y},
+        hitbox = {x = hx, y = hy},
+        velocity = {x = self.velocity.x, y = self.velocity.y},
+        acceleration = self.acceleration / self.size,
+        frictionRatio = self.frictionRatio,
+        direction = self.direction,
+        movement = self.movement,
+        powerUpTime = self.powerUpTime,
+        fall = self.fall,
+        falltime = self.falltime,
+        dead = self.dead,
+        fallen = self.fallen,
+        exploded = self.exploded,
+        dirState = self.dirState,
+        stats = self.stats
+    }
+    return data
+end
+
+function Player:setData(data)
+    self.id = data.id
+    self.position.x = data.position.x
+    self.position.y = data.position.y
+    self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
+    self.velocity.x = data.velocity.x
+    self.velocity.y = data.velocity.y
+    self.acceleration = data.acceleration * self.size
+    self.frictionRatio = data.frictionRatio
+    self.direction = data.direction
+    self.movement = data.movement
+    self.powerUpTime = data.powerUpTime
+    self.fall = data.fall
+    self.falltime = data.falltime
+    self.dead = data.dead
+    self.fallen = data.fallen
+    self.exploded = data.exploded
+    self.dirState = data.dirState
+    self.stats = data.stats
 end
 return Player
 --Rückgabe des Objekts Player

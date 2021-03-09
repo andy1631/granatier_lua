@@ -5,8 +5,9 @@ Player = require "player"
 Field = require "field"
 Vector = require "lib.hump.vector"
 Bomb = require "bomb"
-Tove = require "lib.tove"
+--Tove = require "lib.tove"
 StatusBar = require "statusBar"
+Bitser = require "lib.bitser.bitser"
 
 Map = Class {}
 
@@ -51,20 +52,20 @@ function Map:init(x, y)
     end
 
     -- Show the background
-    background = love.filesystem.read("resources/SVG/background.svg")
-    background = Tove.newGraphics(background)
-    background:rescale(1200)
+    self.background = love.filesystem.read("resources/SVG/background.svg")
+    self.background = Tove.newGraphics(self.background, 1200)
     self.statusBar = StatusBar()
-    self.statusBar:createTextBox(self.playerCount)
+    self.statusBar:createTextBox(#self.players)
 end
 
+--Bitser.register('Map:init', Map.init)
 --Spawns the Player
 function Map:spawn()
     local rnd = love.math.random(1, table.getn(self.spawns))
     local relX = self.spawns[rnd].x
     local relY = self.spawns[rnd].y
     table.remove(self.spawns, rnd)
-    self.players[self.playerCount] =
+    self.players[#self.players] =
         Player(
         self.fields[relX][relY].position.x,
         self.fields[relX][relY].position.y,
@@ -102,7 +103,7 @@ end
 --shows the map
 function Map:draw()
     love.graphics.reset()
-    background:draw(600, 337.5) -- Hintergrund zeichnen lassen
+    self.background:draw(600, 337.5) -- Hintergrund zeichnen lassen
 
     for i = 1, self.x, 1 do
         for j = 1, self.y, 1 do
@@ -120,37 +121,42 @@ end
 
 --Method to set bombs and set bombs to a whole field
 function Map:setBomb()
-  --TODO use getRelPos()-------------------------------------------------------
-  local col = {}
-  local cords = {}
-  if self.players[0].stats.restrain == false and self.players[0].dead == false and self.players[0].fallen == false then
-    if self.players[0].stats.bombs > 0 then
-      for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
-        if shape.cords ~= nil then
-          col[#col + 1] = Vector.new(delta.x, delta.y):len()
-          cords[#cords + 1] = shape.cords
+    --TODO use getRelPos()-------------------------------------------------------
+    local col = {}
+    local cords = {}
+    if self.players[0].stats.restrain == false and self.players[0].dead == false and self.players[0].fallen == false then
+        if self.players[0].stats.bombs > 0 then
+            for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
+                if shape.cords ~= nil then
+                    col[#col + 1] = Vector.new(delta.x, delta.y):len()
+                    cords[#cords + 1] = shape.cords
+                end
+            end
+            col[0] = 0
+            local index = 0
+            for k, v in pairs(col) do
+                if v ~= 0 then
+                    if col[index] < v then
+                        index = k
+                    end
+                end
+            end
+            if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
+                table.insert(
+                    self.bombs,
+                    Bomb(
+                        map.fields[cords[index].x][cords[index].y].position,
+                        self.players[0].stats.power,
+                        cords[index],
+                        self.position
+                    )
+                )
+                map.fields[cords[index].x][cords[index].y].bombs = 1
+                self.players[0].stats.bombs = self.players[0].stats.bombs - 1
+                love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
+            end
         end
-      end
-      col[0] = 0
-      local index = 0
-      for k, v in pairs(col) do
-        if v ~= 0 then
-          if col[index] < v then
-            index = k
-          end
-        end
-      end
-      if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
-        table.insert(
-          self.bombs,
-          Bomb(map.fields[cords[index].x][cords[index].y].position, self.players[0].stats.power, cords[index],self.position)
-        )
-        map.fields[cords[index].x][cords[index].y].bombs = 1
-        self.players[0].stats.bombs = self.players[0].stats.bombs - 1
-        love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
-      end
     end
-  end
 end
 
 --Set the types for Fields
@@ -164,6 +170,66 @@ function Map:addSpawn(x, y)
 end
 
 function Map:resize(w, h)
+end
+
+function Map:getData()
+    local data = {
+        players = {},
+        fields = {},
+        bombs = {}
+    }
+    for k, player in pairs(self.players) do
+        table.insert(data.players, player:getData())
+    end
+    for i, fields in pairs(self.fields) do
+        data.fields[i] = {}
+        for j, field in pairs(fields) do
+            data.fields[i][j] = field:getData()
+        end
+    end
+    for k, bomb in pairs(self.bombs) do
+        table.insert(data.bombs, bomb:getData())
+    end
+    return data
+end
+
+function Map:setData(data)
+    if table.getn(data.players) ~= table.getn(self.players) then
+        for i = 1, table.getn(data.players) - table.getn(self.players), 1 do
+            self.players[#self.players] = Player(0, 0, #self.players, self.position, self.fieldSize)
+        end
+    end
+    for k, player in pairs(self.players) do
+        player:setData(data.players[k + 1])
+    end
+    if #self.fields == 0 then
+        for k, field in pairs(data.fields) do
+            table.insert(
+                self.fields,
+                Field(
+                    Vector.new(data.fields[k].position.x, data.fields[k].position.x),
+                    self.fieldSize,
+                    data.fields[k].type,
+                    Vector.new(data.fields[k].cords.x, data.fields[k].cords.y)
+                )
+            )
+        end
+    else
+        for i, fields in pairs(self.fields) do
+            for j, field in pairs(fields) do
+                field:setData(data.fields[i][j])
+            end
+        end
+    end
+
+    if table.getn(data.bombs) ~= table.getn(self.bombs) then
+        for i = 1, table.getn(data.bombs) - table.getn(self.bombs), 1 do
+            table.insert(self.bombs, Bomb(nil, 0, nil))
+        end
+    end
+    for k, bomb in pairs(self.bombs) do
+        bomb:setData(data.bombs[k])
+    end
 end
 
 return Map

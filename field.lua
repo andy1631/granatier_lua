@@ -21,7 +21,7 @@ PowerUpThrow = require "Powerups.powerUpThrow"
 Field = Class {}
 --Field als Objekt festlegen
 
-function Field:init(pos, size, t, cords,origin)
+function Field:init(pos, size, t, cords, origin)
     self.origin = origin
     self.type = t
     self.hitbox = HC.rectangle(pos.x, pos.y, size, size)
@@ -35,7 +35,7 @@ function Field:init(pos, size, t, cords,origin)
     self.bombs = 0
     self.Texture = Tove.newGraphics(self.Texture)
     self.Texture:rescale(40)
-    local pandora = false
+    self.pandora = false
 end
 --Festlegen der Position der Mauer
 
@@ -46,15 +46,15 @@ end
 
 function Field:draw()
     if self.type ~= "air" then
-        self.Texture:draw(self.position.x+self.origin.x, self.position.y+self.origin.y)
+        self.Texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
     end
     if self.PowerUp ~= nil then
         self.PowerUp:draw()
     end
     if self.hitboxshow then
-        love.graphics.setColor(255,0,0,255)
-        self.hitbox:draw((self.type == 'wall') and 'fill' or 'line') -- shows hitbox
-        love.graphics.setColor(255,255,255,255)
+        love.graphics.setColor(255, 0, 0, 255)
+        self.hitbox:draw((self.type == "wall") and "fill" or "line") -- shows hitbox
+        love.graphics.setColor(255, 255, 255, 255)
     end
 end
 --Zeichnen der Linie der Hitbox
@@ -68,75 +68,71 @@ function Field:update(dt)
             end
             self.PowerUp:usePowerUp(map.players[0])
             self.PowerUp = nil
+            self.powerupNo = nil
             source = love.audio.newSource("resources/sounds/wow.wav", "static")
             love.audio.play(source)
         end
     end
 end
 
-function Field:spawnPowerUp()
-  math.randomseed(os.time())
-  local randomNumber = math.random(1,18)
-  --randomNumber = 10
-  -- Spiegel:
-  if randomNumber == 1 then
-    self.PowerUp = PowerUpMirror(self.position,self.origin)
-
-  -- Kaffee:
-  elseif randomNumber == 2 then
-    self.PowerUp = PowerUpCoffee(self.position,self.origin)
-  
-  -- Fessel:
-  elseif randomNumber == 3 then
-    self.PowerUp = PowerUpRestrain(self.position,self.origin)
-  
-  -- Wirft Bomben zu zufälligen Positionen (Scatty):
-  elseif randomNumber == 4 then
-    self.PowerUp = PowerUpScatty(self.position,self.origin)
-  
-  -- Schnecke:
-  elseif randomNumber == 5 then
-    self.PowerUp = PowerUpSlow(self.position,self.origin)
-  
-  -- Bombe:
-elseif randomNumber == 6 then
-    self.PowerUp = PowerUpThrow(self.position,self.origin)
-  
-  -- Fußball:
-  elseif randomNumber == 7 then
-    self.PowerUp = PowerUpKick(self.position,self.origin)
-  
-  -- Werfen:
-  elseif randomNumber == 8 then
-    self.PowerUp = PowerUpBomb(self.position,self.origin)
-  
-  -- Zufallbox:
-  elseif randomNumber == 9 then
-    self.PowerUp = PowerUpPandora(self.position,self.origin)
-    self.pandora = true
-  -- Power:
-  elseif randomNumber == 10 then
-    self.PowerUp = PowerUpPower(self.position,self.origin)
-  
-  -- Schild:
-  elseif randomNumber == 11 then
-    self.PowerUp = PowerUpShield(self.position,self.origin)
-  
-  -- Schneller bewegen:
-  elseif randomNumber == 12 then
-    self.PowerUp = PowerUpSpeed(self.position,self.origin)
-    
-    -- Teleporter:  --no fuctionality
-  elseif randomNumber == 26 then
-    self.PowerUp = PowerUpTeleport(self.position,self.origin)
-    
-    -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect): --no functionality
-  elseif randomNumber == 27 then
-    self.PowerUp = PowerUpResurrect(self.position,self.origin)
- 
-  -- Mauern bauen:  no functionality
-  elseif randomNumber == 28 then
-    self.PowerUp = PowerUpMason(self.position,self.origin)
+function Field:spawnPowerUp(number)
+    local randomNumber
+    if number == nil then
+        math.randomseed(os.time())
+        randomNumber = math.random(1, 18)
+    else
+        randomNumber = number
+    end
+    --randomNumber = 10
+    -- Spiegel:
+    if randomNumber == 1 then
+        -- Kaffee:
+        self.PowerUp = PowerUpMirror(self.position, self.origin)
+    elseif randomNumber == 2 then
+        -- Fessel:
+        self.PowerUp = PowerUpCoffee(self.position, self.origin)
+    elseif randomNumber == 3 then
+        -- Wirft Bomben zu zufälligen Positionen (Scatty):
+        self.PowerUp = PowerUpRestrain(self.position, self.origin)
+    elseif randomNumber == 4 then
+        -- Schnecke:
+        self.PowerUp = PowerUpScatty(self.position, self.origin)
+    elseif randomNumber == 5 then
+        -- Bombe:
+        self.PowerUp = PowerUpSlow(self.position, self.origin)
+    elseif randomNumber == 6 then
+        -- Fußball:
+        self.PowerUp = PowerUpThrow(self.position, self.origin)
+    elseif randomNumber == 7 then
+        -- Werfen:
+        self.PowerUp = PowerUpKick(self.position, self.origin)
+    elseif randomNumber == 8 then
+        -- Zufallbox:
+        self.PowerUp = PowerUpBomb(self.position, self.origin)
+    elseif randomNumber == 9 then
+        -- Power:
+        self.PowerUp = PowerUpPandora(self.position, self.origin)
+        self.pandora = true
+    elseif randomNumber == 10 then
+        -- Schild:
+        self.PowerUp = PowerUpPower(self.position, self.origin)
+    elseif randomNumber == 11 then
+        -- Schneller bewegen:
+        self.PowerUp = PowerUpShield(self.position, self.origin)
+    elseif randomNumber == 12 then
+        -- Teleporter:  --no fuctionality
+        self.PowerUp = PowerUpSpeed(self.position, self.origin)
+    elseif randomNumber == 26 then
+        -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect): --no functionality
+        self.PowerUp = PowerUpTeleport(self.position, self.origin)
+    elseif randomNumber == 27 then
+        -- Mauern bauen:  no functionality
+        self.PowerUp = PowerUpResurrect(self.position, self.origin)
+    elseif randomNumber == 28 then
+        self.PowerUp = PowerUpMason(self.position, self.origin)
+    end
+    if self.PowerUp ~= nil then
+        self.powerupNo = randomNumber
     end
 end
 
@@ -152,6 +148,38 @@ function Field:getType()
     return self.type
 end
 --Festlegen des Types als HitBox
+
+function Field:getData()
+    local hx, hy = self.hitbox:center()
+    local data = {
+        ["type"] = self.type,
+        hitbox = {x = hx, y = hy, solid = self.hitbox.solid},
+        position = {x = self.position.x, y = self.position.y},
+        hitboxshow = self.hitboxshow,
+        cords = {x = self.cords.x, y = self.cords.y},
+        bombs = self.bombs,
+        pandora = self.pandora,
+        powerup = self.powerupNo
+    }
+    return data
+end
+
+function Field:setData(data)
+    self.type = data.type
+    self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
+    self.hitbox.solid = data.hitbox.solid
+    self.hitbox.cords = self.cords
+    self.position.x = data.position.x
+    self.position.y = data.position.y
+    self.hitboxshow = data.hitboxshow
+    self.cords.x = data.cords.x
+    self.cords.y = data.cords.y
+    self.bombs = data.bombs
+    self.pandora = data.pandora
+    if data.powerup ~= nil then
+        self:spawnPowerUp(data.powerup)
+    end
+end
 
 return Field
 --Rückgabe des Objekts Field
