@@ -493,6 +493,46 @@ function Bomb:explode()
     self.hitbox.solid = false
 end
 
+function Bomb:moveOld(dt)
+    local oldCords = self.cords:clone()
+    self.hitbox:move(self.movedirection.x * (dt * 50), self.movedirection.y * (dt * 50))
+    for shapes, delta in pairs(HC.collisions(self.hitbox)) do
+        if shapes.solid then
+            self.hitbox:move(delta.x, delta.y)
+            if math.sqrt(delta.x ^ 2 + delta.y ^ 2) > 0 then
+                self.movedirection = nil
+            end
+        end
+    end
+    local posx, posy = self.hitbox:center()
+    self.position.x = posx - self.origin.x
+    self.position.y = posy - self.origin.y
+    self.cords = self:getRelPos()
+    if oldCords ~= self.cords then
+        map.fields[oldCords.x][oldCords.y].bombs = 0
+        map.fields[self.cords.x][self.cords.y].bombs = 1
+    end
+end
+
+function Bomb:getRelPos()
+    local col = {}
+    local cords = {}
+    for shape, delta in pairs(HC.collisions(self.hitbox)) do
+        col[#col + 1] = Vector.new(delta.x, delta.y):len()
+        cords[#cords + 1] = shape.cords
+    end
+    --col[0] = 0
+    local index = 1
+    for k, v in pairs(col) do
+        if v ~= 0 then
+            if col[index] < v then
+                index = k
+            end
+        end
+    end
+    return cords[index]
+end
+
 function Bomb:getData()
     local hx, hy = self.hitbox:center()
     local data = {
@@ -543,44 +583,4 @@ function Bomb:setData(data)
     self.eastCords = data.eastCords
     self.westCords = data.westCords
 end
-function Bomb:moveOld(dt)
-    local oldCords = self.cords:clone()
-    self.hitbox:move(self.movedirection.x * (dt * 50), self.movedirection.y * (dt * 50))
-    for shapes, delta in pairs(HC.collisions(self.hitbox)) do
-        if shapes.solid then
-            self.hitbox:move(delta.x, delta.y)
-            if math.sqrt(delta.x ^ 2 + delta.y ^ 2) > 0 then
-                self.movedirection = nil
-            end
-        end
-    end
-    local posx, posy = self.hitbox:center()
-    self.position.x = posx - self.origin.x
-    self.position.y = posy - self.origin.y
-    self.cords = self:getRelPos()
-    if oldCords ~= self.cords then
-        map.fields[oldCords.x][oldCords.y].bombs = 0
-        map.fields[self.cords.x][self.cords.y].bombs = 1
-    end
-end
-
-function Bomb:getRelPos()
-    local col = {}
-    local cords = {}
-    for shape, delta in pairs(HC.collisions(self.hitbox)) do
-        col[#col + 1] = Vector.new(delta.x, delta.y):len()
-        cords[#cords + 1] = shape.cords
-    end
-    --col[0] = 0
-    local index = 1
-    for k, v in pairs(col) do
-        if v ~= 0 then
-            if col[index] < v then
-                index = k
-            end
-        end
-    end
-    return cords[index]
-end
-
 return Bomb

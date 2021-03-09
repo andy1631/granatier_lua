@@ -34,10 +34,10 @@ function game:update(dt)
     if not host then
         if timer > updaterate then
             local dump = udp:receive()
-            if dump ~= "" then
-                local data = Bitser.loads(dump)
-                local decompressed = LibDeflate:DecompressDeflate(data)
-                map:setData(decompressed)
+            if dump ~= nil then
+                local decompressed = LibDeflate:DecompressDeflate(dump)
+                local data = Bitser.loads(decompressed)
+                map:setData(data)
             end
         end
     else
@@ -57,7 +57,7 @@ function game:update(dt)
         if timer > updaterate then
             local dump = Bitser.dumps(map:getData())
             local compressed = LibDeflate:CompressDeflate(dump)
-            local decompressed = LibDeflate:DecompressDeflate(compressed)
+            --local decompressed = LibDeflate:DecompressDeflate(compressed)
             -- map:setData(Bitser.loads(decompressed))
             --local bytes = {string.byte(dump, 1, -1)}
             --local data = ""
