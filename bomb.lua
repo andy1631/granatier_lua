@@ -384,7 +384,6 @@ function Bomb:explodeAnimation()
             self.position.y - (self.northCords[i]) + self.origin.y
           )
         end
-        if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_greenwall" then
       end
       if self.south > 0 then
         for i = table.getn(self.southCords), 1, -1 do
