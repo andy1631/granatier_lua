@@ -107,6 +107,7 @@ end
 
 --Bewegen des Spielers
 function Player:update(dt)
+    self.acceleration = self.acceleration + (self.acceleration * self.stats.speedBoost * 0.1)
     --[[if self.stats.slow then
         self.acceleration = 15
         self.powerUpTime = self.powerUpTime - dt
@@ -203,6 +204,11 @@ function Player:update(dt)
         if shape.solid then
             self:collision(Vector.new(delta.x, delta.y), shape)
         end
+    end
+    if self.stats.hyperactive == true then
+      self.acceleration = (self.size+2) * 15
+    else
+      self.acceleration = (self.size+2) * 1.25
     end
 end
 --Update-Funktion (Aktualisieren der UI)
