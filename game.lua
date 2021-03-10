@@ -8,7 +8,7 @@ Bomb = require "bomb"
 LibDeflate = require "lib.LibDeflate"
 
 local host = false
-local updaterate = 0.03
+local updaterate = 0.00
 local timer = 0
 local connections = {}
 local game = {}
@@ -65,18 +65,16 @@ function game:update(dt)
                 udp:sendto(tostring(newPlayer.id), msg_or_ip, port_or_nil)
             else
                 id, cmd, data = string.match(data, "([^:,]+),([^:,]+):([^:,]+)")
+                --love.window.showMessageBox("info", cmd)
                 if cmd == "walk" then
                     --self:sendPlayerPos(tonumber(id))
                     --local id = get_key_for_value(connections, {msg_or_ip, port_or_nil})
                     map.players[tonumber(id)]:walk(data)
-                else
-                    if cmd == "walk" then
-                        map:setBomb(id)
-                    end
+                elseif cmd == "setBomb" then
+                    map:setBomb(tonumber(id))
                 end
             end
         end
-
         if timer > updaterate then
             local dump = Bitser.dumps(map:getData())
             local compressed = LibDeflate:CompressDeflate(dump)
@@ -120,8 +118,8 @@ function game:keypressed(key, scancode, isrepeat)
             udp:send(playerId .. ",walk:right")
         end
         if key == "q" then
-            map:setBomb()
-            udp:send(playerId .. ",setBomb")
+            --map:setBomb()
+            udp:send(playerId .. ",setBomb:_")
         end
     end
 end

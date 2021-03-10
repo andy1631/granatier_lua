@@ -67,9 +67,16 @@ function Bomb:update(dt)
         self:explode()
     end
 
-    if not self.hitbox:collidesWith(map.players[0].hitbox) and not self.isExploding then
-        self.hitbox.solid = true
+    self.hitbox.solid = true
+    for k, v in pairs(map.players) do
+        if self.hitbox:collidesWith(v.hitbox) or self.isExploding then
+            self.hitbox.solid = false
+        end
     end
+
+    --if not self.hitbox:collidesWith(map.players[0].hitbox) and not self.isExploding then
+    --    self.hitbox.solid = true
+    --end
 
     if self.isExploding then
         self.explodeTime = self.explodeTime + dt
@@ -549,112 +556,37 @@ function Bomb:explode()
             table.insert(self.northCords, self.north)
             break
         end
-        for i = 1, self.power, 1 do
-            if self.cords.x - i < 1 then
-                break
-            end
-            if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_wall" then
-                map.fields[self.cords.x - i][self.cords.y]:setType("arena_ground")
-                map.fields[self.cords.x - i][self.cords.y]:spawnPowerUp()
-                map.fields[self.cords.x - i][self.cords.y].solid = false
-                self.west = ((i - 1 + 0.75) * map.fieldSize)
-                table.insert(self.westCords, self.west)
-                break
-            end
-            if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_greenwall" then
-                break
-            end
-            if map.fields[self.cords.x - i][self.cords.y]:getType() == "arena_ground" then
-                if map.fields[self.cords.x - i][self.cords.y].PowerUp ~= nil then
-                    map.fields[self.cords.x - i][self.cords.y].PowerUp = nil
-                    map.fields[self.cords.x - i][self.cords.y].powerupNo = nil
-                    self.west = ((i - 1 + 0.75) * map.fieldSize)
-                    table.insert(self.westCords, self.west)
-                    break
-                end
-                table.insert(fieldsCords, Vector.new(self.cords.x - i, self.cords.y))
-            end
-            if map.fields[self.cords.x - i][self.cords.y]:getType() ~= "arena_greenwall" then
-                self.west = ((i - 1 + 0.75) * map.fieldSize)
-                table.insert(self.westCords, self.west)
-                table.insert(fieldsCords, Vector.new(self.cords.x - i, self.cords.y))
-            end
+        if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_greenwall" then
+            break
         end
-        for i = 1, self.power, 1 do
-            if self.cords.y + i > map.y then
-                break
-            end
-            if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_wall" then
-                map.fields[self.cords.x][self.cords.y + i]:setType("arena_ground")
-                map.fields[self.cords.x][self.cords.y + i]:spawnPowerUp()
-                map.fields[self.cords.x][self.cords.y + i].solid = false
-                self.south = ((i - 1 + 0.75) * map.fieldSize)
-                table.insert(self.southCords, self.south)
-                break
-            end
-            if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_greenwall" then
-                break
-            end
-            if map.fields[self.cords.x][self.cords.y + i]:getType() == "arena_ground" then
-                if map.fields[self.cords.x][self.cords.y + i].PowerUp ~= nil then
-                    map.fields[self.cords.x][self.cords.y + i].PowerUp = nil
-                    map.fields[self.cords.x][self.cords.y + i].powerupNo = nil
-                    self.south = ((i - 1 + 0.75) * map.fieldSize)
-                    table.insert(self.southCords, self.south)
-                    break
-                end
-                table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y + i))
-            end
-            if map.fields[self.cords.x][self.cords.y + i]:getType() ~= "arena_greenwall" then
-                self.south = ((i - 1 + 0.75) * map.fieldSize)
-                table.insert(self.southCords, self.south)
-                table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y + i))
-            end
-        end
-        for i = 1, self.power, 1 do
-            if self.cords.y - i < 1 then
-                break
-            end
-            if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_wall" then
-                map.fields[self.cords.x][self.cords.y - i]:setType("arena_ground")
-                map.fields[self.cords.x][self.cords.y - i]:spawnPowerUp()
-                map.fields[self.cords.x][self.cords.y - i].solid = false
+        if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_ground" then
+            if map.fields[self.cords.x][self.cords.y - i].PowerUp ~= nil then
+                map.fields[self.cords.x][self.cords.y - i].PowerUp = nil
+                map.fields[self.cords.x][self.cords.y - i].powerupNo = nil
                 self.north = ((i - 1 + 0.75) * map.fieldSize)
                 table.insert(self.northCords, self.north)
                 break
             end
-            if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_greenwall" then
-                break
-            end
-            if map.fields[self.cords.x][self.cords.y - i]:getType() == "arena_ground" then
-                if map.fields[self.cords.x][self.cords.y - i].PowerUp ~= nil then
-                    map.fields[self.cords.x][self.cords.y - i].PowerUp = nil
-                    map.fields[self.cords.x][self.cords.y - i].powerupNo = nil
-                    self.north = ((i - 1 + 0.75) * map.fieldSize)
-                    table.insert(self.northCords, self.north)
-                    break
-                end
-                table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
-            end
-            if map.fields[self.cords.x][self.cords.y - i]:getType() ~= "arena_greenwall" then
-                self.north = ((i - 1 + 0.75) * map.fieldSize)
-                table.insert(self.northCords, self.north)
-                table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
-            end
+            table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
         end
-        for j, l in pairs(map.players) do
-            if l.stats.shield == false then
-                for k, v in pairs(fieldsCords) do
-                    if l:playerOnField(v) == true then
-                        l:explode()
-                    end
-                end
-            else
-                l.stats.shield = false
-            end
+        if map.fields[self.cords.x][self.cords.y - i]:getType() ~= "arena_greenwall" then
+            self.north = ((i - 1 + 0.75) * map.fieldSize)
+            table.insert(self.northCords, self.north)
+            table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
         end
-        self.hitbox.solid = false
     end
+    for j, l in pairs(map.players) do
+        if l.stats.shield == false then
+            for k, v in pairs(fieldsCords) do
+                if l:playerOnField(v) == true then
+                    l:explode()
+                end
+            end
+        else
+            l.stats.shield = false
+        end
+    end
+    self.hitbox.solid = false
 end
 
 function Bomb:getRelPos()
