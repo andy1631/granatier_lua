@@ -442,6 +442,11 @@ function Bomb:explode()
     map.fields[self.cords.x][self.cords.y].PowerUp = nil
     map.fields[self.cords.x][self.cords.y].powerupNo = nil
     table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y))
+  elseif map.fields[self.cords.x][self.cords.y]:getType() == "arena_wall" then
+    map.fields[self.cords.x][self.cords.y]:setType("arena_ground")
+    map.fields[self.cords.x][self.cords.y]:spawnPowerUp()
+    map.fields[self.cords.x][self.cords.y].solid = false
+    table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y))
   end
   for i = 1, self.power, 1 do
     if self.cords.x + i > map.x then
