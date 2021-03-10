@@ -161,7 +161,9 @@ function Player:update(dt)
         else
             y = 0
         end
-        
+        if self.stats.scatty == true and self.powerUpTime%2==0 then
+          map:setBomb(self.id)
+        end
         if self.velocity.length ~= 0 then
             if self.rotationDirection == -1 then
                 self.directionOffset = self.directionOffset - dt * 0.3
@@ -200,7 +202,6 @@ function Player:update(dt)
     self.hitbox:move(self.velocity.x * dt, self.velocity.y * dt)
     local x, y = self.hitbox:center()
     self.position = Vector.new(x, y) - self.origin
-
     for shape, delta in pairs(HC.collisions(self.hitbox)) do
         if shape.solid then
             self:collision(Vector.new(delta.x, delta.y), shape)
