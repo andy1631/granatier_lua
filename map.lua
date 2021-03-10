@@ -120,13 +120,16 @@ function Map:draw()
 end
 
 --Method to set bombs and set bombs to a whole field
-function Map:setBomb()
+function Map:setBomb(id)
     --TODO use getRelPos()-------------------------------------------------------
+    if id == nil then
+      id=0
+    end
     local col = {}
     local cords = {}
-    if self.players[0].stats.restrain == false and self.players[0].dead == false and self.players[0].fallen == false then
-        if self.players[0].stats.bombs > 0 then
-            for shape, delta in pairs(HC.collisions(self.players[0].hitbox)) do
+    if self.players[id].stats.restrain == false and self.players[id].dead == false and self.players[id].fallen == false then
+        if self.players[id].stats.bombs > 0 then
+            for shape, delta in pairs(HC.collisions(self.players[id].hitbox)) do
                 if shape.cords ~= nil then
                     col[#col + 1] = Vector.new(delta.x, delta.y):len()
                     cords[#cords + 1] = shape.cords
@@ -146,13 +149,13 @@ function Map:setBomb()
                     self.bombs,
                     Bomb(
                         map.fields[cords[index].x][cords[index].y].position,
-                        self.players[0].stats.power,
+                        self.players[id].stats.power,
                         cords[index],
                         self.position
                     )
                 )
                 map.fields[cords[index].x][cords[index].y].bombs = 1
-                self.players[0].stats.bombs = self.players[0].stats.bombs - 1
+                self.players[id].stats.bombs = self.players[id].stats.bombs - 1
                 love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
             end
         end
