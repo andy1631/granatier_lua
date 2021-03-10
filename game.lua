@@ -45,15 +45,15 @@ function game:update(dt)
         --if timer > updaterate then
         local dump = udp:receive()
         if dump ~= nil then
-            local id, cmd, x, y = string.match(dump, "([^:,]+),([^:,]+):([^:,]+),([^:,]+)")
-            if cmd == "pos" and map.players[tonumber(id)] ~= nil then
-                --map.players[tonumber(id)].position.x = tonumber(x)
-                --map.players[tonumber(id)].position.y = tonumber(y)
-            elseif cmd ~= "pos" then
-                local decompressed = LibDeflate:DecompressDeflate(dump)
-                local data = Bitser.loads(decompressed)
-                map:setData(data)
-            end
+            --local id, cmd, x, y = string.match(dump, "([^:,]+),([^:,]+):([^:,]+),([^:,]+)")
+            --if cmd == "pos" and map.players[tonumber(id)] ~= nil then
+            --map.players[tonumber(id)].position.x = tonumber(x)
+            --map.players[tonumber(id)].position.y = tonumber(y)
+            --elseif cmd ~= "pos" then
+            local decompressed = LibDeflate:DecompressDeflate(dump)
+            local data = Bitser.loads(decompressed)
+            map:setData(data)
+        --end
         end
     else
         local data, msg_or_ip, port_or_nil = udp:receivefrom()
@@ -66,9 +66,13 @@ function game:update(dt)
             else
                 id, cmd, data = string.match(data, "([^:,]+),([^:,]+):([^:,]+)")
                 if cmd == "walk" then
+                    --self:sendPlayerPos(tonumber(id))
                     --local id = get_key_for_value(connections, {msg_or_ip, port_or_nil})
                     map.players[tonumber(id)]:walk(data)
-                --self:sendPlayerPos(tonumber(id))
+                else
+                    if cmd == "walk" then
+                        map:setBomb(id)
+                    end
                 end
             end
         end
@@ -117,6 +121,7 @@ function game:keypressed(key, scancode, isrepeat)
         end
         if key == "q" then
             map:setBomb()
+            udp:send(playerId .. ",setBomb")
         end
     end
 end
