@@ -83,7 +83,7 @@ function Field:spawnPowerUp(number)
     else
         randomNumber = number
     end
-    randomNumber = 12
+    --randomNumber = 12
     -- Spiegel:
     if randomNumber == 1 then
         -- Kaffee:
