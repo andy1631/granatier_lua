@@ -12,6 +12,7 @@ local updaterate = 0.03
 local timer = 0
 local connections = {}
 local game = {}
+local playerId = 0
 
 function game:enter(curr, address, port)
     mapParser = MapParser()
@@ -20,8 +21,16 @@ function game:enter(curr, address, port)
     udp = Socket.udp()
     udp:settimeout(0)
     if address ~= nil and port ~= nil then
+        --repeat
+        --    data = udp:receive()
+        --until data
         udp:setpeername(address, port)
         udp:send("connect")
+        local data
+        repeat
+            data = udp:receive()
+        until data
+        playerId = tonumber(data)
     else
         host = true
         udp:setsockname("*", 12345)
@@ -32,9 +41,15 @@ end
 function game:update(dt)
     timer = timer + dt
     if not host then
-        if timer > updaterate then
-            local dump = udp:receive()
-            if dump ~= nil then
+        --end
+        --if timer > updaterate then
+        local dump = udp:receive()
+        if dump ~= nil then
+            local id, cmd, x, y = string.match(dump, "([^:,]+),([^:,]+):([^:,]+),([^:,]+)")
+            if cmd == "pos" and map.players[tonumber(id)] ~= nil then
+                --map.players[tonumber(id)].position.x = tonumber(x)
+                --map.players[tonumber(id)].position.y = tonumber(y)
+            elseif cmd ~= "pos" then
                 local decompressed = LibDeflate:DecompressDeflate(dump)
                 local data = Bitser.loads(decompressed)
                 map:setData(data)
@@ -44,12 +59,16 @@ function game:update(dt)
         local data, msg_or_ip, port_or_nil = udp:receivefrom()
         if data then
             if data == "connect" then
+                --self:sendPlayerPos(newPlayer.id)
                 connections[#connections] = {msg_or_ip, port_or_nil}
+                local newPlayer = map:spawn()
+                udp:sendto(tostring(newPlayer.id), msg_or_ip, port_or_nil)
             else
-                cmd, data = data.match("([^,]+),([^,]+)")
+                id, cmd, data = string.match(data, "([^:,]+),([^:,]+):([^:,]+)")
                 if cmd == "walk" then
-                    local id = get_key_for_value(connections, {msg_or_ip, port_or_nil})
-                    map.players[id].walk(data)
+                    --local id = get_key_for_value(connections, {msg_or_ip, port_or_nil})
+                    map.players[tonumber(id)]:walk(data)
+                --self:sendPlayerPos(tonumber(id))
                 end
             end
         end
@@ -69,22 +88,36 @@ function game:draw()
     map:draw()
     love.graphics.setColor(0, 0, 0)
     love.graphics.print("host: " .. tostring(host), 0, 0)
-    --love.graphics.print(Serpent.block(connections), 0, 50)
 end
 
 function game:keypressed(key, scancode, isrepeat)
-    if key == "w" then
-        map.players[0]:walk("up")
-    elseif key == "a" then
-        map.players[0]:walk("left")
-    elseif key == "s" then
-        map.players[0]:walk("down")
-    elseif key == "d" then
-        map.players[0]:walk("right")
-    end
+    if host then
+        if key == "w" then
+            map.players[0]:walk("up")
+        elseif key == "a" then
+            map.players[0]:walk("left")
+        elseif key == "s" then
+            map.players[0]:walk("down")
+        elseif key == "d" then
+            map.players[0]:walk("right")
+        end
 
-    if key == "q" then
-        map:setBomb()
+        if key == "q" then
+            map:setBomb()
+        end
+    else
+        if key == "w" then
+            udp:send(playerId .. ",walk:up")
+        elseif key == "a" then
+            udp:send(playerId .. ",walk:left")
+        elseif key == "s" then
+            udp:send(playerId .. ",walk:down")
+        elseif key == "d" then
+            udp:send(playerId .. ",walk:right")
+        end
+        if key == "q" then
+            map:setBomb()
+        end
     end
 end
 
@@ -101,40 +134,17 @@ function game:resize(w, h)
     map:resize()
 end
 
-function get_key_for_value(t, value)
-    for k, v in pairs(t) do
-        if v == value then
-            return k
-        end
+function game:sendPlayerPos(id)
+    for key, value in pairs(connections) do
+        udp:sendto(
+            id ..
+                ",pos:" ..
+                    tostring(map.players[tonumber(id)].position.x) ..
+                        "," .. tostring(map.players[tonumber(id)].position.x),
+            value[1],
+            value[2]
+        )
     end
-    return nil
-end
-
-function utf8(decimal)
-    if decimal < 128 then
-        return string.char(decimal)
-    end
-    local charbytes = {}
-    for bytes, vals in ipairs(bytemarkers) do
-        if decimal <= vals[1] then
-            for b = bytes + 1, 2, -1 do
-                local mod = decimal % 64
-                decimal = (decimal - mod) / 64
-                charbytes[b] = string.char(128 + mod)
-            end
-            charbytes[1] = string.char(vals[2] + decimal)
-            break
-        end
-    end
-    return table.concat(charbytes)
-end
-
-function utf8frompoints(...)
-    local chars, arg = {}, {...}
-    for i, n in ipairs(arg) do
-        chars[i] = utf8(arg[i])
-    end
-    return table.concat(chars)
 end
 
 return game

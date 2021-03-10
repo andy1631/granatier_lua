@@ -74,7 +74,7 @@ function Map:spawn()
         self.fieldSize
     )
     self.playerCount = self.playerCount + 1
-    return self.players[self.playerCount-1]
+    return self.players[self.playerCount - 1]
 end
 
 function Map:update(dt)
@@ -230,7 +230,9 @@ function Map:setData(data)
         end
     end
     for k, bomb in pairs(self.bombs) do
-        bomb:setData(data.bombs[k])
+        if data.bombs[k] ~= nil then
+            bomb:setData(data.bombs[k])
+        end
     end
 end
 
