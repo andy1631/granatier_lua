@@ -83,7 +83,7 @@ function Field:spawnPowerUp(number)
     else
         randomNumber = number
     end
-    --randomNumber = 10
+    --randomNumber = 12
     -- Spiegel:
     if randomNumber == 1 then
         -- Kaffee:
@@ -181,6 +181,18 @@ function Field:setData(data)
     if data.PowerUp ~= nil then
         self:spawnPowerUp(data.powerup)
     end
+end
+
+function Field:hasPlayer()
+  local collide
+  for k,v in pairs(map.players) do
+    collide = v.hitbox:collidesWith(self.hitbox)
+    if collide then
+      return true
+    else
+      return false
+    end
+  end
 end
 
 return Field
