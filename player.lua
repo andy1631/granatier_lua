@@ -74,15 +74,14 @@ function Player:draw()
     --Rotation des Spielers bei Richtungswechsel
     if self.fall == true then
         self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
+        self.position = self.position + posCorrect:normalized() * -self.size * (1 - (self.falltime / 2))
     end
-    if self.fallen == false then
-        if self.exploded == false then
-            self.texture:draw(
-                self.origin.x + self.position.x + posCorrect.x,
-                self.origin.y + self.position.y + posCorrect.y,
-                dir
-            )
-        end
+    if not self.fallen and not self.exploded then
+        self.texture:draw(
+            self.origin.x + self.position.x + posCorrect.x,
+            self.origin.y + self.position.y + posCorrect.y,
+            dir
+        )
     end
     --self.hitbox:draw('line')
 
@@ -108,30 +107,18 @@ end
 --Bewegen des Spielers
 function Player:update(dt)
     self.acceleration = self.acceleration + (self.acceleration * self.stats.speedBoost * 0.1)
-    --[[if self.stats.slow then
-        self.acceleration = 15
-        self.powerUpTime = self.powerUpTime - dt
-    else
-        self.acceleration = 30
-        end]]
     if self.stats.slow or self.stats.hyperactive or self.stats.mirror or self.stats.restrain then
         self.powerUpTime = self.powerUpTime - dt
     end
     if self.powerUpTime <= 0 then
         self.powerUpTime = 10 -- Die Zeit des aktiven Power-Ups zurücksetzen
-        --self.speedBoost = 0
-        --self.bombs = 1
-        --self.power = 1
-        --self.stats.shield = false
-        --self.stats.throw = false
-        --self.stats.kick = false
         self.stats.slow = false
         self.stats.hyperactive = false
         self.stats.mirror = false
         self.stats.scatty = false
         self.stats.restrain = false
     end
-    if self.fall == true then
+    if self.fall then
         if self.falltime == 2 then
             source = love.audio.newSource("resources/sounds/deepfall.wav", "static")
             love.audio.play(source)
@@ -223,29 +210,9 @@ function Player:setPosition(x, y)
 end
 
 function Player:collision(v, s)
-    --    if (v.y > 0 and v.x == 0 and self.direction == 'up')
-    --    or (v.y < 0 and v.x == 0 and self.direction == 'down')
-    --    or (v.x > 0 and v.y == 0 and self.direction == 'left')
-    --    or (v.x < 0 and v.y == 0 and self.direction == 'right')
-    --    then
-    --    self.velocity.x = 0
-    --    self.velocity.y = 0
     self.hitbox:move(v.x, v.y)
     local posX, posY = self.hitbox:center()
     self.position = Vector.new(posX - self.origin.x, posY - self.origin.y)
-
-    --    local x, y = s:center()
-
-    --    if self.direction == 'up' then
-    --      if self.position.x > x + 20 or self.position.x < x - 20 then
-    --        if self.position.x > x + 20 then x = x + 40 elseif self.position.x < x - 20 then x = x - 40 end
-    --        self:setPosition(x ,self.position.y)
-    --      end
-    --    elseif self.direction == 'down' then
-    --    elseif self.direction == 'left' then
-    --    elseif self.direction == 'right' then
-    --    end
-    --end
 end
 
 function Player:walk(dir)
