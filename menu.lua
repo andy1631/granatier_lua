@@ -12,7 +12,7 @@ local mainmenu
 
 -- Start Game
 local function join_game()
-    Gamestate.switch(game, "127.0.0.1", 12345)
+    Gamestate.switch(game, "localhost", 12345)
 end
 
 -- Options
