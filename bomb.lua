@@ -14,6 +14,7 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.origin = origin
     --self.hitbox = HC.circle(self.position.x,self.position.y, 17.5)
     self.hitbox = HC.rectangle(self.position.x - 20 + self.origin.x, self.position.y - 20 + self.origin.y, 40, 40)
+    self.hitbox.isBomb = true
     self.toDelete = false
     self.cords = cords:clone()
     self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
@@ -38,6 +39,13 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.moveBomb = false
     self.dir = nil
     self.arrow = false
+    self.kicked = false
+    self.throw = false
+    self.throwVector = nil
+    self.throwDistance = nil
+    math.randomseed(os.time())
+    self.explodeCords = {}
+    self.explodedPlayers = {}
 end
 
 function Bomb:draw()
@@ -91,6 +99,45 @@ function Bomb:update(dt)
             self.explodeState = 2
         elseif self.explodeTime >= 0.2 then
             self.explodeState = 1
+        end
+    end
+    if map.fields[self.cords.x][self.cords.y]:getType() == "arena_bomb_mortar" then
+      local RandomX = love.math.random(1,map.x)
+      local RandomY = love.math.random(1,map.y)
+      self:throwBomb(Vector.new(RandomX,RandomY))
+    end
+    if self.throw then
+      self:throwAnimation(dt)
+    end
+    self:kickPowerUp(dt)
+    
+  if self.isExploding then
+    for j, p in pairs(map.players) do
+      for k, v in pairs(self.explodeCords) do
+        if p:playerOnField(v) == true then
+          if not self.explodedPlayers[p.id] then
+            self.explodedPlayers[p.id] = true
+            if not p.stats.shield then
+              p:explode()
+            else
+              p.stats.shield = false
+            end
+          end
+        end
+      end
+    end
+  end
+
+end
+
+function Bomb:kickPowerUp(dt)
+  for k, v in pairs(map.players) do
+        if v.stats.kick==true and self.hitbox.hitByPlayer and not self.arrow and not self.kicked then
+          self.movedirection = v.velocity:normalized()*5
+          self.dir = v.direction
+          self.arrow = true
+          self.kicked = true
+          self:move(dt)
         end
     end
 end
@@ -191,7 +238,6 @@ function Bomb:move(dt)
         if not self.moveBomb then
             self:arrowCheck()
         end
-
     --[[local oldCords = self.cords:clone()
       local posx, posy = self.hitbox:center()
       self.position.x = posx - self.origin.x
@@ -576,7 +622,9 @@ function Bomb:explode()
             table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
         end
     end
-    for j, l in pairs(map.players) do
+    
+    self.explodeCords = fieldsCords
+    --[[for j, l in pairs(map.players) do
         if l.stats.shield == false then
             for k, v in pairs(fieldsCords) do
                 if l:playerOnField(v) == true then
@@ -586,7 +634,7 @@ function Bomb:explode()
         else
             l.stats.shield = false
         end
-    end
+    end]]
     self.hitbox.solid = false
 end
 
@@ -616,7 +664,7 @@ function Bomb:getData()
         position = {x = self.position.x, y = self.position.y},
         power = self.power,
         time = self.time,
-        hitbox = {x = hx, y = hy, self.hitbox.solid},
+        hitbox = {x = hx, y = hy, solid = self.hitbox.solid,isBomb = self.hitbox.isBomb},
         toDelete = self.toDelete,
         cords = {x = self.cords.x, y = self.cords.y},
         scale = self.scale,
@@ -633,7 +681,8 @@ function Bomb:getData()
         eastCords = self.eastCords,
         westCords = self.westCords,
         arrow = self.arrow,
-        stride = self.stride
+        stride = self.stride,
+        kicked = self.kicked
     }
     if self.movedirection ~= nil then
         data.movedirection = {x = self.movedirection.x, y = self.movedirection.y}
@@ -651,6 +700,7 @@ function Bomb:setData(data)
     self.time = data.time
     self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
     self.hitbox.solid = data.hitbox.solid
+    self.hitbox.isBomb = data.hitbox.isBomb
     self.toDelete = data.toDelete
     self.cords.x = data.cords.x
     self.cords.y = data.cords.y
@@ -668,6 +718,7 @@ function Bomb:setData(data)
     self.eastCords = data.eastCords
     self.westCords = data.westCords
     self.arrow = data.arrow
+    self.kicked = data.kicked
     if data.movedirection ~= nil and self.movedirection ~= nil then
         self.movedirection.x = data.movedirection.x
         self.movedirection.y = data.movedirection.y
@@ -675,4 +726,20 @@ function Bomb:setData(data)
     self.stride = data.stride
 end
 
+function Bomb:throwBomb(cords)
+map.fields[self.cords.x][self.cords.y].bombs = 0
+self.throwVector = Vector.new(self.cords.x-cords.x,self.cords.y-cords.y)
+self.throw = true
+self.throwDistance = self.throwVector:len()
+self.hitbox.solid = false
+end
+
+function Bomb:throwAnimation(dt)
+  local norm = self.throwVector:normalized()
+  self.hitbox:move(norm.x*dt*250,norm.y*dt*250)
+  self.throwDistance =Vector.new(norm.x*dt*250,norm.y*dt*250):len()
+  local posx, posy = self.hitbox:center()
+  self.position.x = posx - self.origin.x
+  self.position.y = posy - self.origin.y
+end
 return Bomb

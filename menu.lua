@@ -12,7 +12,7 @@ local mainmenu
 
 -- Start Game
 local function join_game()
-    Gamestate.switch(game, "127.0.0.1", 12345)
+    Gamestate.switch(game, "localhost", 12345)
 end
 
 -- Options
@@ -20,6 +20,10 @@ local function host_game()
     Gamestate.switch(game)
 end
 
+local function select_map()
+  text = "Select map!"
+  
+end
 -- Quit Game
 local function quit_game()
     text = "Quit Game was selected!"
@@ -28,11 +32,14 @@ end
 function menu:enter()
     -- many lines of code
     --love.window.setMode(600, 400)
-    --love.graphics.setFont(love.graphics.newFont(20))
+    --new Font
+    mainfont = love.graphics.newFont("resources/DotGothic16/DotGothic16-Regular.ttf",35)
+    love.graphics.setFont(mainfont)
 
-    mainmenu = menuengine.new(200, 100)
+    mainmenu = menuengine.new(600, 250)
     mainmenu:addEntry("Join Game", join_game)
     mainmenu:addEntry("Host Game", host_game)
+    mainmenu:addEntry("Select Map", select_map)
     mainmenu:addSep()
     mainmenu:addEntry("Quit Game", quit_game)
 end
@@ -41,10 +48,12 @@ function menu:update(dt)
     -- many lines of code
     mainmenu:update()
 end
-
+    
 function menu:draw()
     -- many lines of code
     love.graphics.clear()
+   textFont = love.graphics.newFont("resources/DotGothic16/DotGothic16-Regular.ttf",20)
+    love.graphics.setFont(textFont)
     love.graphics.print(text)
     mainmenu:draw()
 end

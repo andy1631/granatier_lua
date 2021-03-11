@@ -67,7 +67,18 @@ function Field:update(dt)
                 if self.pandora then
                     self:spawnPowerUp()
                 end
-                self.PowerUp:usePowerUp(player)
+                if self.powerupNo < 6 and self.powerupNo > 0 then
+                  if player.stats.slow == false 
+                  and player.stats.hyperactive == false 
+                  and player.stats.mirror == false
+                  and player.stats.scatty == false
+                  and player.stats.restrain == false
+                  then 
+                    self.PowerUp:usePowerUp(player)
+                  end
+                else
+                  self.PowerUp:usePowerUp(player)
+                end
                 self.PowerUp = nil
                 self.powerupNo = nil
                 local source = love.audio.newSource("resources/sounds/wow.wav", "static")
@@ -75,6 +86,27 @@ function Field:update(dt)
             end
         end
     end
+    
+    if self.type == "arena_mine" then
+      for k, player in pairs(map.players) do
+        local collide,dx,dy = player.hitbox:collidesWith(self.hitbox)
+        if collide and Vector.new(dx,dy):len()>(map.fieldSize/2) then
+          if map.fields[self.cords.x][self.cords.y].bombs == 0 then
+            local bomb = Bomb(
+                        map.fields[self.cords.x][self.cords.y].position,
+                        1,
+                        self.cords,
+                        map.position,
+                        player.id
+                    )
+            map.bombs[#map.bombs+1] = bomb
+            bomb.time = 0
+            map.fields[self.cords.x][self.cords.y].bombs = 1
+            self:setType("arena_ground")
+          end
+      end
+    end
+end
 end
 
 function Field:spawnPowerUp(number)
