@@ -10,9 +10,6 @@ local text = "Nothing was selected."
 -- Mainmenu
 local mainmenu
 
---new Font
-mainfont = love.graphics.newFont("resources/DotGothic16/DotGothic16-Regular.ttf", 35)
-
 -- Start Game
 local function join_game()
     Gamestate.switch(game, "127.0.0.1", 12345)
@@ -32,7 +29,7 @@ function menu:enter()
     -- many lines of code
     --love.window.setMode(600, 400)
     --new Font
-    mainfont = love.graphics.newFont("resources/DotGothic16/DotGothic16-Regular.ttf")
+    mainfont = love.graphics.newFont("resources/DotGothic16/DotGothic16-Regular.ttf",35)
     love.graphics.setFont(mainfont)
 
     mainmenu = menuengine.new(600, 250)
@@ -50,6 +47,8 @@ end
 function menu:draw()
     -- many lines of code
     love.graphics.clear()
+   textFont = love.graphics.newFont("resources/DotGothic16/DotGothic16-Regular.ttf",20)
+    love.graphics.setFont(textFont)
     love.graphics.print(text)
     mainmenu:draw()
 end
