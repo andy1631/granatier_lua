@@ -124,7 +124,7 @@ end
 function Map:setBomb(id)
     --TODO use getRelPos()-------------------------------------------------------
     if id == nil then
-      id=0
+        id = 0
     end
     local col = {}
     local cords = {}
@@ -152,7 +152,8 @@ function Map:setBomb(id)
                         map.fields[cords[index].x][cords[index].y].position,
                         self.players[id].stats.power,
                         cords[index],
-                        self.position
+                        self.position,
+                        id
                     )
                 )
                 map.fields[cords[index].x][cords[index].y].bombs = 1

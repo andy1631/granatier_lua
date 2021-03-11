@@ -6,7 +6,8 @@ Vector = require "lib.hump.vector"
 
 Bomb = Class {}
 
-function Bomb:init(pos, power, cords, origin)
+function Bomb:init(pos, power, cords, origin, ownerId)
+    self.ownerId = ownerId
     self.position = pos:clone()
     self.power = power
     self.time = 3
@@ -440,7 +441,7 @@ function Bomb:explode()
     self.isExploding = true
     local fieldsCords = {}
     map.fields[self.cords.x][self.cords.y].bombs = 0
-    map.players[0].stats.bombs = map.players[0].stats.bombs + 1
+    map.players[self.ownerId].stats.bombs = map.players[self.ownerId].stats.bombs + 1
     if map.fields[self.cords.x][self.cords.y]:getType() == "arena_ground" then
         map.fields[self.cords.x][self.cords.y].PowerUp = nil
         map.fields[self.cords.x][self.cords.y].powerupNo = nil
@@ -611,6 +612,7 @@ end
 function Bomb:getData()
     local hx, hy = self.hitbox:center()
     local data = {
+        ownerId = self.ownerId,
         position = {x = self.position.x, y = self.position.y},
         power = self.power,
         time = self.time,
@@ -630,12 +632,19 @@ function Bomb:getData()
         southCords = self.southCords,
         eastCords = self.eastCords,
         westCords = self.westCords,
-        arrow = self.arrow
+        arrow = self.arrow,
+        stride = self.stride
     }
+    if self.movedirection ~= nil then
+        data.movedirection = {x = self.movedirection.x, y = self.movedirection.y}
+    else
+        data.movedirection = nil
+    end
     return data
 end
 
 function Bomb:setData(data)
+    self.ownerId = data.ownerId
     self.position.x = data.position.x
     self.position.y = data.position.y
     self.power = data.power
@@ -659,24 +668,11 @@ function Bomb:setData(data)
     self.eastCords = data.eastCords
     self.westCords = data.westCords
     self.arrow = data.arrow
+    if data.movedirection ~= nil and self.movedirection ~= nil then
+        self.movedirection.x = data.movedirection.x
+        self.movedirection.y = data.movedirection.y
+    end
+    self.stride = data.stride
 end
 
-function Bomb:getRelPos()
-    local col = {}
-    local cords = {}
-    for shape, delta in pairs(HC.collisions(self.hitbox)) do
-        col[#col + 1] = Vector.new(delta.x, delta.y):len()
-        cords[#cords + 1] = shape.cords
-    end
-    --col[0] = 0
-    local index = 1
-    for k, v in pairs(col) do
-        if v ~= 0 then
-            if col[index] < v then
-                index = k
-            end
-        end
-    end
-    return cords[index]
-end
 return Bomb
