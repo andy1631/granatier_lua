@@ -66,7 +66,7 @@ function Bomb:update(dt)
         self:arrowCheck()
     end
     self.time = self.time - dt
-    if not self.throw then
+    if not self.throw and not self.moveBomb then
         if self.scale <= 32 then
             self.scaleFactor = 12 * dt
         elseif self.scale >= 35 then
@@ -78,8 +78,9 @@ function Bomb:update(dt)
     if self.time <= 0 and not self.isExploding and not self.moveBomb then
         self:explode()
     end
-
-    self.hitbox.solid = true
+    if not self.throw then
+      self.hitbox.solid = true
+    end
     for k, v in pairs(map.players) do
         if self.hitbox:collidesWith(v.hitbox) or self.isExploding then
             self.hitbox.solid = false
@@ -104,15 +105,15 @@ function Bomb:update(dt)
             self.explodeState = 1
         end
     end
+    if self.throw then
+        self:throwAnimation(dt)
+    end
     if not self.throw then
         if map.fields[self.cords.x][self.cords.y]:getType() == "arena_bomb_mortar" then
             local RandomX = love.math.random(1, map.x)
             local RandomY = love.math.random(1, map.y)
             self:throwBomb(Vector.new(RandomX, RandomY))
         end
-    end
-    if self.throw then
-        self:throwAnimation(dt)
     end
     self:kickPowerUp(dt)
 
