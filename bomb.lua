@@ -553,13 +553,22 @@ function Bomb:setData(data)
     self.kicked = data.kicked
     self.throw = data.throw
     if data.throwVector then
-    self.throwVector.x = data.throwVector.x
-    self.throwVector.y = data.throwVector.y
+      if self.throwVector then
+        self.throwVector.x = data.throwVector.x
+        self.throwVector.y = data.throwVector.y
+      else
+        self.throwVector = Vector.new(data.throwVector.x,data.throwVector.y)
+      end
+    
     end
     self.throwDistance = data.throwDistance
     if data.throwDest then
-    self.throwDest.x = data.throwDest.x
-    self.throwDest.y = data.throwDest.y
+      if self.throwDest then
+        self.throwDest.x = data.throwDest.x
+        self.throwDest.y = data.throwDest.y
+      else
+        self.throwDest = Vector.new(data.throwDest.x,data.throwDest.y)
+      end
     end
     if data.movedirection ~= nil and self.movedirection ~= nil then
         self.movedirection.x = data.movedirection.x
