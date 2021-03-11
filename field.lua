@@ -186,10 +186,9 @@ function Field:setData(data)
 end
 
 function Field:hasPlayer()
-    local collide
     for k, v in pairs(map.players) do
-        collide = v.hitbox:collidesWith(self.hitbox)
-        if collide then
+        local collide,dx,dy = v.hitbox:collidesWith(self.hitbox)
+        if collide and Vector.new(dx,dy):len()>(map.fieldSize/2) then
             return true
         else
             return false
