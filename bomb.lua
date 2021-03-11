@@ -19,8 +19,8 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.cords = cords:clone()
     self.size = 7 / 8 * map.fieldSize
     --self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
-    self.bomb = Tove.newGraphics(Textures["bomb"])
-    self.bomb:rescale(self.size)
+    self.texture = Tove.newGraphics(Textures["bomb"])
+    self.texture:rescale(self.size)
     self.scale = self.size
     self.scaleFactor = -0.25
     self.north = 0
@@ -54,12 +54,15 @@ end
 
 function Bomb:draw()
     self.hitbox:draw()
-    if not self.isExploding then
-        self.bomb:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
-    end
     if self.fall == true then
-      self.bomb = Tove.newGraphics(Textures["bomb"], self.size * (self.falltime / 2))
+        self.texture = Tove.newGraphics(Textures["bomb"], self.size * (self.falltime / 2))
+        self.position.x = self.position.x + self.size * (1 - (self.falltime / 2))
+        self.position.y = self.position.y + self.size * (1 - (self.falltime / 2))
     end
+    if not self.isExploding then
+        self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
+    end
+
     --love.graphics.print(tostring(self.isExploding),0,0)
     self:explodeAnimation()
 end
@@ -78,9 +81,13 @@ function Bomb:update(dt)
             self.scaleFactor = -12 * dt
         end
         self.scale = self.scale + self.scaleFactor
-        self.bomb:rescale(self.scale)
+        self.texture:rescale(self.scale)
     end
-    if self.time <= 0 and not self.isExploding and not self.moveBomb and self.cords.x > 0 and self.cords.y > 0 and not self.throw and not self.fall then
+    if
+        self.time <= 0 and not self.isExploding and not self.moveBomb and self.cords.x > 0 and self.cords.y > 0 and
+            not self.throw and
+            not self.fall
+     then
         self:explode()
     end
     if not self.throw then
@@ -118,13 +125,13 @@ function Bomb:update(dt)
             self.arrow = false
             self.moveBomb = false
             self.morterTime = 1
-            self.bomb:clear()
+            self.texture:clear()
         end
     end
     if self.morterTime > 0 then
         self.morterTime = self.morterTime - dt
         if self.morterTime <= 0 then
-            self.bomb = Tove.newGraphics(Textures["bomb"])
+            self.texture = Tove.newGraphics(Textures["bomb"])
             local RandomX
             local RandomY
             repeat
@@ -152,7 +159,7 @@ function Bomb:update(dt)
             end
         end
     end
-    local vec=self:getRelPos()
+    local vec = self:getRelPos()
     if self.fall == true then
         if self.falltime - dt >= 0 then
             self.falltime = self.falltime - dt
@@ -162,14 +169,14 @@ function Bomb:update(dt)
             self.toDelete = true
         end
     end
-    if (not vec or map.fields[vec.x][vec.y]:getType()=="air" )and not self.fall then
-      love.window.showMessageBox("Doing")
-      self.fall = true
-      self.falltime = 2
-      self.arrow=false
-      self.moveBomb=false
-      self.scale = self.size
-      self.scaleFactor = -0.25
+    if (not vec or map.fields[vec.x][vec.y]:getType() == "air") and not self.fall then
+        love.window.showMessageBox("Doing")
+        self.fall = true
+        self.falltime = 2
+        self.arrow = false
+        self.moveBomb = false
+        self.scale = self.size
+        self.scaleFactor = -0.25
     end
 end
 
@@ -648,12 +655,12 @@ function Bomb:throwBomb(cords)
     map.fields[self.cords.x][self.cords.y].bombs = 0
     local destPos
     if cords.x > 0 and cords.x <= map.x and cords.y > 0 and cords.y <= map.y then
-      local destPos = map.fields[cords.x][cords.y].position
-      self.throwVector = destPos - self.position
+        local destPos = map.fields[cords.x][cords.y].position
+        self.throwVector = destPos - self.position
     else
-      local t = (cords - self.cords):normalized()
-      self.throwVector = (cords - self.cords):normalized()*2*map.fieldSize
-    end 
+        local t = (cords - self.cords):normalized()
+        self.throwVector = (cords - self.cords):normalized() * 2 * map.fieldSize
+    end
     self.throwDest = cords:clone()
     self.throwDistance = self.throwVector:len()
     self.throw = true
@@ -668,17 +675,17 @@ function Bomb:throwAnimation(dt)
     self.throwDistance = self.throwDistance - Vector.new(norm.x * dt * 250, norm.y * dt * 250):len()
     if self.throwDistance < 0 then
         if self.throwDest.x > 0 and self.throwDest.x <= map.x and self.throwDest.y > 0 and self.throwDest.y <= map.y then
-        self.hitbox:moveTo(
-            map.fields[self.throwDest.x][self.throwDest.y].position.x + self.origin.x,
-            map.fields[self.throwDest.x][self.throwDest.y].position.y + self.origin.y
-        )
-        self.cords = self:getRelPos()
-        map.fields[self.cords.x][self.cords.y].bombs = map.fields[self.cords.x][self.cords.y].bombs + 1
+            self.hitbox:moveTo(
+                map.fields[self.throwDest.x][self.throwDest.y].position.x + self.origin.x,
+                map.fields[self.throwDest.x][self.throwDest.y].position.y + self.origin.y
+            )
+            self.cords = self:getRelPos()
+            map.fields[self.cords.x][self.cords.y].bombs = map.fields[self.cords.x][self.cords.y].bombs + 1
         else
-          local correct = self.throwVector:normalized()*self.throwDistance
-          self.hitbox:move(correct.x,correct.y)
-          self.cords.x = -1
-          self.cords.y = -1
+            local correct = self.throwVector:normalized() * self.throwDistance
+            self.hitbox:move(correct.x, correct.y)
+            self.cords.x = -1
+            self.cords.y = -1
         end
         self.throw = false
         self.scale = self.size
@@ -690,7 +697,7 @@ function Bomb:throwAnimation(dt)
         self.scaleFactor = -15 * dt
     end
     self.scale = self.scale + self.scaleFactor
-    self.bomb:rescale(self.scale)
+    self.texture:rescale(self.scale)
     local posx, posy = self.hitbox:center()
     self.position.x = posx - self.origin.x
     self.position.y = posy - self.origin.y
