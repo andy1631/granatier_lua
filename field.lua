@@ -32,9 +32,9 @@ function Field:init(pos, size, t, cords, origin)
     self.cords = cords
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
     self.hitbox.cords = self.cords
-    self.TexturePath = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
+    --self.TexturePath = Textures[self.type]
     self.bombs = 0
-    self.Texture = Tove.newGraphics(self.Texture, self.size)
+    self.Texture = Tove.newGraphics(Textures[self.type], self.size)
     self.pandora = false
     math.randomseed(os.time())
 end
@@ -68,16 +68,16 @@ function Field:update(dt)
                     self:spawnPowerUp()
                 end
                 if self.powerupNo < 6 and self.powerupNo > 0 then
-                  if player.stats.slow == false 
-                  and player.stats.hyperactive == false 
-                  and player.stats.mirror == false
-                  and player.stats.scatty == false
-                  and player.stats.restrain == false
-                  then 
-                    self.PowerUp:usePowerUp(player)
-                  end
+                    if
+                        player.stats.slow == false and player.stats.hyperactive == false and
+                            player.stats.mirror == false and
+                            player.stats.scatty == false and
+                            player.stats.restrain == false
+                     then
+                        self.PowerUp:usePowerUp(player)
+                    end
                 else
-                  self.PowerUp:usePowerUp(player)
+                    self.PowerUp:usePowerUp(player)
                 end
                 self.PowerUp = nil
                 self.powerupNo = nil
@@ -86,27 +86,21 @@ function Field:update(dt)
             end
         end
     end
-    
     if self.type == "arena_mine" then
-      for k, player in pairs(map.players) do
-        local collide,dx,dy = player.hitbox:collidesWith(self.hitbox)
-        if collide and Vector.new(dx,dy):len()>(map.fieldSize/2) then
-          if map.fields[self.cords.x][self.cords.y].bombs == 0 then
-            local bomb = Bomb(
-                        map.fields[self.cords.x][self.cords.y].position,
-                        1,
-                        self.cords,
-                        map.position,
-                        player.id
-                    )
-            map.bombs[#map.bombs+1] = bomb
-            bomb.time = 0
-            map.fields[self.cords.x][self.cords.y].bombs = 1
-            self:setType("arena_ground")
-          end
-      end
+        for k, player in pairs(map.players) do
+            local collide, dx, dy = player.hitbox:collidesWith(self.hitbox)
+            if collide and Vector.new(dx, dy):len() > (map.fieldSize / 2) then
+                if map.fields[self.cords.x][self.cords.y].bombs == 0 then
+                    local bomb =
+                        Bomb(map.fields[self.cords.x][self.cords.y].position, 1, self.cords, map.position, player.id)
+                    map.bombs[#map.bombs + 1] = bomb
+                    bomb.time = 0
+                    map.fields[self.cords.x][self.cords.y].bombs = 1
+                    self:setType("arena_ground")
+                end
+            end
+        end
     end
-end
 end
 
 function Field:spawnPowerUp(number)
@@ -172,9 +166,8 @@ end
 function Field:setType(t)
     self.type = t
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
-    self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
-    self.Texture = Tove.newGraphics(self.Texture)
-    self.Texture:rescale(self.size)
+    --self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
+    self.Texture = Tove.newGraphics(Textures[self.type], self.size)
 end
 
 function Field:getType()
@@ -219,8 +212,8 @@ end
 
 function Field:hasPlayer()
     for k, v in pairs(map.players) do
-        local collide,dx,dy = v.hitbox:collidesWith(self.hitbox)
-        if collide and Vector.new(dx,dy):len()>(map.fieldSize/2) then
+        local collide, dx, dy = v.hitbox:collidesWith(self.hitbox)
+        if collide and Vector.new(dx, dy):len() > (map.fieldSize / 2) then
             return true
         else
             return false

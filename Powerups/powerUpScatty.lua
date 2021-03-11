@@ -3,10 +3,10 @@ Class = require "lib.hump.class"
 
 local PowerUpScatty = Class {__includes = PowerUp}
 
-function PowerUpScatty:init(pos,origin)
-    self.Texture = love.filesystem.read("resources/SVG/bonus_bad_scatty.svg")
-    self.Texture = Tove.newGraphics(self.Texture)
-    PowerUp.init(self, pos,origin)
+function PowerUpScatty:init(pos, origin)
+    --self.Texture = love.filesystem.read("resources/SVG/bonus_bad_scatty.svg")
+    self.Texture = Tove.newGraphics(Textures["bonus_bad_scatty"])
+    PowerUp.init(self, pos, origin)
 end
 
 function PowerUpScatty:usePowerUp(player)

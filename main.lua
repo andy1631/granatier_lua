@@ -2,10 +2,16 @@ Gamestate = require "lib.hump.gamestate"
 game = require "game"
 menu = require "menu"
 
+Textures = {}
+
 local player
 function love.load()
     if arg[#arg] == "-debug" then
         require("mobdebug").start()
+    end
+    for k, v in pairs(love.filesystem.getDirectoryItems("resources/SVG/")) do
+        local key = string.match(v, "[^.]+")
+        Textures[key] = love.filesystem.read("resources/SVG/" .. v)
     end
     love.window.setMode(1200, 675, {resizable = false})
 

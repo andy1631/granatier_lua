@@ -17,7 +17,6 @@ local playerId = 0
 function game:enter(curr, address, port)
     mapParser = MapParser()
     mapParser:parse()
-
     udp = Socket.udp()
     udp:settimeout(0)
     if address ~= nil and port ~= nil then

@@ -17,8 +17,8 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.hitbox.isBomb = true
     self.toDelete = false
     self.cords = cords:clone()
-    self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
-    self.bomb = Tove.newGraphics(self.bomb)
+    --self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
+    self.bomb = Tove.newGraphics(Textures["bomb"])
     self.bomb:rescale(35)
     self.scale = 35
     self.scaleFactor = -0.25
@@ -102,42 +102,41 @@ function Bomb:update(dt)
         end
     end
     if map.fields[self.cords.x][self.cords.y]:getType() == "arena_bomb_mortar" then
-      local RandomX = love.math.random(1,map.x)
-      local RandomY = love.math.random(1,map.y)
-      self:throwBomb(Vector.new(RandomX,RandomY))
+        local RandomX = love.math.random(1, map.x)
+        local RandomY = love.math.random(1, map.y)
+        self:throwBomb(Vector.new(RandomX, RandomY))
     end
     if self.throw then
-      self:throwAnimation(dt)
+        self:throwAnimation(dt)
     end
     self:kickPowerUp(dt)
-    
-  if self.isExploding then
-    for j, p in pairs(map.players) do
-      for k, v in pairs(self.explodeCords) do
-        if p:playerOnField(v) == true then
-          if not self.explodedPlayers[p.id] then
-            self.explodedPlayers[p.id] = true
-            if not p.stats.shield then
-              p:explode()
-            else
-              p.stats.shield = false
-            end
-          end
-        end
-      end
-    end
-  end
 
+    if self.isExploding then
+        for j, p in pairs(map.players) do
+            for k, v in pairs(self.explodeCords) do
+                if p:playerOnField(v) == true then
+                    if not self.explodedPlayers[p.id] then
+                        self.explodedPlayers[p.id] = true
+                        if not p.stats.shield then
+                            p:explode()
+                        else
+                            p.stats.shield = false
+                        end
+                    end
+                end
+            end
+        end
+    end
 end
 
 function Bomb:kickPowerUp(dt)
-  for k, v in pairs(map.players) do
-        if v.stats.kick==true and self.hitbox.hitByPlayer and not self.arrow and not self.kicked then
-          self.movedirection = v.velocity:normalized()*5
-          self.dir = v.direction
-          self.arrow = true
-          self.kicked = true
-          self:move(dt)
+    for k, v in pairs(map.players) do
+        if v.stats.kick == true and self.hitbox.hitByPlayer and not self.arrow and not self.kicked then
+            self.movedirection = v.velocity:normalized() * 5
+            self.dir = v.direction
+            self.arrow = true
+            self.kicked = true
+            self:move(dt)
         end
     end
 end
@@ -622,7 +621,7 @@ function Bomb:explode()
             table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
         end
     end
-    
+
     self.explodeCords = fieldsCords
     --[[for j, l in pairs(map.players) do
         if l.stats.shield == false then
@@ -664,7 +663,7 @@ function Bomb:getData()
         position = {x = self.position.x, y = self.position.y},
         power = self.power,
         time = self.time,
-        hitbox = {x = hx, y = hy, solid = self.hitbox.solid,isBomb = self.hitbox.isBomb},
+        hitbox = {x = hx, y = hy, solid = self.hitbox.solid, isBomb = self.hitbox.isBomb},
         toDelete = self.toDelete,
         cords = {x = self.cords.x, y = self.cords.y},
         scale = self.scale,
@@ -727,19 +726,19 @@ function Bomb:setData(data)
 end
 
 function Bomb:throwBomb(cords)
-map.fields[self.cords.x][self.cords.y].bombs = 0
-self.throwVector = Vector.new(self.cords.x-cords.x,self.cords.y-cords.y)
-self.throw = true
-self.throwDistance = self.throwVector:len()
-self.hitbox.solid = false
+    map.fields[self.cords.x][self.cords.y].bombs = 0
+    self.throwVector = Vector.new(self.cords.x - cords.x, self.cords.y - cords.y)
+    self.throw = true
+    self.throwDistance = self.throwVector:len()
+    self.hitbox.solid = false
 end
 
 function Bomb:throwAnimation(dt)
-  local norm = self.throwVector:normalized()
-  self.hitbox:move(norm.x*dt*250,norm.y*dt*250)
-  self.throwDistance =Vector.new(norm.x*dt*250,norm.y*dt*250):len()
-  local posx, posy = self.hitbox:center()
-  self.position.x = posx - self.origin.x
-  self.position.y = posy - self.origin.y
+    local norm = self.throwVector:normalized()
+    self.hitbox:move(norm.x * dt * 250, norm.y * dt * 250)
+    self.throwDistance = Vector.new(norm.x * dt * 250, norm.y * dt * 250):len()
+    local posx, posy = self.hitbox:center()
+    self.position.x = posx - self.origin.x
+    self.position.y = posy - self.origin.y
 end
 return Bomb
