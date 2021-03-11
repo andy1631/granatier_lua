@@ -736,12 +736,12 @@ function Bomb:setData(data)
     self.arrow = data.arrow
     self.kicked = data.kicked
     self.throw = data.throw
-    if throwVector then
+    if data.throwVector then
     self.throwVector.x = data.throwVector.x
     self.throwVector.y = data.throwVector.y
     end
     self.throwDistance = data.throwDistance
-    if throwDest then
+    if data.throwDest then
     self.throwDest.x = data.throwDest.x
     self.throwDest.y = data.throwDest.y
     end
