@@ -5,7 +5,11 @@ Xml = require "lib.xml2lua.xml2lua"
 MapParser = Class {}
 
 function MapParser:init(path)
-    self.filePath = "resources/arenas/empty.xml"
+    if not path then
+        self.filePath = "resources/arenas/granatier.xml"
+    else
+        self.filePath = path
+    end
 end
 
 function MapParser:parse()

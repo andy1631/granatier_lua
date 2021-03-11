@@ -17,10 +17,11 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.hitbox.isBomb = true
     self.toDelete = false
     self.cords = cords:clone()
+    self.size = 7 / 8 * map.fieldSize
     --self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
     self.bomb = Tove.newGraphics(Textures["bomb"])
-    self.bomb:rescale(35)
-    self.scale = 35
+    self.bomb:rescale(self.size)
+    self.scale = self.size
     self.scaleFactor = -0.25
     self.north = 0
     self.south = 0
@@ -29,7 +30,6 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.isExploding = false
     self.explodeState = 0
     self.explodeTime = 0
-    self.size = 35
     self.northCords = {}
     self.southCords = {}
     self.eastCords = {}
@@ -47,6 +47,7 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     math.randomseed(os.time())
     self.explodeCords = {}
     self.explodedPlayers = {}
+    self.morterTime = 0
 end
 
 function Bomb:draw()
@@ -67,15 +68,18 @@ function Bomb:update(dt)
     end
     self.time = self.time - dt
     if not self.throw and not self.moveBomb then
-        if self.scale <= 32 then
+        if self.scale <= self.size * 0.914285714286 then
             self.scaleFactor = 12 * dt
-        elseif self.scale >= 35 then
+        elseif self.scale >= self.size then
             self.scaleFactor = -12 * dt
         end
         self.scale = self.scale + self.scaleFactor
         self.bomb:rescale(self.scale)
     end
-    if self.time <= 0 and not self.isExploding and not self.moveBomb and self.cords.x > 0 and self.cords.y > 0 then
+    if
+        self.time <= 0 and not self.isExploding and not self.moveBomb and self.cords.x > 0 and self.cords.y > 0 and
+            not self.throw
+     then
         self:explode()
     end
     if not self.throw then
@@ -108,10 +112,24 @@ function Bomb:update(dt)
     if self.throw then
         self:throwAnimation(dt)
     end
-    if not self.throw and self.cords.x > 0 and self.cords.y > 0 then
+    if not self.throw and self.morterTime <= 0 and self.cords.x > 0 and self.cords.y > 0 then
         if map.fields[self.cords.x][self.cords.y]:getType() == "arena_bomb_mortar" then
-            local RandomX = love.math.random(1, map.x)
-            local RandomY = love.math.random(1, map.y)
+            self.arrow = false
+            self.moveBomb = false
+            self.morterTime = 1
+            self.bomb:clear()
+        end
+    end
+    if self.morterTime > 0 then
+        self.morterTime = self.morterTime - dt
+        if self.morterTime <= 0 then
+            self.bomb = Tove.newGraphics(Textures["bomb"])
+            local RandomX
+            local RandomY
+            repeat
+                RandomX = love.math.random(1, map.x)
+                RandomY = love.math.random(1, map.y)
+            until self.cords.x ~= RandomX and self.cords.y ~= RandomY
             self:throwBomb(Vector.new(RandomX, RandomY))
         end
     end
@@ -531,7 +549,8 @@ function Bomb:getData()
         kicked = self.kicked,
         throw = self.throw,
         explodeCords = self.explodeCords,
-        explodedPlayers = self.explodedPlayers
+        explodedPlayers = self.explodedPlayers,
+        morterTime = self.morterTime
     }
     if self.movedirection ~= nil then
         data.movedirection = {x = self.movedirection.x, y = self.movedirection.y}
@@ -574,6 +593,7 @@ function Bomb:setData(data)
     self.arrow = data.arrow
     self.kicked = data.kicked
     self.throw = data.throw
+    self.morterTime = data.morterTime
     if data.throwVector then
         if self.throwVector then
             self.throwVector.x = data.throwVector.x
@@ -605,8 +625,8 @@ function Bomb:throwBomb(cords)
     local destPos = map.fields[cords.x][cords.y].position
     self.throwVector = destPos - self.position
     self.throwDest = Vector.new(cords.x, cords.y)
-    self.throw = true
     self.throwDistance = self.throwVector:len()
+    self.throw = true
     self.hitbox.solid = false
     self.arrow = false
     self.moveBomb = false
@@ -624,9 +644,16 @@ function Bomb:throwAnimation(dt)
         self.throw = false
         self.cords = self:getRelPos()
         map.fields[self.cords.x][self.cords.y].bombs = map.fields[self.cords.x][self.cords.y].bombs + 1
-        self.scale = 35
+        self.scale = self.size
         self.scaleFactor = -0.25
     end
+    if self.throwDistance > self.throwVector:len() / 2 then
+        self.scaleFactor = 15 * dt
+    else
+        self.scaleFactor = -15 * dt
+    end
+    self.scale = self.scale + self.scaleFactor
+    self.bomb:rescale(self.scale)
     local posx, posy = self.hitbox:center()
     self.position.x = posx - self.origin.x
     self.position.y = posy - self.origin.y
