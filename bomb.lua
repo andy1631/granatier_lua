@@ -51,7 +51,7 @@ function Bomb:init(pos, power, cords, origin, ownerId)
 end
 
 function Bomb:draw()
-    --self.hitbox:draw()
+    self.hitbox:draw()
     if not self.isExploding then
         self.bomb:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
     end
@@ -80,7 +80,7 @@ function Bomb:update(dt)
         self:explode()
     end
     if not self.throw then
-      self.hitbox.solid = true
+        self.hitbox.solid = true
     end
     for k, v in pairs(map.players) do
         if self.hitbox:collidesWith(v.hitbox) or self.isExploding then
@@ -186,36 +186,52 @@ end
 
 function Bomb:nextIsSolid(dir)
     if dir == "up" then
-        if
-            map.fields[self.cords.x][self.cords.y - 1]:getType() ~= "arena_greenwall" and
-                map.fields[self.cords.x][self.cords.y - 1]:getType() ~= "arena_wall" and
-                not map.fields[self.cords.x][self.cords.y - 1]:hasPlayer()
-         then
-            return false
+        if self.cords.y ~= 1 then
+            if
+                map.fields[self.cords.x][self.cords.y - 1]:getType() ~= "arena_greenwall" and
+                    map.fields[self.cords.x][self.cords.y - 1]:getType() ~= "arena_wall" and
+                    not map.fields[self.cords.x][self.cords.y - 1]:hasPlayer()
+             then
+                return false
+            end
+        else
+            return nil
         end
     elseif dir == "down" then
-        if
-            map.fields[self.cords.x][self.cords.y + 1]:getType() ~= "arena_greenwall" and
-                map.fields[self.cords.x][self.cords.y + 1]:getType() ~= "arena_wall" and
-                not map.fields[self.cords.x][self.cords.y + 1]:hasPlayer()
-         then
-            return false
+        if self.cords.y ~= map.y then
+            if
+                map.fields[self.cords.x][self.cords.y + 1]:getType() ~= "arena_greenwall" and
+                    map.fields[self.cords.x][self.cords.y + 1]:getType() ~= "arena_wall" and
+                    not map.fields[self.cords.x][self.cords.y + 1]:hasPlayer()
+             then
+                return false
+            end
+        else
+            return nil
         end
     elseif dir == "right" then
-        if
-            map.fields[self.cords.x + 1][self.cords.y]:getType() ~= "arena_greenwall" and
-                map.fields[self.cords.x + 1][self.cords.y]:getType() ~= "arena_wall" and
-                not map.fields[self.cords.x + 1][self.cords.y]:hasPlayer()
-         then
-            return false
+        if self.cords.x ~= map.x then
+            if
+                map.fields[self.cords.x + 1][self.cords.y]:getType() ~= "arena_greenwall" and
+                    map.fields[self.cords.x + 1][self.cords.y]:getType() ~= "arena_wall" and
+                    not map.fields[self.cords.x + 1][self.cords.y]:hasPlayer()
+             then
+                return false
+            end
+        else
+            return nil
         end
     elseif dir == "left" then
-        if
-            map.fields[self.cords.x - 1][self.cords.y]:getType() ~= "arena_greenwall" and
-                map.fields[self.cords.x - 1][self.cords.y]:getType() ~= "arena_wall" and
-                not map.fields[self.cords.x - 1][self.cords.y]:hasPlayer()
-         then
-            return false
+        if self.cords.x ~= 1 then
+            if
+                map.fields[self.cords.x - 1][self.cords.y]:getType() ~= "arena_greenwall" and
+                    map.fields[self.cords.x - 1][self.cords.y]:getType() ~= "arena_wall" and
+                    not map.fields[self.cords.x - 1][self.cords.y]:hasPlayer()
+             then
+                return false
+            end
+        else
+            return nil
         end
     end
     return true
@@ -226,9 +242,6 @@ function Bomb:move(dt)
         if not self.moveBomb then
             if not self:nextIsSolid(self.dir) then
                 self.moveBomb = true
-            end
-            if self.moveBomb then
-                map.fields[self.cords.x][self.cords.y].bombs = 0
             end
         end
 
@@ -243,14 +256,19 @@ function Bomb:move(dt)
         if self.stride >= map.fieldSize then
             self.moveBomb = false
             self.stride = 0
-            self.cords = self.cords + self.movedirection:normalized()
-            map.fields[self.cords.x][self.cords.y].bombs = 1
-            self.hitbox:moveTo(
-                map.fields[self.cords.x][self.cords.y].position.x + self.origin.x,
-                map.fields[self.cords.x][self.cords.y].position.y + self.origin.y
-            )
-            self.position = map.fields[self.cords.x][self.cords.y].position:clone()
-            if self:nextIsSolid(self.dir) then
+            map.fields[self.cords.x][self.cords.y].bombs = 0
+            if self:nextIsSolid(self.dir) ~= nil then
+                self.cords = self.cords + self.movedirection:normalized()
+                map.fields[self.cords.x][self.cords.y].bombs = 1
+                self.hitbox:moveTo(
+                    map.fields[self.cords.x][self.cords.y].position.x + self.origin.x,
+                    map.fields[self.cords.x][self.cords.y].position.y + self.origin.y
+                )
+                self.position = map.fields[self.cords.x][self.cords.y].position:clone()
+                if self:nextIsSolid(self.dir) then
+                    self.arrow = false
+                end
+            else
                 self.arrow = false
             end
         end
@@ -571,22 +589,21 @@ function Bomb:setData(data)
     self.throw = data.throw
     self.morterTime = data.morterTime
     if data.throwVector then
-      if self.throwVector then
-        self.throwVector.x = data.throwVector.x
-        self.throwVector.y = data.throwVector.y
-      else
-        self.throwVector = Vector.new(data.throwVector.x,data.throwVector.y)
-      end
-    
+        if self.throwVector then
+            self.throwVector.x = data.throwVector.x
+            self.throwVector.y = data.throwVector.y
+        else
+            self.throwVector = Vector.new(data.throwVector.x, data.throwVector.y)
+        end
     end
     self.throwDistance = data.throwDistance
     if data.throwDest then
-      if self.throwDest then
-        self.throwDest.x = data.throwDest.x
-        self.throwDest.y = data.throwDest.y
-      else
-        self.throwDest = Vector.new(data.throwDest.x,data.throwDest.y)
-      end
+        if self.throwDest then
+            self.throwDest.x = data.throwDest.x
+            self.throwDest.y = data.throwDest.y
+        else
+            self.throwDest = Vector.new(data.throwDest.x, data.throwDest.y)
+        end
     end
     if data.movedirection ~= nil and self.movedirection ~= nil then
         self.movedirection.x = data.movedirection.x

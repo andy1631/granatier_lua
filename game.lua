@@ -51,7 +51,7 @@ function game:update(dt)
         --end
         end
     else
-        local data, msg_or_ip, port_or_nil = udp:receivefrom()
+        --[[local data, msg_or_ip, port_or_nil = udp:receivefrom()
         if data then
             if data == "connect" then
                 --self:sendPlayerPos(newPlayer.id)
@@ -80,8 +80,9 @@ function game:update(dt)
                 udp:sendto(compressed, value[1], value[2])
             end
         end
-        timer = timer + dt
+        timer = timer + dt]]
     end
+    map:update(dt)
 end
 
 function game:draw()
