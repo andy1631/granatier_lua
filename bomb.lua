@@ -40,6 +40,8 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.dir = nil
     self.arrow = false
     self.kicked = false
+    self.throw = false
+    self.throwVector = nil
 end
 
 function Bomb:draw()
@@ -694,4 +696,10 @@ function Bomb:setData(data)
     self.stride = data.stride
 end
 
+function Bomb:throw(cords)
+map.fields[self.cords.x][self.cords.y].bombs = 0
+local vec = Vector.new(self.cords.x-cords.x,self.cords.y-cords.y)
+map.fields[cords.x][cords.y].bombs = 1
+self.cords = cords
+  end
 return Bomb
