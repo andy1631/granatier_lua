@@ -106,11 +106,11 @@ function Bomb:update(dt)
       local RandomY = love.math.random(1,map.y)
       self:throwBomb(Vector.new(RandomX,RandomY))
     end
-    if throw then
+    if self.throw then
       self:throwAnimation(dt)
     end
     self:kickPowerUp(dt)
-  
+    
   if self.isExploding then
     for j, p in pairs(map.players) do
       for k, v in pairs(self.explodeCords) do
@@ -127,7 +127,7 @@ function Bomb:update(dt)
       end
     end
   end
-  
+
 end
 
 function Bomb:kickPowerUp(dt)
@@ -238,7 +238,6 @@ function Bomb:move(dt)
         if not self.moveBomb then
             self:arrowCheck()
         end
-
     --[[local oldCords = self.cords:clone()
       local posx, posy = self.hitbox:center()
       self.position.x = posx - self.origin.x
@@ -732,9 +731,15 @@ map.fields[self.cords.x][self.cords.y].bombs = 0
 self.throwVector = Vector.new(self.cords.x-cords.x,self.cords.y-cords.y)
 self.throw = true
 self.throwDistance = self.throwVector:len()
+self.hitbox.solid = false
 end
 
 function Bomb:throwAnimation(dt)
-  
+  local norm = self.throwVector:normalized()
+  self.hitbox:move(norm.x*dt*250,norm.y*dt*250)
+  self.throwDistance =Vector.new(norm.x*dt*250,norm.y*dt*250):len()
+  local posx, posy = self.hitbox:center()
+  self.position.x = posx - self.origin.x
+  self.position.y = posy - self.origin.y
 end
 return Bomb
