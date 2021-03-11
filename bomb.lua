@@ -109,7 +109,11 @@ function Bomb:update(dt)
         local RandomX = love.math.random(1,map.x)
         local RandomY = love.math.random(1,map.y)
         self:throwBomb(Vector.new(RandomX,RandomY))
+<<<<<<< Updated upstream
       end
+=======
+    end
+>>>>>>> Stashed changes
     end
     if self.throw then
         self:throwAnimation(dt)
