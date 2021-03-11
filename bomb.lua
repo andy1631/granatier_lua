@@ -75,7 +75,7 @@ function Bomb:update(dt)
         self.scale = self.scale + self.scaleFactor
         self.bomb:rescale(self.scale)
     end
-    if self.time <= 0 and not self.isExploding and not self.moveBomb then
+    if self.time <= 0 and not self.isExploding and not self.moveBomb and self.cords.x > 0 and self.cords.y > 0 then
         self:explode()
     end
     if not self.throw then
@@ -108,7 +108,7 @@ function Bomb:update(dt)
     if self.throw then
         self:throwAnimation(dt)
     end
-    if not self.throw then
+    if not self.throw and self.cords.x > 0 and self.cords.y > 0 then
         if map.fields[self.cords.x][self.cords.y]:getType() == "arena_bomb_mortar" then
             local RandomX = love.math.random(1, map.x)
             local RandomY = love.math.random(1, map.y)
@@ -148,7 +148,7 @@ function Bomb:kickPowerUp(dt)
 end
 
 function Bomb:arrowCheck()
-    if not self.moveBomb then
+    if not self.moveBomb and self.cords.x > 0 and self.cords.y > 0 then
         if map.fields[self.cords.x][self.cords.y]:getType() == "arena_arrow_up" then
             self.movedirection = Vector.new(0, -5)
             self.dir = "up"
@@ -254,6 +254,9 @@ function Bomb:move(dt)
                     self.arrow = false
                 end
             else
+                map.fields[self.cords.x][self.cords.y].bombs = 0
+                self.cords.x = -1
+                self.cords.y = -1
                 self.arrow = false
             end
         end

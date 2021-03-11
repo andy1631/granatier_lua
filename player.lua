@@ -44,7 +44,7 @@ function Player:init(x, y, id, origin, size)
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
-    self.texturePath = love.filesystem.read("resources/player2.svg")
+    self.texturePath = love.filesystem.read("resources/player" .. self.id + 1 .. ".svg")
     self.playertexture = Tove.newGraphics(self.texturePath, self.size)
     self.deadtexture = Tove.newGraphics(love.filesystem.read("resources/SVG/score_star_enabled.svg"), self.size)
     self.texture = self.playertexture
@@ -161,8 +161,8 @@ function Player:update(dt)
         else
             y = 0
         end
-        if self.stats.scatty == true and self.powerUpTime%2==0 then
-          map:setBomb(self.id)
+        if self.stats.scatty == true and self.powerUpTime % 2 == 0 then
+            map:setBomb(self.id)
         end
         if self.velocity.length ~= 0 then
             if self.rotationDirection == -1 then
@@ -204,16 +204,16 @@ function Player:update(dt)
     self.position = Vector.new(x, y) - self.origin
     for shape, delta in pairs(HC.collisions(self.hitbox)) do
         if shape.solid then
-          if shape.isBomb  then
-            shape.hitByPlayer = true
-          end
+            if shape.isBomb then
+                shape.hitByPlayer = true
+            end
             self:collision(Vector.new(delta.x, delta.y), shape)
         end
     end
     if self.stats.hyperactive == true then
-      self.acceleration = (self.size+2) * 15
+        self.acceleration = (self.size + 2) * 15
     else
-      self.acceleration = (self.size+2) * 1.25
+        self.acceleration = (self.size + 2) * 1.25
     end
 end
 --Update-Funktion (Aktualisieren der UI)

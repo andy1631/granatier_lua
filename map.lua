@@ -55,7 +55,7 @@ function Map:init(x, y)
     self.background = love.filesystem.read("resources/SVG/background.svg")
     self.background = Tove.newGraphics(self.background, 1200)
     self.statusBar = StatusBar()
-    self.statusBar:createTextBox(self.playerCount)
+    --self.statusBar:createTextBox(self.playerCount)
 end
 
 --Bitser.register('Map:init', Map.init)
@@ -209,6 +209,7 @@ function Map:setData(data)
     for k, player in pairs(self.players) do
         player:setData(data.players[k + 1])
     end
+    self.playerCount = data.playerCount
     if #self.fields == 0 then
         for k, field in pairs(data.fields) do
             table.insert(

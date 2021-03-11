@@ -4,7 +4,7 @@ Xml = require "lib.xml2lua.xml2lua"
 
 MapParser = Class {}
 
-function MapParser:init()
+function MapParser:init(path)
     self.filePath = "resources/arenas/empty.xml"
 end
 
@@ -61,8 +61,7 @@ function MapParser:parse()
             map:changeType(j, i, temp)
         end
     end
-
-    map:spawn()
+    return map
 end
 
 return MapParser

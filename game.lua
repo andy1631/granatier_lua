@@ -18,22 +18,22 @@ function game:enter(curr, address, port)
     mapParser = MapParser()
     mapParser:parse()
     udp = Socket.udp()
-    udp:settimeout(0)
     if address ~= nil and port ~= nil then
         --repeat
         --    data = udp:receive()
         --until data
+        udp:settimeout(5)
         udp:setpeername(address, port)
-        udp:send("connect")
-        local data
         repeat
+            udp:send("connect")
             data = udp:receive()
-        until data
+        until data ~= nil
         playerId = tonumber(data)
     else
         host = true
         udp:setsockname("*", 12345)
     end
+    udp:settimeout(0)
     --Bitser.registerClass("map", Map)
 end
 
@@ -51,7 +51,7 @@ function game:update(dt)
         --end
         end
     else
-        --[[local data, msg_or_ip, port_or_nil = udp:receivefrom()
+        local data, msg_or_ip, port_or_nil = udp:receivefrom()
         if data then
             if data == "connect" then
                 --self:sendPlayerPos(newPlayer.id)
@@ -80,7 +80,7 @@ function game:update(dt)
                 udp:sendto(compressed, value[1], value[2])
             end
         end
-        timer = timer + dt]]
+        timer = timer + dt
     end
     map:update(dt)
 end
