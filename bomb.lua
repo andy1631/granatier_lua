@@ -297,7 +297,7 @@ function Bomb:explodeAnimation()
                 )
             end
         end
-        Tove.newGraphics(Textures[explodeString .. "core_" .. self.explodeState], (self.size * 2))
+        self.texture = Tove.newGraphics(Textures[explodeString .. "core_" .. self.explodeState], self.size)
         self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
     end
 end
@@ -517,10 +517,10 @@ function Bomb:getData()
         data.movedirection = nil
     end
     if self.throw then
-          data.throwVector = {x = self.throwVector.x, y = self.throwVector.y}
-          data.hrowDistance = self.throwDistance
-          data.throwDest = {x = self.throwDest.x, y = self.throwDest.y}
-        end
+        data.throwVector = {x = self.throwVector.x, y = self.throwVector.y}
+        data.hrowDistance = self.throwDistance
+        data.throwDest = {x = self.throwDest.x, y = self.throwDest.y}
+    end
     return data
 end
 
@@ -553,13 +553,13 @@ function Bomb:setData(data)
     self.kicked = data.kicked
     self.throw = data.throw
     if throwVector then
-    self.throwVector.x = data.throwVector.x
-    self.throwVector.y = data.throwVector.y
+        self.throwVector.x = data.throwVector.x
+        self.throwVector.y = data.throwVector.y
     end
     self.throwDistance = data.throwDistance
     if throwDest then
-    self.throwDest.x = data.throwDest.x
-    self.throwDest.y = data.throwDest.y
+        self.throwDest.x = data.throwDest.x
+        self.throwDest.y = data.throwDest.y
     end
     if data.movedirection ~= nil and self.movedirection ~= nil then
         self.movedirection.x = data.movedirection.x
