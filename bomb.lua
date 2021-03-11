@@ -44,6 +44,8 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.throwVector = nil
     self.throwDistance = nil
     math.randomseed(os.time())
+    self.explodeCords = {}
+    self.explodedPlayers = {}
 end
 
 function Bomb:draw()
@@ -108,6 +110,24 @@ function Bomb:update(dt)
       self:throwAnimation(dt)
     end
     self:kickPowerUp(dt)
+  
+  if self.isExploding then
+    for j, p in pairs(map.players) do
+      for k, v in pairs(self.explodeCords) do
+        if p:playerOnField(v) == true then
+          if not self.explodedPlayers[p.id] then
+            self.explodedPlayers[p.id] = true
+            if not p.stats.shield then
+              p:explode()
+            else
+              p.stats.shield = false
+            end
+          end
+        end
+      end
+    end
+  end
+  
 end
 
 function Bomb:kickPowerUp(dt)
@@ -603,7 +623,9 @@ function Bomb:explode()
             table.insert(fieldsCords, Vector.new(self.cords.x, self.cords.y - i))
         end
     end
-    for j, l in pairs(map.players) do
+    
+    self.explodeCords = fieldsCords
+    --[[for j, l in pairs(map.players) do
         if l.stats.shield == false then
             for k, v in pairs(fieldsCords) do
                 if l:playerOnField(v) == true then
@@ -613,7 +635,7 @@ function Bomb:explode()
         else
             l.stats.shield = false
         end
-    end
+    end]]
     self.hitbox.solid = false
 end
 
