@@ -5,7 +5,7 @@ Xml = require "lib.xml2lua.xml2lua"
 MapParser = Class {}
 
 function MapParser:init()
-    self.filePath = "resources/arenas/granatier.xml"
+    self.filePath = "resources/arenas/empty.xml"
 end
 
 function MapParser:parse()

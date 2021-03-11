@@ -43,6 +43,7 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.throw = false
     self.throwVector = nil
     self.throwDistance = nil
+    self.throwDest = nil
     math.randomseed(os.time())
     self.explodeCords = {}
     self.explodedPlayers = {}
@@ -61,17 +62,19 @@ end
 function Bomb:update(dt)
     if self.arrow or self.moveBomb then
         self:move(dt)
-    elseif not self.arrow then
+    elseif not self.arrow and not self.throw then
         self:arrowCheck()
     end
     self.time = self.time - dt
-    if self.scale <= 32 then
-        self.scaleFactor = 12 * dt
-    elseif self.scale >= 35 then
-        self.scaleFactor = -12 * dt
+    if self.throw then
+      if self.scale <= 32 then
+          self.scaleFactor = 12 * dt
+      elseif self.scale >= 35 then
+          self.scaleFactor = -12 * dt
+      end
+      self.scale = self.scale + self.scaleFactor
+      self.bomb:rescale(self.scale)
     end
-    self.scale = self.scale + self.scaleFactor
-    self.bomb:rescale(self.scale)
     if self.time <= 0 and not self.isExploding and not self.moveBomb then
         self:explode()
     end
@@ -101,10 +104,12 @@ function Bomb:update(dt)
             self.explodeState = 1
         end
     end
-    if map.fields[self.cords.x][self.cords.y]:getType() == "arena_bomb_mortar" then
-        local RandomX = love.math.random(1, map.x)
-        local RandomY = love.math.random(1, map.y)
-        self:throwBomb(Vector.new(RandomX, RandomY))
+    if not self.throw then
+      if map.fields[self.cords.x][self.cords.y]:getType() == "arena_bomb_mortar" then
+        local RandomX = love.math.random(1,map.x)
+        local RandomY = love.math.random(1,map.y)
+        self:throwBomb(Vector.new(RandomX,RandomY))
+      end
     end
     if self.throw then
         self:throwAnimation(dt)
@@ -250,6 +255,9 @@ function Bomb:move(dt)
 end
 
 function Bomb:explodeAnimation()
+  local explodeString = "resources/SVG/bomb_blast_"
+  local EndExplodeString = self.explodeState
+  
     if self.isExploding == true then
         if self.explodeState == 0 then
             if self.north > 0 then
@@ -641,8 +649,10 @@ function Bomb:getRelPos()
     local col = {}
     local cords = {}
     for shape, delta in pairs(HC.collisions(self.hitbox)) do
+      if shape.cords ~= nil then
         col[#col + 1] = Vector.new(delta.x, delta.y):len()
         cords[#cords + 1] = shape.cords
+      end
     end
     --col[0] = 0
     local index = 1
@@ -681,7 +691,13 @@ function Bomb:getData()
         westCords = self.westCords,
         arrow = self.arrow,
         stride = self.stride,
-        kicked = self.kicked
+        kicked = self.kicked,
+        throw = self.throw,
+        throwVector = {x = self.throwVector.x, y = self.throwVector.y},
+        throwDistance = self.throwDistance,
+        throwDest = {x = self.throwDest.x, y = self.throwDest.y},
+        explodeCords = self.explodeCords,
+        explodedPlayers = self.explodedPlayers
     }
     if self.movedirection ~= nil then
         data.movedirection = {x = self.movedirection.x, y = self.movedirection.y}
@@ -718,27 +734,50 @@ function Bomb:setData(data)
     self.westCords = data.westCords
     self.arrow = data.arrow
     self.kicked = data.kicked
+    self.throw = data.throw
+    self.throwVector.x=data.throwVector.x
+    self.throwVector.y=data.throwVector.y
+    self.throwDistance = data.throwDistance
+    self.throwDest.x = data.throwDest.x
+    self.throwDest.y = data.throwDest.y
     if data.movedirection ~= nil and self.movedirection ~= nil then
         self.movedirection.x = data.movedirection.x
         self.movedirection.y = data.movedirection.y
     end
     self.stride = data.stride
+    self.explodeCords = data.explodeCords
+    self.explodedPlayers = data.explodedPlayers
 end
 
 function Bomb:throwBomb(cords)
-    map.fields[self.cords.x][self.cords.y].bombs = 0
-    self.throwVector = Vector.new(self.cords.x - cords.x, self.cords.y - cords.y)
-    self.throw = true
-    self.throwDistance = self.throwVector:len()
-    self.hitbox.solid = false
+map.fields[self.cords.x][self.cords.y].bombs = 0
+local destPos = map.fields[cords.x][cords.y].position
+self.throwVector = destPos - self.position
+self.throwDest = Vector.new(cords.x,cords.y)
+self.throw = true
+self.throwDistance = self.throwVector:len() 
+self.hitbox.solid = false
+self.arrow = false
+self.moveBomb = false
 end
 
 function Bomb:throwAnimation(dt)
-    local norm = self.throwVector:normalized()
-    self.hitbox:move(norm.x * dt * 250, norm.y * dt * 250)
-    self.throwDistance = Vector.new(norm.x * dt * 250, norm.y * dt * 250):len()
-    local posx, posy = self.hitbox:center()
-    self.position.x = posx - self.origin.x
-    self.position.y = posy - self.origin.y
+  local norm = self.throwVector:normalized()
+  self.hitbox:move(norm.x*dt*250,norm.y*dt*250)
+  self.throwDistance = self.throwDistance - Vector.new(norm.x*dt*250,norm.y*dt*250):len()
+  if self.throwDistance < 0 then
+    self.hitbox:moveTo(
+        map.fields[self.throwDest.x][self.throwDest.y].position.x + self.origin.x,
+        map.fields[self.throwDest.x][self.throwDest.y].position.y + self.origin.y
+    )
+    self.throw=false
+    self.cords=self:getRelPos()
+    map.fields[self.cords.x][self.cords.y].bombs=map.fields[self.cords.x][self.cords.y].bombs + 1
+    self.scale = 35
+    self.scaleFactor = -0.25
+  end
+  local posx, posy = self.hitbox:center()
+  self.position.x = posx - self.origin.x
+  self.position.y = posy - self.origin.y
 end
 return Bomb
