@@ -692,9 +692,6 @@ function Bomb:getData()
         stride = self.stride,
         kicked = self.kicked,
         throw = self.throw,
-        throwVector = {x = self.throwVector.x, y = self.throwVector.y},
-        throwDistance = self.throwDistance,
-        throwDest = {x = self.throwDest.x, y = self.throwDest.y},
         explodeCords = self.explodeCords,
         explodedPlayers = self.explodedPlayers
     }
@@ -703,6 +700,11 @@ function Bomb:getData()
     else
         data.movedirection = nil
     end
+    if self.throw then
+          data.throwVector = {x = self.throwVector.x, y = self.throwVector.y}
+          data.hrowDistance = self.throwDistance
+          data.throwDest = {x = self.throwDest.x, y = self.throwDest.y}
+        end
     return data
 end
 
@@ -734,11 +736,15 @@ function Bomb:setData(data)
     self.arrow = data.arrow
     self.kicked = data.kicked
     self.throw = data.throw
+    if throwVector then
     self.throwVector.x = data.throwVector.x
     self.throwVector.y = data.throwVector.y
+    end
     self.throwDistance = data.throwDistance
+    if throwDest then
     self.throwDest.x = data.throwDest.x
     self.throwDest.y = data.throwDest.y
+    end
     if data.movedirection ~= nil and self.movedirection ~= nil then
         self.movedirection.x = data.movedirection.x
         self.movedirection.y = data.movedirection.y
