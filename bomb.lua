@@ -48,6 +48,8 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.explodeCords = {}
     self.explodedPlayers = {}
     self.morterTime = 0
+    self.fall = false
+    self.falltime = -1
 end
 
 function Bomb:draw()
@@ -55,7 +57,9 @@ function Bomb:draw()
     if not self.isExploding then
         self.bomb:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
     end
-
+    if self.fall == true then
+      self.bomb = Tove.newGraphics(Textures["bomb"], self.size * (self.falltime / 2))
+    end
     --love.graphics.print(tostring(self.isExploding),0,0)
     self:explodeAnimation()
 end
@@ -63,11 +67,11 @@ end
 function Bomb:update(dt)
     if self.arrow or self.moveBomb then
         self:move(dt)
-    elseif not self.arrow and not self.throw then
+    elseif not self.arrow and not self.throw and not self.fall then
         self:arrowCheck()
     end
     self.time = self.time - dt
-    if not self.throw and not self.moveBomb then
+    if not self.throw and not self.moveBomb and not self.fall then
         if self.scale <= self.size * 0.914285714286 then
             self.scaleFactor = 12 * dt
         elseif self.scale >= self.size then
@@ -76,10 +80,7 @@ function Bomb:update(dt)
         self.scale = self.scale + self.scaleFactor
         self.bomb:rescale(self.scale)
     end
-    if
-        self.time <= 0 and not self.isExploding and not self.moveBomb and self.cords.x > 0 and self.cords.y > 0 and
-            not self.throw
-     then
+    if self.time <= 0 and not self.isExploding and not self.moveBomb and self.cords.x > 0 and self.cords.y > 0 and not self.throw and not self.fall then
         self:explode()
     end
     if not self.throw then
@@ -150,6 +151,25 @@ function Bomb:update(dt)
                 end
             end
         end
+    end
+    local vec=self:getRelPos()
+    if self.fall == true then
+        if self.falltime - dt >= 0 then
+            self.falltime = self.falltime - dt
+        else
+            self.fall = false
+            self.falltime = -1
+            self.toDelete = true
+        end
+    end
+    if (not vec or map.fields[vec.x][vec.y]:getType()=="air" )and not self.fall then
+      love.window.showMessageBox("Doing")
+      self.fall = true
+      self.falltime = 2
+      self.arrow=false
+      self.moveBomb=false
+      self.scale = self.size
+      self.scaleFactor = -0.25
     end
 end
 
@@ -550,7 +570,9 @@ function Bomb:getData()
         throw = self.throw,
         explodeCords = self.explodeCords,
         explodedPlayers = self.explodedPlayers,
-        morterTime = self.morterTime
+        morterTime = self.morterTime,
+        fall = self.fall,
+        falltime = self.falltime
     }
     if self.movedirection ~= nil then
         data.movedirection = {x = self.movedirection.x, y = self.movedirection.y}
@@ -618,6 +640,8 @@ function Bomb:setData(data)
     self.stride = data.stride
     self.explodeCords = data.explodeCords
     self.explodedPlayers = data.explodedPlayers
+    self.fall = data.fall
+    self.falltime = data.falltime
 end
 
 function Bomb:throwBomb(cords)
