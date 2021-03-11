@@ -196,6 +196,7 @@ function Map:getData()
     for k, bomb in pairs(self.bombs) do
         table.insert(data.bombs, bomb:getData())
     end
+
     return data
 end
 

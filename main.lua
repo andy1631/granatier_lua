@@ -7,7 +7,7 @@ function love.load()
     if arg[#arg] == "-debug" then
         require("mobdebug").start()
     end
-    love.window.setMode(1200, 675, {resizable = true})
+    love.window.setMode(1200, 675, {resizable = false})
 
     Gamestate.registerEvents()
     Gamestate.switch(menu)

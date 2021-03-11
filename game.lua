@@ -8,7 +8,7 @@ Bomb = require "bomb"
 LibDeflate = require "lib.LibDeflate"
 
 local host = false
-local updaterate = 0.00
+local updaterate = 0.03
 local timer = 0
 local connections = {}
 local game = {}
@@ -39,20 +39,16 @@ function game:enter(curr, address, port)
 end
 
 function game:update(dt)
-    timer = timer + dt
+    local start
     if not host then
         --end
         --if timer > updaterate then
         local dump = udp:receive()
         if dump ~= nil then
-            --local id, cmd, x, y = string.match(dump, "([^:,]+),([^:,]+):([^:,]+),([^:,]+)")
-            --if cmd == "pos" and map.players[tonumber(id)] ~= nil then
-            --map.players[tonumber(id)].position.x = tonumber(x)
-            --map.players[tonumber(id)].position.y = tonumber(y)
-            --elseif cmd ~= "pos" then
             local decompressed = LibDeflate:DecompressDeflate(dump)
             local data = Bitser.loads(decompressed)
             map:setData(data)
+            map:update(dt)
         --end
         end
     else
@@ -77,6 +73,7 @@ function game:update(dt)
                 end
             end
         end
+        map:update(dt)
         if timer > updaterate then
             local dump = Bitser.dumps(map:getData())
             local compressed = LibDeflate:CompressDeflate(dump)
@@ -84,8 +81,8 @@ function game:update(dt)
                 udp:sendto(compressed, value[1], value[2])
             end
         end
+        timer = timer + dt
     end
-    map:update(dt)
 end
 
 function game:draw()
@@ -123,6 +120,13 @@ function game:keypressed(key, scancode, isrepeat)
             --map:setBomb()
             udp:send(playerId .. ",setBomb:_")
         end
+
+        local dump = udp:receive()
+        if dump ~= nil then
+            local decompressed = LibDeflate:DecompressDeflate(dump)
+            local data = Bitser.loads(decompressed)
+            map:setData(data)
+        end
     end
 end
 
@@ -141,19 +145,6 @@ end
 
 function game:resize(w, h)
     map:resize()
-end
-
-function game:sendPlayerPos(id)
-    for key, value in pairs(connections) do
-        udp:sendto(
-            id ..
-                ",pos:" ..
-                    tostring(map.players[tonumber(id)].position.x) ..
-                        "," .. tostring(map.players[tonumber(id)].position.x),
-            value[1],
-            value[2]
-        )
-    end
 end
 
 return game
