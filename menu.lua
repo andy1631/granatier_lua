@@ -10,6 +10,7 @@ local text = "Nothing was selected."
 -- Mainmenu
 local mainmenu
 
+
 -- Start Game
 local function join_game()
     Gamestate.switch(game, "127.0.0.1", 12345)
@@ -28,9 +29,9 @@ end
 function menu:enter()
     -- many lines of code
     --love.window.setMode(600, 400)
-    --love.graphics.setFont(love.graphics.newFont(20))
+    love.graphics.setFont(love.graphics.newFont(20))
 
-    mainmenu = menuengine.new(200, 100)
+    mainmenu = menuengine.new(600, 250)
     mainmenu:addEntry("Join Game", join_game)
     mainmenu:addEntry("Host Game", host_game)
     mainmenu:addSep()
