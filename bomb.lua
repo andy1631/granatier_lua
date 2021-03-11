@@ -518,7 +518,7 @@ function Bomb:getData()
     end
     if self.throw then
         data.throwVector = {x = self.throwVector.x, y = self.throwVector.y}
-        data.hrowDistance = self.throwDistance
+        data.throwDistance = self.throwDistance
         data.throwDest = {x = self.throwDest.x, y = self.throwDest.y}
     end
     return data
