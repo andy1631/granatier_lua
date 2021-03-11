@@ -14,6 +14,7 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.origin = origin
     --self.hitbox = HC.circle(self.position.x,self.position.y, 17.5)
     self.hitbox = HC.rectangle(self.position.x - 20 + self.origin.x, self.position.y - 20 + self.origin.y, 40, 40)
+    self.hitbox.isBomb = true
     self.toDelete = false
     self.cords = cords:clone()
     self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
@@ -38,6 +39,7 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.moveBomb = false
     self.dir = nil
     self.arrow = false
+    self.kicked = false
 end
 
 function Bomb:draw()
@@ -97,12 +99,13 @@ function Bomb:update(dt)
     self:kickPowerUp(dt)
 end
 
-function kickPowerUp(dt)
+function Bomb:kickPowerUp(dt)
   for k, v in pairs(map.players) do
-        local collide = v.hitbox:collidesWith(self.hitbox)
-        if collide and v.stats.kick==true then
+        if v.stats.kick==true and self.hitbox.hitByPlayer and not self.arrow and not self.kicked then
           self.movedirection = v.velocity:normalized()*5
           self.dir = v.direction
+          self.arrow = true
+          self.kicked = true
           self:move(dt)
         end
     end

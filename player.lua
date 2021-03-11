@@ -204,6 +204,9 @@ function Player:update(dt)
     self.position = Vector.new(x, y) - self.origin
     for shape, delta in pairs(HC.collisions(self.hitbox)) do
         if shape.solid then
+          if shape.isBomb  then
+            shape.hitByPlayer = true
+          end
             self:collision(Vector.new(delta.x, delta.y), shape)
         end
     end
