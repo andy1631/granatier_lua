@@ -170,7 +170,6 @@ function Bomb:update(dt)
         end
     end
     if (not vec or map.fields[vec.x][vec.y]:getType() == "air") and not self.fall then
-        love.window.showMessageBox("Doing")
         self.fall = true
         self.falltime = 2
         self.arrow = false
