@@ -632,7 +632,7 @@ function Bomb:getData()
         position = {x = self.position.x, y = self.position.y},
         power = self.power,
         time = self.time,
-        hitbox = {x = hx, y = hy, self.hitbox.solid},
+        hitbox = {x = hx, y = hy, solid = self.hitbox.solid,isBomb = self.hitbox.isBomb},
         toDelete = self.toDelete,
         cords = {x = self.cords.x, y = self.cords.y},
         scale = self.scale,
@@ -649,7 +649,8 @@ function Bomb:getData()
         eastCords = self.eastCords,
         westCords = self.westCords,
         arrow = self.arrow,
-        stride = self.stride
+        stride = self.stride,
+        kicked = self.kicked
     }
     if self.movedirection ~= nil then
         data.movedirection = {x = self.movedirection.x, y = self.movedirection.y}
@@ -667,6 +668,7 @@ function Bomb:setData(data)
     self.time = data.time
     self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
     self.hitbox.solid = data.hitbox.solid
+    self.hitbox.isBomb = data.hitbox.isBomb
     self.toDelete = data.toDelete
     self.cords.x = data.cords.x
     self.cords.y = data.cords.y
@@ -684,6 +686,7 @@ function Bomb:setData(data)
     self.eastCords = data.eastCords
     self.westCords = data.westCords
     self.arrow = data.arrow
+    self.kicked = data.kicked
     if data.movedirection ~= nil and self.movedirection ~= nil then
         self.movedirection.x = data.movedirection.x
         self.movedirection.y = data.movedirection.y
