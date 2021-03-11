@@ -122,46 +122,64 @@ end
 
 --Method to set bombs and set bombs to a whole field
 function Map:setBomb(id)
-    --TODO use getRelPos()-------------------------------------------------------
-    if id == nil then
-        id = 0
+  --TODO use getRelPos()-------------------------------------------------------
+  if id == nil then
+    id = 0
+  end
+  local col = {}
+  local cords = {}
+  if self.players[id].stats.restrain == false and self.players[id].dead == false and self.players[id].fallen == false then
+    for shape, delta in pairs(HC.collisions(self.players[id].hitbox)) do
+      if shape.cords ~= nil then
+        col[#col + 1] = Vector.new(delta.x, delta.y):len()
+        cords[#cords + 1] = shape.cords
+      end
     end
-    local col = {}
-    local cords = {}
-    if self.players[id].stats.restrain == false and self.players[id].dead == false and self.players[id].fallen == false then
-        if self.players[id].stats.bombs > 0 then
-            for shape, delta in pairs(HC.collisions(self.players[id].hitbox)) do
-                if shape.cords ~= nil then
-                    col[#col + 1] = Vector.new(delta.x, delta.y):len()
-                    cords[#cords + 1] = shape.cords
-                end
-            end
-            col[0] = 0
-            local index = 0
-            for k, v in pairs(col) do
-                if v ~= 0 then
-                    if col[index] < v then
-                        index = k
-                    end
-                end
-            end
-            if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
-                table.insert(
-                    self.bombs,
-                    Bomb(
-                        map.fields[cords[index].x][cords[index].y].position,
-                        self.players[id].stats.power,
-                        cords[index],
-                        self.position,
-                        id
-                    )
-                )
-                map.fields[cords[index].x][cords[index].y].bombs = 1
-                self.players[id].stats.bombs = self.players[id].stats.bombs - 1
-                love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
-            end
+    col[0] = 0
+    local index = 0
+    for k, v in pairs(col) do
+      if v ~= 0 then
+        if col[index] < v then
+          index = k
         end
+      end
     end
+    if index ~= 0 and map.fields[cords[index].x][cords[index].y].bombs == 0 then
+      if self.players[id].stats.bombs > 0 then
+        table.insert(
+          self.bombs,
+          Bomb(
+            map.fields[cords[index].x][cords[index].y].position,
+            self.players[id].stats.power,
+            cords[index],
+            self.position,
+            id
+          )
+        )
+        map.fields[cords[index].x][cords[index].y].bombs = 1
+        self.players[id].stats.bombs = self.players[id].stats.bombs - 1
+        love.audio.play(love.audio.newSource("resources/sounds/putbomb.wav", "static"))
+      end
+    elseif map.fields[cords[index].x][cords[index].y].bombs > 0 then
+      local bomb
+      for k, v in pairs(map.bombs) do
+        if v.cords == cords[index] then
+          bomb=v
+        end
+      end
+      local vect
+      if self.players[id].direction == "right" then
+        vect = Vector:new(cords[index].x+2,cords[index].y)
+      elseif self.players[id].direction == "left" then
+        vect = Vector:new(cords[index].x-2,cords[index].y)
+      elseif self.players[id].direction == "up" then
+        vect = Vector:new(cords[index].x,cords[index].y-2)
+      elseif players[id].direction == "down" then
+        vect = Vector:new(cords[index].x,cords[index].y+2)
+      end
+      bomb:throwBomb(vect)
+    end
+  end
 end
 
 --Set the types for Fields
