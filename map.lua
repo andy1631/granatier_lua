@@ -168,14 +168,14 @@ function Map:setBomb(id)
         end
       end
       local vect
-      if self.players[id].direction == "right" then
-        vect = Vector:new(cords[index].x+2,cords[index].y)
-      elseif self.players[id].direction == "left" then
-        vect = Vector:new(cords[index].x-2,cords[index].y)
-      elseif self.players[id].direction == "up" then
-        vect = Vector:new(cords[index].x,cords[index].y-2)
-      elseif players[id].direction == "down" then
-        vect = Vector:new(cords[index].x,cords[index].y+2)
+      if map.players[id].direction == "right" then
+        vect = Vector.new(cords[index].x+2,cords[index].y)
+      elseif map.players[id].direction == "left" then
+        vect = Vector.new(cords[index].x-2,cords[index].y)
+      elseif map.players[id].direction == "up" then
+        vect = Vector.new(cords[index].x,cords[index].y-2)
+      elseif map.players[id].direction == "down" then
+        vect = Vector.new(cords[index].x,cords[index].y+2)
       end
       bomb:throwBomb(vect)
     end
