@@ -152,7 +152,6 @@ function Bomb:update(dt)
             end
         end
     end
-    local vec=self:getRelPos()
     if self.fall == true then
         if self.falltime - dt >= 0 then
             self.falltime = self.falltime - dt
@@ -160,16 +159,19 @@ function Bomb:update(dt)
             self.fall = false
             self.falltime = -1
             self.toDelete = true
+            map.players[self.ownerId].stats.bombs=map.players[self.ownerId].stats.bombs+1
         end
     end
-    if (not vec or map.fields[vec.x][vec.y]:getType()=="air" )and not self.fall then
-      love.window.showMessageBox("Doing")
-      self.fall = true
-      self.falltime = 2
-      self.arrow=false
-      self.moveBomb=false
-      self.scale = self.size
-      self.scaleFactor = -0.25
+    local vec=self:getRelPos()
+    if not self.fall then
+      if not vec or map.fields[vec.x][vec.y]:getType()=="air"then
+        self.fall = true
+        self.falltime = 2
+        self.arrow=false
+        self.moveBomb=false
+        self.scale = self.size
+        self.scaleFactor = -0.25
+      end
     end
 end
 
