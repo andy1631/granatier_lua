@@ -692,9 +692,9 @@ function Bomb:throwAnimation(dt)
         self.scaleFactor = -0.25
     end
     if self.throwDistance > self.throwVector:len() / 2 then
-        self.scaleFactor = 15 * dt
+        self.scaleFactor = 25 * dt
     else
-        self.scaleFactor = -15 * dt
+        self.scaleFactor = -25 * dt
     end
     self.scale = self.scale + self.scaleFactor
     self.texture:rescale(self.scale)
