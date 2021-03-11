@@ -6,7 +6,9 @@ StatusBar = Class {}
 function StatusBar:init()
   
 end
-
+-- In update() schauen, ob sich die Spieleranzahl ändert
+-- Compilen auf Kommandozeile (Windows):
+-- "C:\Users\GutzeiMo\Downloads\love-11.3-win64\love-11.3-win64\love.exe" "C:\Users\GutzeiMo\Documents\GitHub\granatier_lua"
 function StatusBar:createTextBox(playerCount)
   self.textbox = {
     x = 1200,
@@ -60,12 +62,16 @@ function StatusBar:draw()
   self.powerUpY = 160
   for i = 1, self.Test, 1
   do
-    -- if map.players[i-1].stats.shield == true -> normal -- shield, throw, kick und ein negatives Power-Up
-    -- if map.players[i-1].stats.shield == false -> ausgegraut
     -- Spieler anhand der Anzahl erstellen:
     love.graphics.printf({{0, 0, 255, 255}, "Spieler " .. i}, self.x, self.y, 100, 'center') -- Farbe auf Blau setzen
+    love.graphics.setColor(255, 255, 255, 255) -- Farbe für das Zeichnen des Spieler-Bilds zurücksetzen
     -- Zeichnen der Power-Ups unterhalb von Spieler 1:
-    self.Player1Tex:draw(150, self.y + 7) -- x, y
+    if i % 2 == 0 then
+      self.Player1Tex:draw(150, self.y + 7) -- x, y
+    end
+    if i % 2 == 1 then
+      self.Player2Tex:draw(150, self.y + 7) -- x, y
+    end
     if map.players[i-1].stats.shield == true then -- Falls das Schild-Power-Up eingesammelt wurde
       love.graphics.setColor(255, 255, 255, 255) -- Normales Zeichnen
       self.ShieldTex:draw(148, self.powerUpY)
@@ -91,11 +97,6 @@ function StatusBar:draw()
       self.KickTex:draw(208, self.powerUpY)
     end
     -- Falls das zuvor eingesammelte Power-Up nicht mehr aktiv ist, muss es weiterhin dargestellt, aber ausgegraut werden
-    --[[self.SlowBool = false -- Power-Up wurde mal eingesammelt, ist aber nicht mehr aktiv
-    self.HyperBool = false
-    self.MirrorBool = false
-    self.ScattyBool = false
-    self.RestrainBool = false--]]
     -- Ausgabe, ob die Variable true oder false ist:
     love.graphics.printf({{0, 0, 255, 255}, "Variable self.SlowBool vor ifs ist " .. tostring(self.SlowBool)}, self.x, self.y + 150, 100, 'center')
     love.graphics.printf({{0, 0, 255, 255}, "Variable self.HyperBool vor ifs ist " .. tostring(self.HyperBool)}, self.x, self.y + 450, 100, 'center')
@@ -127,9 +128,6 @@ function StatusBar:draw()
       self.RestrainBool = false
       love.graphics.printf({{0, 0, 255, 255}, "Variable self.HyperBool in if ist " .. tostring(self.HyperBool)}, self.x, self.y + 350, 100, 'center')
     end
-    --love.graphics.printf({{0, 0, 255, 255}, "stats.hyperactive == false -> "
-        --.. tostring(map.players[i-1].stats.hyperactive == false)}, self.x, self.y + 500, 100, 'center')
-    -- stats.hyperactive ist false, falls es nicht eingesammelt worden ist, trotzdem wird es nicht angezeigt
     if (map.players[i-1].stats.hyperactive == false and self.HyperBool == true) then -- Falls das Slow-Power-Up eingesammelt wurde, muss es ausgegraut werden
       love.graphics.setColor(255, 0, 0, 180)
       self.HyperTex:draw(238, self.powerUpY)
@@ -172,40 +170,14 @@ function StatusBar:draw()
       self.MirrorBool = false
       self.ScattyBool = false
     end
-    -- love.graphics.printf({{0, 0, 255, 255}, "Variable self.RestrainBool vor ifs ist " .. tostring(self.RestrainBool)} .. " und map.player.restrain == " .. tostring(map.players[i-1].stats.restrain), self.x, self.y + 10, 100, 'center')
     if (map.players[i-1].stats.restrain == false and self.RestrainBool == true) then -- Falls das Slow-Power-Up eingesammelt wurde, muss es ausgegraut werden
       love.graphics.setColor(255, 0, 0, 180)
       self.RestrainTex:draw(238, self.powerUpY)
     end
-    --[[
-    self.ThrowTex:draw(178, self.powerUpY)
-    love.graphics.setColor(255, 0, 0, 180) -- 255, 0, 0, 180 = rot
-    self.KickTex:draw(208, self.powerUpY)
-    self.RestrainTex:draw(238, self.powerUpY)
-    love.graphics.setColor(255, 255, 255, 255)
-    --]]
     -- Hochzählen der einzelnen Variablen:
     self.y = self.y + 78
     self.powerUpY = self.powerUpY + 78
   end
-  -- Altes Zeichnen des Spielers:
-  --[[
-  love.graphics.printf({{0, 0, 255, 255}, "Spieler 1"}, 152, 262, 100, 'center') -- Farbe auf Blau setzen
-  -- Zeichnen der Power-Ups unterhalb von Spieler 1:
-  self.ShieldTex:draw(148, 310)
-  self.ThrowTex:draw(178, 310)
-  love.graphics.setColor(255, 0, 0, 180) -- 255, 0, 0, 180 = rot
-  self.KickTex:draw(208, 310)
-  self.RestrainTex:draw(238, 310)
-  -- Spieler 2 mit Text und Power-Ups:
-  self.Player2Tex:draw(150, 348)
-  love.graphics.printf({{255, 0, 0, 255}, "Spieler 2"}, 152, 340, 100, 'center')
-  -- Zeichnen der Power-Ups unterhalb von Spieler 2:
-  self.ShieldTex:draw(148, 388)
-  self.ThrowTex:draw(178, 388)
-  self.KickTex:draw(208, 388)
-  self.RestrainTex:draw(238, 388)
-  --]]
 end
 
 function StatusBar:update()
