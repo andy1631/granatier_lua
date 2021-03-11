@@ -23,7 +23,7 @@ function MapParser:parse()
     local y = t._attr.rowCount
     t.Row.n = nil
     math.randomseed(os.time())
-    map = Map(x, y)
+    local map = Map(x, y)
     for i, v in pairs(t.Row) do
         local xcord = v[1]
         for j = 1, x, 1 do

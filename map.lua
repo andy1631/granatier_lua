@@ -21,7 +21,7 @@ function Map:init(x, y)
     end
     self.fieldSize = 40
     self.width = self.x * self.fieldSize
-    self.height = self.y * 40
+    self.height = self.y * self.fieldSize
     self.position =
         Vector.new(
         (love.graphics:getWidth() / 2) - (self.width / 2),
@@ -199,7 +199,9 @@ function Map:getData()
         playerCount = self.playerCount,
         players = {},
         fields = {},
-        bombs = {}
+        bombs = {},
+        x = self.x,
+        y = self.y
     }
     for k, player in pairs(self.players) do
         table.insert(data.players, player:getData())
@@ -218,26 +220,31 @@ function Map:getData()
 end
 
 function Map:setData(data)
+  self.x = data.x
+  self.y = data.y
     if data.playerCount ~= self.playerCount then
-        for i = 1, data.playerCount - self.playerCount, 1 do
-            self.players[self.playerCount] = Player(0, 0, self.playerCount, self.position, self.fieldSize)
+        for i = 0, data.playerCount - self.playerCount - 1, 1 do
+            self.players[i] = Player(0, 0, i, self.position, self.fieldSize)
         end
     end
     for k, player in pairs(self.players) do
-        player:setData(data.players[k + 1])
+        player:setData(data.players[k+1])
     end
     self.playerCount = data.playerCount
     if #self.fields == 0 then
-        for k, field in pairs(data.fields) do
-            table.insert(
-                self.fields,
-                Field(
-                    Vector.new(data.fields[k].position.x, data.fields[k].position.x),
-                    self.fieldSize,
-                    data.fields[k].type,
-                    Vector.new(data.fields[k].cords.x, data.fields[k].cords.y)
-                )
-            )
+      self.width = self.x * self.fieldSize
+    self.height = self.y * self.fieldSize
+    self.position =
+        Vector.new(
+        (love.graphics:getWidth() / 2) - (self.width / 2),
+        (love.graphics:getHeight() / 2) - (self.height / 2)
+    )
+        for i = 1, table.getn(data.fields), 1 do
+          self.fields[i] = {}
+          for j = 1, table.getn(data.fields[i]), 1 do
+                self.fields[i][j] =
+                    Field(Vector.new(data.fields[i][j].position.x, data.fields[i][j].position.y), map.fieldSize,data.fields[i][j].type, Vector.new(i, j), self.position)
+          end
         end
     else
         for i, fields in pairs(self.fields) do

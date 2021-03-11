@@ -53,7 +53,7 @@ function Bomb:init(pos, power, cords, origin, ownerId)
 end
 
 function Bomb:draw()
-    self.hitbox:draw()
+    --self.hitbox:draw()
     if self.fall == true then
         self.texture = Tove.newGraphics(Textures["bomb"], self.size * (self.falltime / 2))
     end
@@ -164,19 +164,19 @@ function Bomb:update(dt)
             self.fall = false
             self.falltime = -1
             self.toDelete = true
-            map.players[self.ownerId].stats.bombs=map.players[self.ownerId].stats.bombs+1
+            map.players[self.ownerId].stats.bombs = map.players[self.ownerId].stats.bombs + 1
         end
     end
-    local vec=self:getRelPos()
+    local vec = self:getRelPos()
     if not self.fall then
-      if not vec or map.fields[vec.x][vec.y]:getType()=="air"then
-        self.fall = true
-        self.falltime = 2
-        self.arrow=false
-        self.moveBomb=false
-        self.scale = self.size
-        self.scaleFactor = -0.25
-      end
+        if not vec or map.fields[vec.x][vec.y]:getType() == "air" then
+            self.fall = true
+            self.falltime = 2
+            self.arrow = false
+            self.moveBomb = false
+            self.scale = self.size
+            self.scaleFactor = -0.25
+        end
     end
 end
 
@@ -682,7 +682,7 @@ function Bomb:throwAnimation(dt)
             self.cords = self:getRelPos()
             map.fields[self.cords.x][self.cords.y].bombs = map.fields[self.cords.x][self.cords.y].bombs + 1
         else
-            local correct = self.throwVector:normalized() * (self.throwDistance+1)
+            local correct = self.throwVector:normalized() * (self.throwDistance + 1)
             self.hitbox:move(correct.x, correct.y)
             self.cords.x = -1
             self.cords.y = -1

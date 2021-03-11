@@ -13,15 +13,12 @@ local timer = 0
 local connections = {}
 local game = {}
 local playerId = 0
+map = nil
 
 function game:enter(curr, address, port)
-    mapParser = MapParser("resources/arenas/empty.xml")
-    mapParser:parse()
     udp = Socket.udp()
     if address ~= nil and port ~= nil then
-        --repeat
-        --    data = udp:receive()
-        --until data
+        map = Map(0,0)
         udp:settimeout(5)
         udp:setpeername(address, port)
         repeat
@@ -29,9 +26,17 @@ function game:enter(curr, address, port)
             data = udp:receive()
         until data ~= nil
         playerId = tonumber(data)
+        local dump = udp:receive()
+        if dump ~= nil then
+            local decompressed = LibDeflate:DecompressDeflate(dump)
+            local data = Bitser.loads(decompressed)
+            map:setData(data)
+        end
     else
         host = true
         udp:setsockname("*", 12345)
+        mapParser = MapParser("resources/arenas/empty.xml")
+        map = mapParser:parse()
         map:spawn()
     end
     udp:settimeout(0)

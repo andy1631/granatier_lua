@@ -164,10 +164,11 @@ function Field:spawnPowerUp(number)
 end
 
 function Field:setType(t)
+  if t ~= self.type then
     self.type = t
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
-    --self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
     self.Texture = Tove.newGraphics(Textures[self.type], self.size)
+    end
 end
 
 function Field:getType()
@@ -191,8 +192,8 @@ function Field:getData()
 end
 
 function Field:setData(data)
-    --self:setType(data.type)
-    self.type = data.type
+    self:setType(data.type)
+    --self.type = data.type
     self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
     self.hitbox.solid = data.hitbox.solid
     self.hitbox.cords = self.cords
