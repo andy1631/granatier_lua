@@ -320,7 +320,7 @@ function Player:explode()
             self:die()
         elseif self.exploded == true then
             self.texture = nil
-            source = love.audio.newSource("resources/sounds/joint.wav", "static")
+            --source = love.audio.newSource("resources/sounds/joint.wav", "static")
             love.audio.play(source)
         end
     end
