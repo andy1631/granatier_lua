@@ -15,7 +15,7 @@ local game = {}
 local playerId = 0
 
 function game:enter(curr, address, port)
-    mapParser = MapParser()
+    mapParser = MapParser("resources/arenas/empty.xml")
     mapParser:parse()
     udp = Socket.udp()
     if address ~= nil and port ~= nil then
