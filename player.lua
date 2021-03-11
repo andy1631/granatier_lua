@@ -33,7 +33,7 @@ function Player:init(x, y, id, origin, size)
         bombs = 1,
         power = 1,
         shield = false,
-        throw = false,
+        throw = true,
         kick = false,
         slow = false,
         hyperactive = false,

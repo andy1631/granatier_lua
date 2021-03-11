@@ -622,9 +622,15 @@ end
 
 function Bomb:throwBomb(cords)
     map.fields[self.cords.x][self.cords.y].bombs = 0
-    local destPos = map.fields[cords.x][cords.y].position
-    self.throwVector = destPos - self.position
-    self.throwDest = Vector.new(cords.x, cords.y)
+    local destPos
+    if cords.x > 0 and cords.x <= map.x and cords.y > 0 and cords.y <= map.y then
+      local destPos = map.fields[cords.x][cords.y].position
+      self.throwVector = destPos - self.position
+    else
+      local t = (cords - self.cords):normalized()
+      self.throwVector = (cords - self.cords):normalized()*2*map.fieldSize
+    end 
+    self.throwDest = cords:clone()
     self.throwDistance = self.throwVector:len()
     self.throw = true
     self.hitbox.solid = false
@@ -637,13 +643,20 @@ function Bomb:throwAnimation(dt)
     self.hitbox:move(norm.x * dt * 250, norm.y * dt * 250)
     self.throwDistance = self.throwDistance - Vector.new(norm.x * dt * 250, norm.y * dt * 250):len()
     if self.throwDistance < 0 then
+        if self.throwDest.x > 0 and self.throwDest.x <= map.x and self.throwDest.y > 0 and self.throwDest.y <= map.y then
         self.hitbox:moveTo(
             map.fields[self.throwDest.x][self.throwDest.y].position.x + self.origin.x,
             map.fields[self.throwDest.x][self.throwDest.y].position.y + self.origin.y
         )
-        self.throw = false
         self.cords = self:getRelPos()
         map.fields[self.cords.x][self.cords.y].bombs = map.fields[self.cords.x][self.cords.y].bombs + 1
+        else
+          local correct = self.throwVector:normalized()*self.throwDistance
+          self.hitbox:move(correct.x,correct.y)
+          self.cords.x = -1
+          self.cords.y = -1
+        end
+        self.throw = false
         self.scale = self.size
         self.scaleFactor = -0.25
     end
