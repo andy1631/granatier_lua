@@ -93,6 +93,19 @@ function Bomb:update(dt)
             self.explodeState = 1
         end
     end
+    
+    self:kickPowerUp(dt)
+end
+
+function kickPowerUp(dt)
+  for k, v in pairs(map.players) do
+        local collide = v.hitbox:collidesWith(self.hitbox)
+        if collide and v.stats.kick==true then
+          self.movedirection = v.velocity:normalized()*5
+          self.dir = v.direction
+          self:move(dt)
+        end
+    end
 end
 
 function Bomb:arrowCheck()
