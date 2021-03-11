@@ -67,7 +67,18 @@ function Field:update(dt)
                 if self.pandora then
                     self:spawnPowerUp()
                 end
-                self.PowerUp:usePowerUp(player)
+                if self.powerupNo < 6 and self.powerupNo > 0 then
+                  if player.stats.slow == false 
+                  and player.stats.hyperactive == false 
+                  and player.stats.mirror == false
+                  and player.stats.scatty == false
+                  and player.stats.restrain == false
+                  then 
+                    self.PowerUp:usePowerUp(player)
+                  end
+                else
+                  self.PowerUp:usePowerUp(player)
+                end
                 self.PowerUp = nil
                 self.powerupNo = nil
                 local source = love.audio.newSource("resources/sounds/wow.wav", "static")
