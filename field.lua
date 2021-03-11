@@ -23,6 +23,7 @@ Field = Class {}
 
 function Field:init(pos, size, t, cords, origin)
     self.origin = origin
+    self.size = size
     self.type = t
     self.hitbox = HC.rectangle(pos.x, pos.y, size, size)
     local x, y = self.hitbox:center()
@@ -31,10 +32,9 @@ function Field:init(pos, size, t, cords, origin)
     self.cords = cords
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
     self.hitbox.cords = self.cords
-    self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
+    self.TexturePath = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
     self.bombs = 0
-    self.Texture = Tove.newGraphics(self.Texture)
-    self.Texture:rescale(40)
+    self.Texture = Tove.newGraphics(self.Texture, self.size)
     self.pandora = false
     math.randomseed(os.time())
 end
@@ -62,16 +62,17 @@ end
 
 function Field:update(dt)
     if self.PowerUp ~= nil then
-        local collide, dx, dy = map.players[0].hitbox:collidesWith(self.hitbox)
-        if collide and (dx > 1 or dx < -1 or dy > 1 or dy < -1) then
-            if self.pandora then
-                self:spawnPowerUp()
+        for k, player in pairs(map.players) do
+            if player.hitbox:collidesWith(self.hitbox) then
+                if self.pandora then
+                    self:spawnPowerUp()
+                end
+                self.PowerUp:usePowerUp(player)
+                self.PowerUp = nil
+                self.powerupNo = nil
+                local source = love.audio.newSource("resources/sounds/wow.wav", "static")
+                love.audio.play(source)
             end
-            self.PowerUp:usePowerUp(map.players[0])
-            self.PowerUp = nil
-            self.powerupNo = nil
-            source = love.audio.newSource("resources/sounds/wow.wav", "static")
-            love.audio.play(source)
         end
     end
 end
@@ -141,7 +142,7 @@ function Field:setType(t)
     self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
     self.Texture = love.filesystem.read("resources/SVG/" .. self.type .. ".svg")
     self.Texture = Tove.newGraphics(self.Texture)
-    self.Texture:rescale(40)
+    self.Texture:rescale(self.size)
 end
 
 function Field:getType()
@@ -165,6 +166,7 @@ function Field:getData()
 end
 
 function Field:setData(data)
+    --self:setType(data.type)
     self.type = data.type
     self.hitbox:moveTo(data.hitbox.x, data.hitbox.y)
     self.hitbox.solid = data.hitbox.solid
@@ -177,22 +179,22 @@ function Field:setData(data)
     self.bombs = data.bombs
     self.pandora = data.pandora
     self.powerupNo = nil
-    self.powerup = nil
-    if data.PowerUp ~= nil then
+    self.PowerUp = nil
+    if data.powerup ~= nil then
         self:spawnPowerUp(data.powerup)
     end
 end
 
 function Field:hasPlayer()
-  local collide
-  for k,v in pairs(map.players) do
-    collide = v.hitbox:collidesWith(self.hitbox)
-    if collide then
-      return true
-    else
-      return false
+    local collide
+    for k, v in pairs(map.players) do
+        collide = v.hitbox:collidesWith(self.hitbox)
+        if collide then
+            return true
+        else
+            return false
+        end
     end
-  end
 end
 
 return Field

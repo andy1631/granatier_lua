@@ -70,6 +70,8 @@ function game:update(dt)
                     --self:sendPlayerPos(tonumber(id))
                     --local id = get_key_for_value(connections, {msg_or_ip, port_or_nil})
                     map.players[tonumber(id)]:walk(data)
+                elseif cmd == "stopWalk" then
+                    map.players[tonumber(id)].movement = false
                 elseif cmd == "setBomb" then
                     map:setBomb(tonumber(id))
                 end
@@ -129,7 +131,11 @@ function game:keyreleased(key, scancode, isrepeat)
         not love.keyboard.isDown("w") and not love.keyboard.isDown("a") and not love.keyboard.isDown("s") and
             not love.keyboard.isDown("d")
      then
-        map.players[0].movement = false
+        if host then
+            map.players[0].movement = false
+        else
+            udp:send(playerId .. ",stopWalk:_")
+        end
     end
 end
 
