@@ -20,6 +20,10 @@ local function host_game()
     Gamestate.switch(game)
 end
 
+local function select_map()
+  text = "Select map!"
+  
+end
 -- Quit Game
 local function quit_game()
     text = "Quit Game was selected!"
@@ -35,6 +39,7 @@ function menu:enter()
     mainmenu = menuengine.new(600, 250)
     mainmenu:addEntry("Join Game", join_game)
     mainmenu:addEntry("Host Game", host_game)
+    mainmenu:addEntry("Select Map", select_map)
     mainmenu:addSep()
     mainmenu:addEntry("Quit Game", quit_game)
 end
@@ -43,7 +48,7 @@ function menu:update(dt)
     -- many lines of code
     mainmenu:update()
 end
-
+    
 function menu:draw()
     -- many lines of code
     love.graphics.clear()
