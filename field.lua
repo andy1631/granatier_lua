@@ -86,6 +86,27 @@ function Field:update(dt)
             end
         end
     end
+    
+    if self.type == "arena_mine" then
+      for k, player in pairs(map.players) do
+        local collide,dx,dy = player.hitbox:collidesWith(self.hitbox)
+        if collide and Vector.new(dx,dy):len()>(map.fieldSize/2) then
+          if map.fields[self.cords.x][self.cords.y].bombs == 0 then
+            local bomb = Bomb(
+                        map.fields[self.cords.x][self.cords.y].position,
+                        1,
+                        self.cords,
+                        map.position,
+                        player.id
+                    )
+            map.bombs[#map.bombs+1] = bomb
+            bomb.time = 0
+            map.fields[self.cords.x][self.cords.y].bombs = 1
+            self:setType("arena_ground")
+          end
+      end
+    end
+end
 end
 
 function Field:spawnPowerUp(number)
