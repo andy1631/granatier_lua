@@ -66,7 +66,7 @@ function Bomb:update(dt)
         self:arrowCheck()
     end
     self.time = self.time - dt
-    if self.throw then
+    if not self.throw then
         if self.scale <= 32 then
             self.scaleFactor = 12 * dt
         elseif self.scale >= 35 then
