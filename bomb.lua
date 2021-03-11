@@ -42,6 +42,8 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.kicked = false
     self.throw = false
     self.throwVector = nil
+    self.throwDistance = nil
+    math.randomseed(os.time())
 end
 
 function Bomb:draw()
@@ -97,7 +99,14 @@ function Bomb:update(dt)
             self.explodeState = 1
         end
     end
-    
+    if map.fields[self.cords.x][self.cords.y]:getType() == "arena_bomb_mortar" then
+      local RandomX = love.math.random(1,map.x)
+      local RandomY = love.math.random(1,map.y)
+      self:throwBomb(Vector.new(RandomX,RandomY))
+    end
+    if throw then
+      self:throwAnimation(dt)
+    end
     self:kickPowerUp(dt)
 end
 
@@ -696,10 +705,14 @@ function Bomb:setData(data)
     self.stride = data.stride
 end
 
-function Bomb:throw(cords)
+function Bomb:throwBomb(cords)
 map.fields[self.cords.x][self.cords.y].bombs = 0
-local vec = Vector.new(self.cords.x-cords.x,self.cords.y-cords.y)
-map.fields[cords.x][cords.y].bombs = 1
-self.cords = cords
-  end
+self.throwVector = Vector.new(self.cords.x-cords.x,self.cords.y-cords.y)
+self.throw = true
+self.throwDistance = self.throwVector:len()
+end
+
+function Bomb:throwAnimation(dt)
+  
+end
 return Bomb

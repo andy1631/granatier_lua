@@ -18,6 +18,7 @@ function MapParser:parse()
     local x = t._attr.colCount
     local y = t._attr.rowCount
     t.Row.n = nil
+    math.randomseed(os.time())
     map = Map(x, y)
     for i, v in pairs(t.Row) do
         local xcord = v[1]
