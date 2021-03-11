@@ -32,6 +32,7 @@ function game:enter(curr, address, port)
     else
         host = true
         udp:setsockname("*", 12345)
+        map:spawn()
     end
     udp:settimeout(0)
     --Bitser.registerClass("map", Map)
