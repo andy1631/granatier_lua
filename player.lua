@@ -73,7 +73,7 @@ function Player:draw()
 
     --Rotation des Spielers bei Richtungswechsel
     if self.fall == true then
-        self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
+      self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
     end
     if self.fallen == false then
         if self.exploded == false then
