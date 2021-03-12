@@ -10,7 +10,7 @@ function PowerUpTeleport:init(pos, origin)
 end
 
 function PowerUpTeleport:usePowerUp(player)
-    -- player.stats.teleport = true
+    player.stats.teleport = true
 end
 
 return PowerUpTeleport

@@ -39,7 +39,8 @@ function Player:init(x, y, id, origin, size)
         hyperactive = false,
         mirror = false,
         scatty = false,
-        restrain = false
+        restrain = false,
+        teleport = false
     }
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
@@ -164,6 +165,19 @@ function Player:update(dt)
             end
         end
         self:move(x, y)
+        if self.stats.teleport then
+            source = love.audio.newSource("resources/sounds/teleport.wav", "static")
+            love.audio.play(source)
+            local RandomX
+            local RandomY
+            repeat
+                RandomX = love.math.random(1, map.x)
+                RandomY = love.math.random(1, map.y)
+            until map.fields[RandomX][RandomY]:getType() ~= "arena_greenwall" and
+                map.fields[RandomX][RandomY]:getType() ~= "arena_wall"
+            self:setPosition(map.fields[RandomX][RandomY].position.x, map.fields[RandomX][RandomY].position.y)
+            self.stats.teleport = false
+        end
     end
 
     --while key is pressed ändere den state von o zu 1 dann 2 und 1... am Ende wieder 0
