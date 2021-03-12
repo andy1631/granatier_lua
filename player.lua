@@ -45,7 +45,7 @@ function Player:init(x, y, id, origin, size)
     self.id = id or 0
     self.hitbox.playerId = self.id
     self.playertexture = Tove.newGraphics(Textures["player" .. self.id + 1], self.size)
-    self.deadtexture = Tove.newGraphics(Textures["score_star_enabled"], self.size)
+    self.deadtexture = Tove.newGraphics(Textures["player" .. self.id .. "_death"], self.size)
     self.texture = self.playertexture
 end
 --Anzeige der SVG-Spielers
