@@ -106,7 +106,7 @@ end
 function Field:spawnPowerUp(number)
     local randomNumber
     if number == nil then
-        randomNumber = math.random(1, 18)
+        randomNumber = math.random(1, 26)
     else
         randomNumber = number
     end
@@ -149,13 +149,15 @@ function Field:spawnPowerUp(number)
     elseif randomNumber == 12 then
         -- Teleporter:  --no fuctionality
         self.PowerUp = PowerUpSpeed(self.position, self.origin)
-    elseif randomNumber == 26 then
+    elseif randomNumber == 13 then
+        self:setType("arena_mine")
+    elseif randomNumber == 27 then
         -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect): --no functionality
         self.PowerUp = PowerUpTeleport(self.position, self.origin)
-    elseif randomNumber == 27 then
+    elseif randomNumber == 28 then
         -- Mauern bauen:  no functionality
         self.PowerUp = PowerUpResurrect(self.position, self.origin)
-    elseif randomNumber == 28 then
+    elseif randomNumber == 29 then
         self.PowerUp = PowerUpMason(self.position, self.origin)
     end
     if self.PowerUp ~= nil then
