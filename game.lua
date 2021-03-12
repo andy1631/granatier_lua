@@ -5,7 +5,7 @@ Map = require "map"
 Player = require "player"
 Field = require "field"
 Bomb = require "bomb"
-LibDeflate = require "lib.LibDeflate"
+LibDeflate = require "lib.LibDeflate.LibDeflate"
 
 local host = false
 local updaterate = 0.03
