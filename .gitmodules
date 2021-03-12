@@ -1,0 +1,6 @@
+[submodule "lib/LibDeflate"]
+	path = lib/LibDeflate
+	url = https://github.com/SafeteeWoW/LibDeflate.git
+[submodule "lib/love2d-menuengine"]
+	path = lib/love2d-menuengine
+	url = https://github.com/Astorek86/love2d-menuengine.git
