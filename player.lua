@@ -45,7 +45,8 @@ function Player:init(x, y, id, origin, size)
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
-    self.playertexture = Tove.newGraphics(Textures["player" .. self.id + 1], self.size)
+    --self.playertexture = Tove.newGraphics(Textures["player" .. self.id + 1], self.size)
+    self.playertexture = GetToveGraphics("player" .. self.id + 1, self.size)
     self.deadtexture = Tove.newGraphics(Textures["player" .. self.id + 1 .. "_death"], self.size)
     self.texture = self.playertexture
 end
@@ -77,9 +78,8 @@ function Player:draw()
         self.position = self.position + posCorrect:normalized() * -self.size * (1 - (self.falltime / 2))
     end
     if self.exploded then
-      self.exploded = self.exploded
+        self.exploded = self.exploded
     end
-    
     if not self.fallen then
         self.texture:draw(
             self.origin.x + self.position.x + posCorrect.x,
