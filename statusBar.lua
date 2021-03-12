@@ -7,11 +7,9 @@ function StatusBar:init(playerCount)
     self.playerCount = playerCount
     --self:createTextBox()
     -- Darstellung des Spieler 1-Bilds:
-    self.Player1Tex = love.filesystem.read("resources/player1.svg")
-    self.Player1Tex = Tove.newGraphics(self.Player1Tex, 30)
+    self.Player1Tex = Tove.newGraphics(Textures["player1"], 30)
     -- Darstellung des Spieler 2-Bilds:
-    self.Player2Tex = love.filesystem.read("resources/player2.svg")
-    self.Player2Tex = Tove.newGraphics(self.Player2Tex, 30)
+    self.Player2Tex = Tove.newGraphics(Textures["player2"], 30)
     -- Darstellung des Schild-Power-Ups:
     --self.ShieldTex = love.filesystem.read("resources/SVG/bonus_shield.svg")
     self.ShieldTex = Tove.newGraphics(Textures["bonus_shield"])
@@ -64,10 +62,10 @@ function StatusBar:draw()
         love.graphics.printf({{0, 0, 255, 255}, "Spieler " .. i}, self.x, self.y, 100, "center") -- Farbe auf Blau setzen
         love.graphics.setColor(255, 255, 255, 255) -- Farbe für das Zeichnen des Spieler-Bilds zurücksetzen
         -- Abwechselnd soll die Textur für Spieler 1 oder Spieler 2 gezeichnet werden:
-        if i % 2 == 0 then
+        if i % 2 == 1 then
             self.Player1Tex:draw(150, self.y + 7) -- x, y
         end
-        if i % 2 == 1 then
+        if i % 2 == 0 then
             self.Player2Tex:draw(150, self.y + 7) -- x, y
         end
         -- Zeichnen der Power-Ups unterhalb des jeweiligen Spielers:

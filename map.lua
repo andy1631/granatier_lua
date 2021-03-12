@@ -32,7 +32,7 @@ function Map:init(x, y)
     self.fields = {}
     self.bombs = {}
     self.spawns = {}
-    self.death = true
+    self.death = false
 
     --if self.type == 'arena_greenwall' then
     for i = 1, self.x, 1 do

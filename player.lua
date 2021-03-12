@@ -44,9 +44,8 @@ function Player:init(x, y, id, origin, size)
     --Standard-Boni und Ort ob und falls wie viele Power-Ups aktiv sind
     self.id = id or 0
     self.hitbox.playerId = self.id
-    self.texturePath = love.filesystem.read("resources/player" .. self.id + 1 .. ".svg")
-    self.playertexture = Tove.newGraphics(self.texturePath, self.size)
-    self.deadtexture = Tove.newGraphics(love.filesystem.read("resources/SVG/score_star_enabled.svg"), self.size)
+    self.playertexture = Tove.newGraphics(Textures["player" .. self.id + 1], self.size)
+    self.deadtexture = Tove.newGraphics(Textures["score_star_enabled"], self.size)
     self.texture = self.playertexture
 end
 --Anzeige der SVG-Spielers
