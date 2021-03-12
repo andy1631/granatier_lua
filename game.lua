@@ -62,7 +62,7 @@ function game:update(dt)
                 local newPlayer = map:spawn()
                 udp:sendto(tostring(newPlayer.id), msg_or_ip, port_or_nil)
             else
-                id, cmd, data = string.match(data, "([^:,]+),([^:,]+):([^:,]+)")
+                id, cmd, data = string.match(data, "([^:,]+),([^:,]+),([^:,]+)")
                 --love.window.showMessageBox("info", cmd)
                 if cmd == "walk" then
                     --self:sendPlayerPos(tonumber(id))
@@ -110,17 +110,17 @@ function game:keypressed(key, scancode, isrepeat)
         end
     else
         if key == "w" then
-            udp:send(playerId .. ",walk:up")
+            udp:send(playerId .. ",walk,up")
         elseif key == "a" then
-            udp:send(playerId .. ",walk:left")
+            udp:send(playerId .. ",walk,left")
         elseif key == "s" then
-            udp:send(playerId .. ",walk:down")
+            udp:send(playerId .. ",walk,down")
         elseif key == "d" then
-            udp:send(playerId .. ",walk:right")
+            udp:send(playerId .. ",walk,right")
         end
         if key == "q" then
             --map:setBomb()
-            udp:send(playerId .. ",setBomb:_")
+            udp:send(playerId .. ",setBomb,_")
         end
 
         local dump = udp:receive()
