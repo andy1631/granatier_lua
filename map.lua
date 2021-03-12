@@ -168,16 +168,16 @@ function Map:setBomb(id)
             end
             local vect
             if self.players[id].stats.throw then
-              if self.players[id].direction == "right" then
-                vect = Vector.new(cords[index].x + 2, cords[index].y)
-              elseif self.players[id].direction == "left" then
-                vect = Vector.new(cords[index].x - 2, cords[index].y)
-              elseif self.players[id].direction == "up" then
-                vect = Vector.new(cords[index].x, cords[index].y - 2)
-              elseif self.players[id].direction == "down" then
-                vect = Vector.new(cords[index].x, cords[index].y + 2)
-              end
-            bomb:throwBomb(vect)
+                if self.players[id].direction == "right" then
+                    vect = Vector.new(cords[index].x + 2, cords[index].y)
+                elseif self.players[id].direction == "left" then
+                    vect = Vector.new(cords[index].x - 2, cords[index].y)
+                elseif self.players[id].direction == "up" then
+                    vect = Vector.new(cords[index].x, cords[index].y - 2)
+                elseif self.players[id].direction == "down" then
+                    vect = Vector.new(cords[index].x, cords[index].y + 2)
+                end
+                bomb:throwBomb(vect)
             end
         end
     end
@@ -222,31 +222,28 @@ function Map:getData()
 end
 
 function Map:setData(data)
-  self.x = data.x
-  self.y = data.y
-    if data.playerCount ~= self.playerCount then
-        for i = 0, data.playerCount - self.playerCount - 1, 1 do
-            self.players[i] = Player(0, 0, i, self.position, self.fieldSize)
-        end
-    end
-    for k, player in pairs(self.players) do
-        player:setData(data.players[k+1])
-    end
-    self.playerCount = data.playerCount
+    self.x = data.x
+    self.y = data.y
     if #self.fields == 0 then
-      self.width = self.x * self.fieldSize
-    self.height = self.y * self.fieldSize
-    self.position =
-        Vector.new(
-        (love.graphics:getWidth() / 2) - (self.width / 2),
-        (love.graphics:getHeight() / 2) - (self.height / 2)
-    )
+        self.width = self.x * self.fieldSize
+        self.height = self.y * self.fieldSize
+        self.position =
+            Vector.new(
+            (love.graphics:getWidth() / 2) - (self.width / 2),
+            (love.graphics:getHeight() / 2) - (self.height / 2)
+        )
         for i = 1, table.getn(data.fields), 1 do
-          self.fields[i] = {}
-          for j = 1, table.getn(data.fields[i]), 1 do
+            self.fields[i] = {}
+            for j = 1, table.getn(data.fields[i]), 1 do
                 self.fields[i][j] =
-                    Field(Vector.new(data.fields[i][j].position.x, data.fields[i][j].position.y), map.fieldSize,data.fields[i][j].type, Vector.new(i, j), self.position)
-          end
+                    Field(
+                    Vector.new(data.fields[i][j].position.x, data.fields[i][j].position.y),
+                    map.fieldSize,
+                    data.fields[i][j].type,
+                    Vector.new(i, j),
+                    self.position
+                )
+            end
         end
     else
         for i, fields in pairs(self.fields) do
@@ -255,7 +252,15 @@ function Map:setData(data)
             end
         end
     end
-
+    if data.playerCount ~= self.playerCount then
+        for i = 0, data.playerCount - self.playerCount - 1, 1 do
+            self.players[i] = Player(0, 0, i, self.position, self.fieldSize)
+        end
+    end
+    for k, player in pairs(self.players) do
+        player:setData(data.players[k + 1])
+    end
+    self.playerCount = data.playerCount
     if table.getn(data.bombs) ~= table.getn(self.bombs) then
         for i = 1, table.getn(data.bombs) - table.getn(self.bombs), 1 do
             table.insert(self.bombs, Bomb(Vector.new(0, 0), 0, Vector.new(0, 0), self.position))

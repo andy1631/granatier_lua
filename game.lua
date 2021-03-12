@@ -18,7 +18,7 @@ map = nil
 function game:enter(curr, address, port)
     udp = Socket.udp()
     if address ~= nil and port ~= nil then
-        map = Map(0,0)
+        map = Map(0, 0)
         udp:settimeout(5)
         udp:setpeername(address, port)
         repeat
@@ -35,7 +35,7 @@ function game:enter(curr, address, port)
     else
         host = true
         udp:setsockname("*", 12345)
-        mapParser = MapParser("resources/arenas/empty.xml")
+        mapParser = MapParser("resources/arenas/granatier.xml")
         map = mapParser:parse()
         map:spawn()
     end
@@ -46,22 +46,19 @@ end
 function game:update(dt)
     local start
     if not host then
-        --end
-        --if timer > updaterate then
         local dump = udp:receive()
         if dump ~= nil then
             local decompressed = LibDeflate:DecompressDeflate(dump)
             local data = Bitser.loads(decompressed)
             map:setData(data)
             map:update(dt)
-        --end
         end
     else
         local data, msg_or_ip, port_or_nil = udp:receivefrom()
         if data then
             if data == "connect" then
                 --self:sendPlayerPos(newPlayer.id)
-                connections[#connections] = {msg_or_ip, port_or_nil}
+                table.insert(connections, {msg_or_ip, port_or_nil})
                 local newPlayer = map:spawn()
                 udp:sendto(tostring(newPlayer.id), msg_or_ip, port_or_nil)
             else
@@ -88,7 +85,6 @@ function game:update(dt)
         end
         timer = timer + dt
     end
-    map:update(dt)
 end
 
 function game:draw()
