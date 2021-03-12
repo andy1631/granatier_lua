@@ -5,7 +5,7 @@ local PowerUpKick = Class {__includes = PowerUp}
 
 function PowerUpKick:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_kick.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_kick"])
+    self.Texture = GetToveGraphics("bonus_kick", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

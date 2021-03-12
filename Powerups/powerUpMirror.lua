@@ -5,7 +5,7 @@ local PowerUpMirror = Class {__includes = PowerUp}
 
 function PowerUpMirror:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_bad_mirror.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_bad_mirror"])
+    self.Texture = GetToveGraphics("bonus_bad_mirror", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

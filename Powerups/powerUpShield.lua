@@ -5,7 +5,7 @@ local PowerUpShield = Class {__includes = PowerUp}
 
 function PowerUpShield:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_shield.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_shield"])
+    self.Texture = GetToveGraphics("bonus_shield", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

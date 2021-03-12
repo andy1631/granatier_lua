@@ -5,7 +5,7 @@ local PowerUpSlow = Class {__includes = PowerUp}
 
 function PowerUpSlow:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_bad_slow.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_bad_slow"])
+    self.Texture = GetToveGraphics("bonus_bad_slow", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

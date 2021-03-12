@@ -20,15 +20,15 @@ end,
 ]]
 local PowerUp = Class {}
 
-function PowerUp:init(pos,origin)
+function PowerUp:init(pos, origin)
     self.position = pos
-    self.Texture:rescale(40)
+    --self.Texture:rescale(40)
     self.origin = origin
     -- print("Ein neues Power-Up erscheint!")
 end
 
 function PowerUp:draw()
-    self.Texture:draw(self.position.x+self.origin.x, self.position.y+self.origin.y)
+    self.Texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
 end
 
 return PowerUp

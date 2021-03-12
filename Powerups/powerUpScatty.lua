@@ -5,7 +5,7 @@ local PowerUpScatty = Class {__includes = PowerUp}
 
 function PowerUpScatty:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_bad_scatty.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_bad_scatty"])
+    self.Texture = GetToveGraphics("bonus_bad_scatty", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

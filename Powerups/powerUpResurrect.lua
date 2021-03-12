@@ -5,7 +5,7 @@ local PowerUpResurrect = Class {__includes = PowerUp}
 
 function PowerUpResurrect:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_neutral_resurrect.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_neutral_resurrect"])
+    self.Texture = GetToveGraphics("bonus_neutral_resurrect", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

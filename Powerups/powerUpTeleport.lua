@@ -5,7 +5,7 @@ local PowerUpTeleport = Class {__includes = PowerUp}
 
 function PowerUpTeleport:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_neutral_teleport.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_neutral_teleport"])
+    self.Texture = GetToveGraphics("bonus_neutral_teleport", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

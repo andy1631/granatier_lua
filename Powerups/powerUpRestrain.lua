@@ -5,7 +5,7 @@ local PowerUpRestrain = Class {__includes = PowerUp}
 
 function PowerUpRestrain:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_bad_restrain.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_bad_restrain"])
+    self.Texture = GetToveGraphics("bonus_bad_restrain", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

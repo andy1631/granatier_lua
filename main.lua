@@ -43,13 +43,13 @@ function GetToveGraphics(name, size)
     if ToveBuffer[name] ~= nil then
         for i, img in ipairs(ToveBuffer[name]) do
             if img:getWidth() == size then
-                return ToveBuffer[name]
+                return img
             end
         end
         if #ToveBuffer[name] >= 3 then
-            table.remove(Tove.Buffer[name], 1)
+            table.remove(ToveBuffer[name], 1)
         end
-        table.insert(ToveBuffer[name], Tove.newGraphics(ToveBuffer[name], size))
+        table.insert(ToveBuffer[name], Tove.newGraphics(Textures[name], size))
         return ToveBuffer[name][#ToveBuffer[name]]
     else
         ToveBuffer[name] = {}

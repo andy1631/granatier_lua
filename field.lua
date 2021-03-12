@@ -164,10 +164,10 @@ function Field:spawnPowerUp(number)
 end
 
 function Field:setType(t)
-  if t ~= self.type then 
-    self.type = t
-    self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
-    self.Texture = Tove.newGraphics(Textures[self.type], self.size)
+    if t ~= self.type then
+        self.type = t
+        self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
+        self.Texture = Tove.newGraphics(Textures[self.type], self.size)
     end
 end
 

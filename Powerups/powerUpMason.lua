@@ -5,7 +5,7 @@ local PowerUpMason = Class {__includes = PowerUp}
 
 function PowerUpMason:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_mason.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_mason"])
+    self.Texture = GetToveGraphics("bonus_mason", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

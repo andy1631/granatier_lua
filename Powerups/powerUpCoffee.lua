@@ -5,7 +5,7 @@ local PowerUpCoffee = Class {__includes = PowerUp}
 
 function PowerUpCoffee:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_bad_hyperactive.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_bad_hyperactive"])
+    self.Texture = GetToveGraphics("bonus_bad_hyperactive", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 

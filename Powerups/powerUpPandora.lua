@@ -5,7 +5,7 @@ local PowerUpPandora = Class {__includes = PowerUp}
 
 function PowerUpPandora:init(pos, origin)
     --self.Texture = love.filesystem.read("resources/SVG/bonus_neutral_pandora.svg")
-    self.Texture = Tove.newGraphics(Textures["bonus_neutral_pandora"])
+    self.Texture = GetToveGraphics("bonus_neutral_pandora", map.fieldSize)
     PowerUp.init(self, pos, origin)
 end
 
