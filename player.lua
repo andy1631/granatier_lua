@@ -46,7 +46,7 @@ function Player:init(x, y, id, origin, size)
     self.id = id or 0
     self.hitbox.playerId = self.id
     self.playertexture = Tove.newGraphics(Textures["player" .. self.id + 1], self.size)
-    self.deadtexture = Tove.newGraphics(Textures["player" .. self.id .. "_death"], self.size)
+    self.deadtexture = Tove.newGraphics(Textures["player" .. self.id + 1 .. "_death"], self.size)
     self.texture = self.playertexture
 end
 --Anzeige der SVG-Spielers
@@ -73,10 +73,14 @@ function Player:draw()
 
     --Rotation des Spielers bei Richtungswechsel
     if self.fall == true then
-        self.texture = Tove.newGraphics(self.texturePath, self.size * (self.falltime / 2))
+        self.texture = Tove.newGraphics(Textures["player" .. self.id + 1], self.size * (self.falltime / 2))
         self.position = self.position + posCorrect:normalized() * -self.size * (1 - (self.falltime / 2))
     end
-    if not self.fallen and not self.exploded then
+    if self.exploded then
+      self.exploded = self.exploded
+    end
+    
+    if not self.fallen then
         self.texture:draw(
             self.origin.x + self.position.x + posCorrect.x,
             self.origin.y + self.position.y + posCorrect.y,

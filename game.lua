@@ -54,7 +54,7 @@ function game:update(dt)
             map:update(dt)
         end
     else
-        local data, msg_or_ip, port_or_nil = udp:receivefrom()
+        --[[local data, msg_or_ip, port_or_nil = udp:receivefrom()
         if data then
             if data == "connect" then
                 --self:sendPlayerPos(newPlayer.id)
@@ -74,15 +74,15 @@ function game:update(dt)
                     map:setBomb(tonumber(id))
                 end
             end
-        end
+        end]]
         map:update(dt)
-        if timer > updaterate then
+        --[[if timer > updaterate then
             local dump = Bitser.dumps(map:getData())
             local compressed = LibDeflate:CompressDeflate(dump)
             for key, value in pairs(connections) do
                 udp:sendto(compressed, value[1], value[2])
             end
-        end
+        end]]
         timer = timer + dt
     end
 end

@@ -106,11 +106,11 @@ end
 function Field:spawnPowerUp(number)
     local randomNumber
     if number == nil then
-        randomNumber = math.random(1, 28)
+        randomNumber = math.random(1, 18)
     else
         randomNumber = number
     end
-    randomNumber = 27
+    --randomNumber = 12
     -- Spiegel:
     if randomNumber == 1 then
         -- Kaffee:
@@ -149,15 +149,13 @@ function Field:spawnPowerUp(number)
     elseif randomNumber == 12 then
         -- Teleporter:  --no fuctionality
         self.PowerUp = PowerUpSpeed(self.position, self.origin)
-    elseif randomNumber == 13 then
-        self:setType("arena_mine")
-    elseif randomNumber == 14 then
+    elseif randomNumber == 26 then
         -- Ein zufälliger Spieler wird nach dem Tod wiederbelebt (Resurrect): --no functionality
         self.PowerUp = PowerUpTeleport(self.position, self.origin)
-    elseif randomNumber == 29 then
+    elseif randomNumber == 27 then
         -- Mauern bauen:  no functionality
         self.PowerUp = PowerUpResurrect(self.position, self.origin)
-    elseif randomNumber == 30 then
+    elseif randomNumber == 28 then
         self.PowerUp = PowerUpMason(self.position, self.origin)
     end
     if self.PowerUp ~= nil then
@@ -166,10 +164,10 @@ function Field:spawnPowerUp(number)
 end
 
 function Field:setType(t)
-    if t ~= self.type then
-        self.type = t
-        self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
-        self.Texture = Tove.newGraphics(Textures[self.type], self.size)
+  if t ~= self.type then 
+    self.type = t
+    self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
+    self.Texture = Tove.newGraphics(Textures[self.type], self.size)
     end
 end
 
@@ -206,8 +204,9 @@ function Field:setData(data)
     self.cords.y = data.cords.y
     self.bombs = data.bombs
     self.pandora = data.pandora
-    if data.powerup ~= nil and self.powerupNo ~= data.powerupNo then
-        self.PowerUp = nil
+    self.powerupNo = nil
+    self.PowerUp = nil
+    if data.powerup ~= nil then
         self:spawnPowerUp(data.powerup)
     end
 end
