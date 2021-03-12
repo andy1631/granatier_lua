@@ -46,12 +46,14 @@ end
 function game:update(dt)
     local start
     if not host then
-        local dump = udp:receive()
-        if dump ~= nil then
-            local decompressed = LibDeflate:DecompressDeflate(dump)
-            local data = Bitser.loads(decompressed)
-            map:setData(data)
-            map:update(dt)
+        for i = 0, 1, 1 do
+            local dump = udp:receive()
+            if dump ~= nil then
+                local decompressed = LibDeflate:DecompressDeflate(dump)
+                local data = Bitser.loads(decompressed)
+                map:setData(data)
+                map:update(dt)
+            end
         end
     else
         local data, msg_or_ip, port_or_nil = udp:receivefrom()
