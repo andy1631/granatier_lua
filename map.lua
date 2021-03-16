@@ -52,7 +52,7 @@ function Map:init(x, y)
     end
 
     -- Show the background
-    self.background = Tove.newGraphics(Textures["background"], 1200)
+    self.background = GetToveGraphics("background", 1200)
     self.statusBar = StatusBar()
     --self.statusBar:createTextBox(self.playerCount)
 end

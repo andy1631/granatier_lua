@@ -19,8 +19,7 @@ function Bomb:init(pos, power, cords, origin, ownerId)
     self.cords = cords:clone()
     self.size = 7 / 8 * map.fieldSize
     --self.bomb = love.filesystem.read("resources/SVG/bomb.svg")
-    self.texture = Tove.newGraphics(Textures["bomb"])
-    self.texture:rescale(self.size)
+    self.texture = GetToveGraphics("bomb", self.size)
     self.scale = self.size
     self.scaleFactor = -0.25
     self.north = 0
@@ -55,7 +54,8 @@ end
 function Bomb:draw()
     --self.hitbox:draw()
     if self.fall == true then
-        self.texture = Tove.newGraphics(Textures["bomb"], self.size * (self.falltime / 2))
+        --self.texture = Tove.newGraphics(Textures["bomb"], self.size * (self.falltime / 2))
+        self.texture:rescale(self.size * (self.falltime / 2))
     end
     if not self.isExploding then
         self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
@@ -129,7 +129,7 @@ function Bomb:update(dt)
     if self.morterTime > 0 then
         self.morterTime = self.morterTime - dt
         if self.morterTime <= 0 then
-            self.texture = Tove.newGraphics(Textures["bomb"])
+            self.texture = GetToveGraphics("bomb", self.size)
             local RandomX
             local RandomY
             repeat
@@ -326,8 +326,9 @@ function Bomb:explodeAnimation()
     if self.isExploding == true then
         if self.north > 0 then
             for i = table.getn(self.northCords), 1, -1 do
-                self.texture =
-                    Tove.newGraphics(Textures[explodeString .. "north_" .. self.explodeState], (self.size * 2))
+                --self.texture =
+                --   Tove.newGraphics(Textures[explodeString .. "north_" .. self.explodeState], (self.size * 2))
+                self.texture = GetToveGraphics(explodeString .. "north_" .. self.explodeState, self.size * 2)
                 self.texture:draw(
                     self.position.x + self.origin.x,
                     self.position.y - (self.northCords[i]) + self.origin.y
@@ -336,8 +337,9 @@ function Bomb:explodeAnimation()
         end
         if self.south > 0 then
             for i = table.getn(self.southCords), 1, -1 do
-                self.texture =
-                    Tove.newGraphics(Textures[explodeString .. "south_" .. self.explodeState], (self.size * 2))
+                --self.texture =
+                --    Tove.newGraphics(Textures[explodeString .. "south_" .. self.explodeState], (self.size * 2))
+                self.texture = GetToveGraphics(explodeString .. "south_" .. self.explodeState, self.size * 2)
                 self.texture:draw(
                     self.position.x + self.origin.x,
                     self.position.y + (self.southCords[i]) + self.origin.y
@@ -346,8 +348,9 @@ function Bomb:explodeAnimation()
         end
         if self.east > 0 then
             for i = table.getn(self.eastCords), 1, -1 do
-                self.texture =
-                    Tove.newGraphics(Textures[explodeString .. "east_" .. self.explodeState], (self.size * 2))
+                --self.texture =
+                --    Tove.newGraphics(Textures[explodeString .. "east_" .. self.explodeState], (self.size * 2))
+                self.texture = GetToveGraphics(explodeString .. "east_" .. self.explodeState, self.size * 2)
                 self.texture:draw(
                     self.position.x + self.origin.x + (self.eastCords[i]),
                     self.position.y + self.origin.y
@@ -356,15 +359,17 @@ function Bomb:explodeAnimation()
         end
         if self.west > 0 then
             for i = table.getn(self.westCords), 1, -1 do
-                self.texture =
-                    Tove.newGraphics(Textures[explodeString .. "west_" .. self.explodeState], (self.size * 2))
+                --self.texture =
+                --    Tove.newGraphics(Textures[explodeString .. "west_" .. self.explodeState], (self.size * 2))
+                self.texture = GetToveGraphics(explodeString .. "west_" .. self.explodeState, self.size * 2)
                 self.texture:draw(
                     self.position.x + self.origin.x - (self.westCords[i]),
                     self.position.y + self.origin.y
                 )
             end
         end
-        self.texture = Tove.newGraphics(Textures[explodeString .. "core_" .. self.explodeState], self.size)
+        --self.texture = Tove.newGraphics(Textures[explodeString .. "core_" .. self.explodeState], self.size)
+        self.texture = GetToveGraphics(explodeString .. "core_" .. self.explodeState, self.size)
         self.texture:draw(self.position.x + self.origin.x, self.position.y + self.origin.y)
     end
 end

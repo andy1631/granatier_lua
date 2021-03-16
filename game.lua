@@ -69,7 +69,6 @@ function game:update(dt)
                     --local id = get_key_for_value(connections, {msg_or_ip, port_or_nil})
                     map.players[tonumber(id)]:walk(data)
                 elseif cmd == "stopWalk" then
-                    love.window.showMessageBox("stop", "walking should be stopped...")
                     map.players[tonumber(id)].movement = false
                 elseif cmd == "setBomb" then
                     map:setBomb(tonumber(id))
@@ -141,7 +140,7 @@ function game:keyreleased(key, scancode, isrepeat)
         if host then
             map.players[0].movement = false
         else
-            udp:send(playerId .. ",stopWalk:_")
+            udp:send(playerId .. ",stopWalk,_")
         end
     end
 end

@@ -7,33 +7,33 @@ function StatusBar:init(playerCount)
     self.playerCount = playerCount
     --self:createTextBox()
     -- Darstellung des Spieler 1-Bilds:
-    self.Player1Tex = Tove.newGraphics(Textures["player1"], 30)
+    self.Player1Tex = GetToveGraphics("player1", 30)
     -- Darstellung des Spieler 2-Bilds:
-    self.Player2Tex = Tove.newGraphics(Textures["player2"], 30)
+    self.Player2Tex = GetToveGraphics("player2", 30)
     -- Darstellung des Schild-Power-Ups:
     --self.ShieldTex = love.filesystem.read("resources/SVG/bonus_shield.svg")
-    self.ShieldTex = Tove.newGraphics(Textures["bonus_shield"])
+    self.ShieldTex = GetToveGraphics("bonus_shield")
     -- Darstellung des Throw-Power-Ups:
     --self.ThrowTex = love.filesystem.read("resources/SVG/bonus_throw.svg")
-    self.ThrowTex = Tove.newGraphics(Textures["bonus_throw"])
+    self.ThrowTex = GetToveGraphics("bonus_throw")
     -- Darstellung des Kick-Power-Ups:
     --self.KickTex = love.filesystem.read("resources/SVG/bonus_kick.svg")
-    self.KickTex = Tove.newGraphics(Textures["bonus_kick"])
+    self.KickTex = GetToveGraphics("bonus_kick")
     -- Darstellung des Slow-Power-Ups:
     --self.SlowTex = love.filesystem.read("resources/SVG/bonus_bad_slow.svg")
-    self.SlowTex = Tove.newGraphics(Textures["bonus_bad_slow"])
+    self.SlowTex = GetToveGraphics("bonus_bad_slow")
     -- Darstellung des Hyperactive-Power-Ups:
     --self.HyperTex = love.filesystem.read("resources/SVG/bonus_bad_hyperactive.svg")
-    self.HyperTex = Tove.newGraphics(Textures["bonus_bad_hyperactive"])
+    self.HyperTex = GetToveGraphics("bonus_bad_hyperactive")
     -- Darstellung des Spiegel-Power-Ups:
     --self.MirrorTex = love.filesystem.read("resources/SVG/bonus_bad_mirror.svg")
-    self.MirrorTex = Tove.newGraphics(Textures["bonus_bad_mirror"])
+    self.MirrorTex = GetToveGraphics("bonus_bad_mirror")
     -- Darstellung des Scatty-Power-Ups:
     --self.ScattyTex = love.filesystem.read("resources/SVG/bonus_bad_scatty.svg")
-    self.ScattyTex = Tove.newGraphics(Textures["bonus_bad_scatty"])
+    self.ScattyTex = GetToveGraphics("bonus_bad_scatty")
     -- Darstellung des Restrain-Power-Ups:
     --self.RestrainTex = love.filesystem.read("resources/SVG/bonus_bad_restrain.svg")
-    self.RestrainTex = Tove.newGraphics(Textures["bonus_bad_restrain"])
+    self.RestrainTex = GetToveGraphics("bonus_bad_restrain")
 end
 
 function StatusBar:createTextBox()

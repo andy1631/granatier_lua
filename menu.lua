@@ -15,7 +15,7 @@ local function join_game()
     if love.system.getOS() == "Windows" then
         Gamestate.switch(game, "localhost", 12345)
     else
-        Gamestate.switch(game, "188.192.213.233", 12345)
+        Gamestate.switch(game, "172.0.0.1", 12345)
     end
 end
 

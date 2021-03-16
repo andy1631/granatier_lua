@@ -34,7 +34,8 @@ function Field:init(pos, size, t, cords, origin)
     self.hitbox.cords = self.cords
     --self.TexturePath = Textures[self.type]
     self.bombs = 0
-    self.Texture = Tove.newGraphics(Textures[self.type], self.size)
+    --self.Texture = Tove.newGraphics(Textures[self.type], self.size)
+    self.Texture = GetToveGraphics(self.type, self.size)
     self.pandora = false
     math.randomseed(os.time())
 end
@@ -167,7 +168,7 @@ function Field:setType(t)
     if t ~= self.type then
         self.type = t
         self.hitbox.solid = (self.type == "arena_greenwall" or self.type == "arena_wall")
-        self.Texture = Tove.newGraphics(Textures[self.type], self.size)
+        self.Texture = GetToveGraphics(self.type, self.size)
     end
 end
 
